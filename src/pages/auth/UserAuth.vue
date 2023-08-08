@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="An error occured" @close="handleError">
+    <base-dialog :show="!!error" title="不知名的錯誤" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
 
@@ -10,22 +10,22 @@
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
-          <label for="email">Email</label>
+          <label for="email">電子信箱</label>
           <input type="email" id="email" v-model.trim="formData.email.val" />
 
           <p v-if="!formData.email.isValid">
-            Please enter a valid email address
+            請輸入有效的電子信箱
           </p>
         </div>
         <div class="form-control">
-          <label for="password">Password</label>
+          <label for="password">密碼</label>
           <input
             type="password"
             id="password"
             v-model.trim="formData.password.val"
           />
           <p v-if="!formData.password.isValid">
-            Password Must be at Least 6 Character
+            密碼長度至少為6個字
           </p>
         </div>
         <base-button>{{ submittedButtonCaption }}</base-button>
@@ -42,7 +42,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 const store = useStore();
 const router = useRouter();
-const route = useRoute();
+const route = useRoute();  
 const formData = reactive({
   email: {
     val: "",
@@ -114,16 +114,16 @@ function handleError() {
 
 const submittedButtonCaption = computed(() => {
   if (mode.value === "login") {
-    return "Login ";
+    return "登入";
   } else {
-    return "Signup";
+    return "註冊";
   }
 });
 const switchModeCaption = computed(() => {
   if (mode.value === "login") {
-    return "Signup";
+    return "註冊";
   } else {
-    return "login";
+    return "登入";
   }
 });
 </script>
@@ -157,5 +157,9 @@ textarea:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;
+}
+
+p {
+  color: red;
 }
 </style>
