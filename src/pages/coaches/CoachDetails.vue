@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="selectedCoach">
     <section>
       <base-card>
         <header>
@@ -20,20 +20,52 @@
   </div>
 </template>
 <script setup>
-import { ref, defineProps, computed, reactive } from "vue";
+import { ref, defineProps, computed, onBeforeMount, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+// import router from "../../router";
+
+// const router = useRouter(); 
 const store = useStore();
 const route = useRoute();
-const props = defineProps(["id"]);
+const router = useRouter(); 
+const props = defineProps({
+  id: {
+    type: String,
+    default: "red", 
+  }
+});
 const selectedCoach = ref(null);
-function setCoach() {
-  // console.log(store.getters["coaches/coaches"]);
-  selectedCoach.value = store.getters["coaches/coaches"].find((coach) => {
-    return coach.id === props.id;
-  });
-}
-setCoach();
+console.log(props.id); 
+// function setCoach() {
+//    selectedCoach.value = store.getters["coaches/coaches"].find((coach) => {
+//     return coach.id === props.id;
+//   });
+// };
+async function setCoach() {
+      // If the user refreshes the page inside this Component
+      // The component needs to download the data to work
+      try {
+        if (store.getters['coaches/coaches'].length === 0) {
+          await store.dispatch('coaches/loadCoaches', { forceRefresh: true })
+        }
+        const coachId = route.params.id; 
+        const coach = store.getters['coaches/coaches'].find(
+          (coach) => coach.id === coachId
+        )
+        if (coach != undefined) {
+          selectedCoach.value = coach;
+        }
+      } catch (error) {
+        console.log(error); 
+      }
+    }
+  
+
+onBeforeMount(async()=> {
+  await setCoach();
+  console.log(selectedCoach.value); 
+})
 
 const fullName = computed(() => {
   return selectedCoach.value.firstName + " " + selectedCoach.value.lastName;
@@ -57,7 +89,7 @@ const contactLink = computed(() => {
     return route.path
   }
 });
-console.log(route.path);
+
 
 </script>
 <style lang="scss" scoped>
