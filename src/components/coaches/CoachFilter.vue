@@ -1,6 +1,6 @@
 <template>
   <base-card>
-    <h2>在轉職路上尋找業界前輩的幫助!</h2>
+    <h2>Find the Mentor on Your Software Engineer Journey</h2>
     <span class="filter-option">
       <input type="checkbox" id="frontend" checked @change="setFilter" />
       <label for="frontend">前端</label>

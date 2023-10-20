@@ -1,11 +1,11 @@
 <template>
-  <div class="card">
+  <div class="base-card">
     <slot></slot>
   </div>
 </template>
 <script setup></script>
 <style scoped>
-.card {
+.base-card {
   border-radius: 10px;
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
   padding: 1rem;

@@ -1,10 +1,7 @@
 <template>
+  <hero-section></hero-section>
   <div>
-    <base-dialog
-      :show="!!error"
-      title="Something went wrong"
-      @close="handleError"
-    >
+    <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -19,27 +16,15 @@
           <base-button v-if="!isLoggedIn" link to="/auth?redirect=register">
             創建帳號成為職涯導師
           </base-button>
-          <base-button
-            v-if="isLoggedIn && !isCoach && !isLoading"
-            link
-            to="/register"
-            >註冊成為職涯前輩</base-button
-          >
+          <base-button v-if="isLoggedIn && !isCoach && !isLoading" link to="/register">註冊成為職涯前輩</base-button>
         </div>
 
         <div v-if="isLoading">
           <base-spinner></base-spinner>
         </div>
         <ul v-else-if="hasCoaches">
-          <coach-item
-            v-for="coach in filteredCoaches"
-            :key="coach.id"
-            :id="coach.id"
-            :firstName="coach.firstName"
-            :lastName="coach.lastName"
-            :rate="coach.hourlyRate"
-            :areas="coach.areas"
-          ></coach-item>
+          <coach-item v-for="coach in filteredCoaches" :key="coach.id" :id="coach.id" :firstName="coach.firstName"
+            :lastName="coach.lastName" :rate="coach.hourlyRate" :areas="coach.areas"></coach-item>
         </ul>
         <h3 v-else>目前沒有職涯前輩</h3>
       </base-card>
@@ -50,6 +35,7 @@
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 //test
+import HeroSection from "../../components/hero/HeroSection.vue";
 import CoachItem from "../../components/coaches/CoachItem.vue";
 import CoachFilter from "../../components/coaches/CoachFilter.vue";
 const store = useStore();
