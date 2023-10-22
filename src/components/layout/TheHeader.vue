@@ -2,30 +2,57 @@
   <header>
     <nav class="navbar navbar-expand-md">
       <router-link to="/" class="navbar-brand">Finding Mentor</router-link>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNav">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        @click="toggleNav"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" :class="{ 'show': showNav }" id="navbarNav" ref="mobileDropdown">
+      <div
+        class="collapse navbar-collapse"
+        :class="{ show: showNav }"
+        id="navbarNav"
+        ref="mobileDropdown"
+      >
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link to="/coaches" class="nav-link" @click="closeMenu">Home</router-link>
+            <router-link to="/coaches" class="nav-link" @click="closeMenu"
+              >Home</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link to="/coaches" class="nav-link" @click="closeMenu">About Us</router-link>
+            <router-link to="/coaches" class="nav-link" @click="closeMenu"
+              >About Us</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link to="/" class="nav-link" @click="closeMenu">Pricing</router-link>
+            <router-link to="/" class="nav-link" @click="closeMenu"
+              >Pricing</router-link
+            >
           </li>
         </ul>
 
-
         <ul class="navbar-nav">
           <li class="nav-item" v-if="isLoggedIn">
-            <router-link to="/request" class="nav-link" @click="closeMenu">Your Requests</router-link>
+            <router-link to="/request" class="nav-link" @click="closeMenu"
+              >Your Requests</router-link
+            >
           </li>
-          <li class="nav-item" v-else>
-            <router-link to="/auth" class="nav-link" @click="closeMenu">Login</router-link>
+          <li class="nav-item register-button" v-if="!isLoggedIn">
+            <router-link to="/auth" class="nav-link" @click="closeMenu"
+              >Register
+            </router-link>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <router-link to="/auth" class="nav-link" @click="closeMenu"
+              >Login</router-link
+            >
           </li>
           <li class="nav-item" v-if="isLoggedIn">
             <base-button @click="logOut">Logout</base-button>
@@ -42,6 +69,7 @@ import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
+const windowWidth = ref(window.innerWidth);
 const isLoggedIn = computed(() => {
   return store.getters.isAuthenticated;
 });
@@ -52,19 +80,28 @@ const mobileDropdown = ref(null);
 const logOut = () => {
   store.dispatch("logout");
   router.replace("/coaches");
-}
+};
 
 const toggleNav = () => {
   showNav.value = !showNav.value;
-}
+};
 
 const closeMenu = () => {
   showNav.value = false;
-}
+};
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  if (windowWidth.value > 768) {
+    closeMenu();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+});
 
 // const viewWidth = ref(document.documentElement.clientWidth);
-
-
 </script>
 
 <style scoped lang="scss">
@@ -75,8 +112,7 @@ header {
   align-items: center;
 
   a {
-    text-decoration: none;
-    display: inline-block;
+    display: block;
     padding: 0.75rem 1.5rem;
     border: 1px solid transparent;
     border-radius: 5px;
@@ -105,7 +141,9 @@ header .navbar {
 
   .navbar-collapse.show {
     background-color: white;
-
+    position: absolute;
+    width: 100%;
+    top: 72px;
   }
 }
 
@@ -128,7 +166,6 @@ header ul {
       border-color: transparent;
     }
   }
-
 }
 
 /* 標題樣式 */
@@ -147,9 +184,42 @@ h1 {
   }
 }
 
-@media (min-width :768px) {
+.register-button {
+  background-color: #635bff;
+  color: white;
+  border-radius: 20px;
+  padding: 7px 10px;
+  a {
+    color: white;
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
   .navbar-collapse.show {
-    background-color: transparent !important;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  }
+  .register-button {
+    background-color: transparent;
+    border: none;
+    a {
+      color: var(--bs-nav-link-color);
+    }
+  }
+  header {
+    div ul {
+      li {
+        width: 100%;
+        a {
+          display: block;
+          width: 100%;
+          text-align: center;
+        }
+      }
+    }
   }
 }
 </style>

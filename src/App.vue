@@ -1,9 +1,7 @@
 <template>
   <the-header></the-header>
   <router-view #default="slotProps">
-    <transition name="route" mode="out-in">
-      <component :is="slotProps.Component"></component>
-    </transition>
+    <component :is="slotProps.Component"></component>
   </router-view>
 </template>
 <script setup>
@@ -13,9 +11,9 @@ import { watch, computed } from "vue";
 import { useRouter } from "vue-router";
 const store = useStore();
 const router = useRouter();
-function tryLogin() {
+const tryLogin = () => {
   store.dispatch("tryLogin");
-}
+};
 tryLogin();
 
 const didAutoLogout = computed(() => {
@@ -29,21 +27,23 @@ watch(didAutoLogout, (currentValue, oldValue) => {
   }
 });
 </script>
-<style lang="scss">
-// @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap");
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,400;0,700;0,900;1,100;1,400;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+TC:wght@100;200;300;400;500;600;700&family=Roboto:ital,wght@0,100;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap");
 
 * {
   box-sizing: border-box;
 }
 
 html {
+  font-family: "Lato", sans-serif;
+  font-family: "Merriweather", serif;
+  font-family: "Noto Sans TC", sans-serif;
   font-family: "Roboto", sans-serif;
 }
 
 body {
   margin: 0;
-  background-color: #F6F9FC;
+  background-color: #f6f9fc;
 }
 
 .route-enter-from {
