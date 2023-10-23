@@ -165,6 +165,7 @@ header ul {
     a.router-link-active {
       font-weight: 700;
       border-color: transparent;
+      transition: 0.3s;
     }
   }
 }
