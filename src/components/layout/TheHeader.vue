@@ -106,6 +106,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 header {
+  font-family: "Roboto", sans-serif;
   max-width: 100%;
   display: flex;
   justify-content: center;

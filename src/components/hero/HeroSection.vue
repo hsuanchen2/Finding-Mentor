@@ -1,17 +1,74 @@
 <template>
     <section class="hero-section container">
         <div class="row">
-            <div class="hero-text col-6">
-                <h2>You Are Not Alone on the Journey</h2>
+            <div class="hero-text col-lg-6 col-md-12">
+                <h2>The Best Companion on Your <br> <span class="career-text">{{ careerValue }}</span> <span
+                        class="blinking-cursor">|</span><br>Career
+                    Journey
+                </h2>
+                <p>We have successfully matched over a thousand career consultations, helping them discover their dream
+                    jobs.</p>
+                <div class="hero-section-cta-button">
+                    <router-link to="/auth" class="hero-start-now"><span>Start now <i class="fas fa-arrow-right"></i></span>
+                    </router-link>
+                    <router-link to="/auth" class="hero-register"><span>Register <i class="fas fa-arrow-right"></i></span></router-link>
+                </div>
             </div>
-            <div class="hero-image col-6">
-                <img src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="">
+            <div class="hero-image-container col-lg-6 col-md-12"> 
+                <img src="../../../public/index/hero-image.png" alt="profession" class="hero-image-main">
+                <img src="../../../public/index/hero-image-miner.png" alt="profession" class="hero-image-miner-one">
             </div>
         </div>
     </section>
 </template>
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const careerValue = ref("");
+const isTyping = ref(false);
+const displayTextArray = ref(["Front-End Engineer", "Back-End Engineer", "Full-Stack Engineer", "DevOps"]);
+const typingSpeed = ref(200);
+const erasingSpeed = ref(100);
+const nextTextDelay = ref(2000);
+const displayTextArrayIndex = ref(0);
+const charIndex = ref(0); // 某一個職稱的字數
+
+const typeText = () => {
+    // index小於該文字長度時，則代表要開始打字
+    if (charIndex.value < displayTextArray.value[displayTextArrayIndex.value].length) {
+        // console.log(charIndex.value);
+        if (!isTyping.value) isTyping.value = true;
+        careerValue.value += displayTextArray.value[displayTextArrayIndex.value].charAt(charIndex.value);
+        charIndex.value++;
+        setTimeout(typeText, typingSpeed.value);
+    } else {
+        // 某個職稱的字打完了，開始刪除
+        isTyping.value = false;
+        setTimeout(eraseText, nextTextDelay.value);
+    }
+};
+
+const eraseText = () => {
+    if (charIndex.value > 0) {
+        if (!isTyping.value) isTyping.value = true;
+        careerValue.value = displayTextArray.value[displayTextArrayIndex.value].substring(0, charIndex.value - 1);
+        charIndex.value -= 1;
+        setTimeout(eraseText, erasingSpeed.value);
+    } else {
+        // charIndex == 0, 代表字已經刪除完畢，要開始打下一個字了
+        isTyping.value = false;
+        // 把字刪除後，往後一個單字
+        displayTextArrayIndex.value++;
+        // 若所有字都打過了，則從0開始打
+        if (displayTextArrayIndex.value >= displayTextArray.value.length) {
+            displayTextArrayIndex.value = 0;
+        }
+        setTimeout(typeText, typingSpeed.value + 1000);
+    }
+};
+typeText();
+
+</script>
 <style scoped lang="scss">
 .hero-section {
     max-width: 1200px;
@@ -20,9 +77,120 @@
     .row {
         width: 100%;
     }
-}
 
-.hero-image img {
-    width: 100%;
+    .hero-text {
+        color: #0a2540;
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.5;
+            .career-text {
+                color: #635bff;
+                border-bottom: 2px solid rgb(53, 200, 249);
+            }
+        }
+
+        p {
+            margin-top: 25px;
+            color: #425466;
+            font-family: "Roboto", sans-serif;
+            letter-spacing: 0.1em;
+            font-size: 1rem;
+        }
+    }
+
+    .hero-section-cta-button {
+        margin-top: 40px;
+
+        .hero-start-now {
+            span {
+                display: inline-block;
+                transition: 0.3s ease;
+                position: relative;
+                font-family: "Roboto", sans-serif;
+                width: 70px;
+                text-align: center;
+            }
+
+            a {
+                text-decoration: none;
+                position: relative;
+            }
+
+            i {
+                position: absolute;
+                opacity: 0;
+                top: 20%;
+                right: -10px;
+                transition: 0.3s;
+                font-size: 2px;
+            }
+
+            &:hover span {
+                transform: translate3d(-0.2rem, 0, 0);
+            }
+
+            &:hover span i {
+                opacity: 1;
+            }
+        }
+
+        .hero-start-now {
+            color: white;
+            background-color: #635BFF;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 14px;
+            margin-right: 20px;
+        }
+
+        .hero-register {
+            color: #0a2540;
+        }
+
+
+        // register cta
+        .hero-register {
+            text-decoration: none;
+        }
+    }
+
+    .hero-image-container {
+        display: flex;
+        justify-content: end;
+        position: relative;
+
+        .hero-image-main {
+            max-width: 350px;
+            min-width: 250px;
+        }
+
+        .hero-image-miner-one {
+            width: 45%;
+            position: absolute;
+            left: -2%;
+            bottom: 20px;
+            border: 3px solid white;
+            border-radius: 10px;
+        }
+    }
+
+    // blinking cursor animation
+    .blinking-cursor {
+        animation: blink 1.5s step-end infinite;
+    }
+
+    @keyframes blink {
+
+        from,
+        to {
+            color: transparent;
+        }
+
+        50% {
+            color: #2c3e50;
+        }
+    }
 }
 </style>

@@ -34,16 +34,10 @@ watch(didAutoLogout, (currentValue, oldValue) => {
   box-sizing: border-box;
 }
 
-html {
-  font-family: "Lato", sans-serif;
-  font-family: "Merriweather", serif;
-  font-family: "Noto Sans TC", sans-serif;
-  font-family: "Roboto", sans-serif;
-}
-
 body {
   margin: 0;
   background-color: #f6f9fc;
+  font-family: "Roboto", sans-serif !important
 }
 
 .route-enter-from {

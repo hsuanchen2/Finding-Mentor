@@ -32,10 +32,10 @@ const props = defineProps({
 button,
 a {
   text-decoration: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.4rem 1.5rem;
   font: inherit;
-  background-color: #635BFF;
-  border: 1px solid #635BFF;
+  background-color: #7A73FF;
+  border: none;
   color: white;
   cursor: pointer;
   border-radius: 30px;
@@ -48,8 +48,8 @@ a:hover,
 a:active,
 button:hover,
 button:active {
-  background-color: #270041;
-  border-color: #270041;
+  background-color: #8b00e8;
+  border-color: #8600e0;
 }
 
 .flat {
