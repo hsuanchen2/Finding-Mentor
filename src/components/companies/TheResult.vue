@@ -6,22 +6,22 @@
         </div>
         <section class="client-results container">
             <div class="row">
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/google.png" alt="google" loading="lazy">
                 </div>
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/facebook.png" alt="facebook" loading="lazy">
                 </div>
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/amazon.png" alt="amazon" loading="lazy">
                 </div>
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/bloomberg.png" alt="bloomberg" loading="lazy">
                 </div>
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/microsoft.png" alt="microsoft" loading="lazy">
                 </div>
-                <div class="col col-lg-2 col-4">
+                <div class="col col-sm-6 col-lg-2 col-md-4">
                     <img src="../../../public/company-logo/twosigma.png" alt="twosigma" loading="lazy">
                 </div>
             </div>
@@ -46,7 +46,7 @@
         }
         p {
             color: #425466;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
     }
 }

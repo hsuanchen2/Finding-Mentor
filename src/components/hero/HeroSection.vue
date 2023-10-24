@@ -261,4 +261,10 @@ typeText();
 
 
 // responsive
+
+@media (max-width: 768px)  {
+    .hero-image-container {
+        margin-top: 50px;
+    }
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <hero-section></hero-section>
   <the-result></the-result>
-  <div>
+  <!-- <div>
     <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
@@ -30,7 +30,7 @@
         <h3 v-else>目前沒有職涯前輩</h3>
       </base-card>
     </section>
-  </div>
+  </div> -->
 </template>
 <script setup>
 import { ref, computed, reactive, onBeforeMount } from "vue";
