@@ -10,12 +10,13 @@ import router from "./router";
 import store from "./store/index.js";
 import App from "./App.vue";
 
+
 const app = createApp(App);
 app.component("base-card", BaseCard);
 app.component("base-button", BaseButton);
 app.component("base-badge", BaseBadge);
 app.component("base-spinner", BaseSpinner);
 app.component("base-dialog", BaseDialog);
-app.use(bootstrap);
+// app.use(bootstrap);
 app.use(store);
 app.use(router).mount("#app");

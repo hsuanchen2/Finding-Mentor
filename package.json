@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@splidejs/splide": "^4.1.4",
+    "@splidejs/vue-splide": "^0.6.12",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.2",
-    "vue": "^3.3.4",
+    "bootstrap-vue": "^2.23.1",
+    "vue": "^3.3.7",
     "vue-router": "^4.2.4",
     "vuex": "^4.0.2"
   },

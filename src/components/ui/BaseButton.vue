@@ -1,10 +1,12 @@
 <template>
   <!-- 給class -->
   <button v-if="!link" :class="mode">
-    <slot></slot>
+    <!-- <slot></slot> -->
+    <slot></slot> <span><i class="fas fa-arrow-right"></i></span>
   </button>
   <router-link v-else :class="mode" :to="to">
-    <slot></slot>
+    <!-- <slot></slot> -->
+    <slot></slot> <span><i class="fas fa-arrow-right"></i></span>
   </router-link>
 </template>
 
@@ -32,14 +34,14 @@ const props = defineProps({
 button,
 a {
   text-decoration: none;
-  padding: 0.4rem 1.5rem;
+  // padding: 0.4rem 1.5rem;
   font: inherit;
-  background-color: #7A73FF;
+  background-color: $main-button-color;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 30px;
-  margin-right: 0.5rem;
+  // margin-right: 0.5rem;
   display: inline-block;
   transition: 0.3s;
 }
@@ -52,22 +54,37 @@ button:active {
   border-color: #8600e0;
 }
 
-.flat {
-  background-color: transparent;
-  color: #3a0061;
-  border: none;
-}
+// arrow hover
 
-.outline {
-  background-color: transparent;
-  border-color: #635BFF;
-  color: #635BFF;
-}
+span {
+  display: inline-block;
+  transition: 0.3s ease;
+  position: relative;
+  font-family: "Roboto", sans-serif;
+  // width: 70px;
+  text-align: center;
+  font-size: 16px;
 
-.flat:hover,
-.flat:active,
-.outline:hover,
-.outline:active {
-  background-color: #edd2ff;
+  a {
+    text-decoration: none;
+    position: relative;
+  }
+
+  i {
+    position: absolute;
+    opacity: 0;
+    top: 29%;
+    right: -12px;
+    transition: 0.3s;
+    font-size: 12px;
+  }
+
+  &:hover span {
+    transform: translate3d(-0.2rem, 0, 0);
+  }
+
+  &:hover span i {
+    opacity: 1;
+  }
 }
 </style>

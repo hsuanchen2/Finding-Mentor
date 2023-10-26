@@ -2,63 +2,40 @@
   <header>
     <nav class="navbar navbar-expand-md">
       <router-link to="/" class="navbar-brand">Finding Mentor</router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        @click="toggleNav"
-      >
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNav">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="collapse navbar-collapse"
-        :class="{ show: showNav }"
-        id="navbarNav"
-        ref="mobileDropdown"
-      >
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link to="/coaches" class="nav-link" @click="closeMenu"
-              >Home</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link to="/coaches" class="nav-link" @click="closeMenu"
-              >About Us</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link to="/" class="nav-link" @click="closeMenu"
-              >Pricing</router-link
-            >
-          </li>
-        </ul>
+      </button> 
+        <div class="collapse navbar-collapse" :class="{ show: showNav, leave: !showNav }" id="navbarNav"
+          ref="mobileDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <router-link to="/coaches" class="nav-link" @click="closeMenu">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/coaches" class="nav-link" @click="closeMenu">About Us</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/" class="nav-link" @click="closeMenu">Pricing</router-link>
+            </li>
+          </ul>
 
-        <ul class="navbar-nav">
-          <li class="nav-item" v-if="isLoggedIn">
-            <router-link to="/request" class="nav-link" @click="closeMenu"
-              >Your Requests</router-link
-            >
-          </li>
-          <li class="nav-item register-button" v-if="!isLoggedIn">
-            <router-link to="/auth" class="nav-link" @click="closeMenu"
-              >Register
-            </router-link>
-          </li>
-          <li class="nav-item" v-if="!isLoggedIn">
-            <router-link to="/auth" class="nav-link" @click="closeMenu"
-              >Login</router-link
-            >
-          </li>
-          <li class="nav-item" v-if="isLoggedIn">
-            <base-button @click="logOut">Logout</base-button>
-          </li>
-        </ul>
-      </div>
+          <ul class="navbar-nav">
+            <li class="nav-item" v-if="isLoggedIn">
+              <router-link to="/request" class="nav-link" @click="closeMenu">Your Requests</router-link>
+            </li>
+            <li class="nav-item register-button" v-if="!isLoggedIn">
+              <router-link to="/auth" class="nav-link" @click="closeMenu">Register
+              </router-link>
+            </li>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <router-link to="/auth" class="nav-link" @click="closeMenu">Login</router-link>
+            </li>
+            <li class="nav-item" v-if="isLoggedIn">
+              <base-button @click="logOut">Logout</base-button>
+            </li>
+          </ul>
+        </div>
     </nav>
   </header>
 </template>
@@ -101,7 +78,6 @@ onMounted(() => {
   window.addEventListener("resize", handleResize);
 });
 
-// const viewWidth = ref(document.documentElement.clientWidth);
 </script>
 
 <style scoped lang="scss">
@@ -118,6 +94,7 @@ header {
     border: 1px solid transparent;
     border-radius: 5px;
   }
+
   button {
     margin-right: 1.5rem;
   }
@@ -140,12 +117,41 @@ header .navbar {
     justify-content: space-between;
   }
 
+
+  // @keyframes slideright {
+  //   from {
+  //     transform: translateX(100%);
+  //   }
+
+  //   to {
+  //     transform: translateX(0%);
+  //   }
+  // }
+
   .navbar-collapse.show {
     background-color: white;
     position: absolute;
-    width: 100%;
+    width: 95%;
     top: 72px;
+    left: 2.5%;
+    border-radius: 10px;
+    // animation: 0.5s slideright;
   }
+
+  // .navbar-collapse.leave {
+  //   animation: 0.5s slideleft;
+  // }
+
+  @keyframes slideleft {
+    from {
+      transform: translateX(100%);
+    }
+
+    to {
+      transform: translateX(0%);
+    }
+  }
+
 }
 
 /* 選單項目樣式 */
@@ -191,6 +197,7 @@ h1 {
   color: white;
   border-radius: 20px;
   padding: 7px 10px;
+
   a {
     color: white;
     padding: 0;
@@ -204,17 +211,21 @@ h1 {
     border-bottom-right-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   }
+
   .register-button {
     background-color: transparent;
     border: none;
+
     a {
       color: var(--bs-nav-link-color);
     }
   }
+
   header {
     div ul {
       li {
         width: 100%;
+
         a {
           display: block;
           width: 100%;
@@ -223,5 +234,4 @@ h1 {
       }
     }
   }
-}
-</style>
+}</style>

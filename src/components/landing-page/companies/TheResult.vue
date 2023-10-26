@@ -11,42 +11,42 @@
         <div class="row g-2">
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/google.png"
+              src="@/../company-logo/google.png"
               alt="google"
               loading="lazy"
             />
           </div>
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/facebook.png"
+              src="@/../company-logo/facebook.png"
               alt="facebook"
               loading="lazy"
             />
           </div>
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/amazon.png"
+              src="@/../company-logo/amazon.png"
               alt="amazon"
               loading="lazy"
             />
           </div>
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/bloomberg.png"
+              src="@/../company-logo/bloomberg.png"
               alt="bloomberg"
               loading="lazy"
             />
           </div>
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/microsoft.png"
+              src="@/../company-logo/microsoft.png"
               alt="microsoft"
               loading="lazy"
             />
           </div>
           <div class="col col-lg-2 col-md-4 col-sm-6 col-6">
             <img
-              src="../../../public/company-logo/twosigma.png"
+              src="@/../company-logo/twosigma.png"
               alt="twosigma"
               loading="lazy"
             />
@@ -84,6 +84,7 @@
 }
 
 .container {
+    margin-bottom: 15px;
   .row {
     .col {
       text-align: center;

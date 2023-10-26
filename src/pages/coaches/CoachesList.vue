@@ -35,9 +35,8 @@
 <script setup>
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { useStore } from "vuex";
-//test
-import HeroSection from "../../components/hero/HeroSection.vue";
-import TheResult from "../../components/companies/TheResult.vue";
+import HeroSection from "../../components/landing-page/hero/HeroSection.vue";
+import TheResult from "../../components/landing-page/companies/TheResult.vue";
 import CoachItem from "../../components/coaches/CoachItem.vue";
 import CoachFilter from "../../components/coaches/CoachFilter.vue";
 const store = useStore();
