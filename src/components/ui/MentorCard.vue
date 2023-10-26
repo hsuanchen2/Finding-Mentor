@@ -38,6 +38,7 @@ article {
     box-shadow: $light-card-shadow;
     border-radius: 10px;
     padding: 10px 20px;
+    height: 350px;
     img {
         width: 35%;
         margin-bottom: 15px;
