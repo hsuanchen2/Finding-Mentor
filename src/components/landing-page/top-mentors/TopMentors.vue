@@ -6,7 +6,7 @@
                 from various
                 industries.
                 They are here to offer a wide array of consultation services tailored to your needs. <router-link to="/"
-                    class="cta-link">Discover More <i class="fas fa-arrow-right"></i></router-link></p>
+                    class="cta-link"> Discover More <i class="fas fa-arrow-right"></i></router-link></p>
         </div>
         <Splide ref="splide" :options="splideSettings" aria-label="Senpai Card">
             <SplideSlide v-for="mentor in userArray" :key="mentor.userId" class="splide__slide">
@@ -55,6 +55,14 @@ const splideSettings = ref({
             perPage: 3,
             gap: "1rem",
             focus: "center",
+        },
+        440: {
+            perPage: 1,
+            gap: "10px",
+            focus: "center",
+            padding: {
+                right: "15px",
+            }
         }
     },
     padding: {
@@ -227,15 +235,44 @@ const btnNext = () => {
         .cta-link {
             text-decoration: none;
             color: $main-purple;
-            font-weight: 700;
+            font-weight: 600;
             transition: 0.3s ease-in;
+            position: relative;
+            display: inline-block;
+
             i {
                 font-size: 14px;
             }
         }
+
         .cta-link:hover {
             color: $main-button-color;
         }
+
+        .cta-link:after {
+            background: none repeat scroll 0 0 transparent;
+            bottom: 0;
+            content: "";
+            display: block;
+            height: 2px;
+            left: 50%;
+            position: absolute;
+            background: $main-button-color;
+            transition: width 0.3s ease 0s, left 0.3s ease 0s;
+            width: 0;
+        }
+
+        .cta-link:hover:after {
+            width: 100%;
+            left: 0;
+        }
+    }
+}
+
+// mobile
+@media (max-width:768px) {
+    .top-mentors-copy {
+        padding: 0;
     }
 }
 </style>

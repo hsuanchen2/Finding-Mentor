@@ -2,6 +2,7 @@
     <section class="hero-section container">
         <div class="row">
             <div class="hero-text col-lg-6 col-md-12">
+                <p class="text-start">We are here to be</p>
                 <h2>
                     The Companion on Your <br />
                     <span class="career-text">{{ careerValue }}</span>
@@ -100,7 +101,6 @@ typeText();
 
 
     .hero-text {
-
         h2 {
             font-size: 3.25rem;
             font-weight: 700;
@@ -120,6 +120,11 @@ typeText();
             font-size: 1.2rem;
             width: 90%;
         }
+        .text-start {
+            color: $main-purple;
+            font-weight: 600;
+            margin-bottom: 5px;
+        } 
     }
 
     .hero-section-cta-button {
