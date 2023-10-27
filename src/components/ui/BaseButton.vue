@@ -34,14 +34,12 @@ const props = defineProps({
 button,
 a {
   text-decoration: none;
-  // padding: 0.4rem 1.5rem;
-  font: inherit;
+  padding: 0.3rem 1rem;
   background-color: $main-button-color;
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 30px;
-  // margin-right: 0.5rem;
   display: inline-block;
   transition: 0.3s;
 }

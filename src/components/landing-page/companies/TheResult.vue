@@ -78,7 +78,7 @@
     }
     p {
       color: #425466;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
   }
 }

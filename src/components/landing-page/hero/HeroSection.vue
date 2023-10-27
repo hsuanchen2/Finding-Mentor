@@ -41,7 +41,8 @@ const displayTextArray = ref([
     "Back-End Engineer",
     "Full-Stack Engineer",
     "DevOps",
-    "UI/UX Designer"
+    "UI/UX Designer", 
+    "Data Scientist"
 ]);
 const typingSpeed = ref(200);
 const erasingSpeed = ref(100);
@@ -116,7 +117,7 @@ typeText();
             margin-top: 25px;
             color: $miner-text-color;
             font-family: "Roboto", sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             width: 90%;
         }
     }
@@ -132,7 +133,7 @@ typeText();
                 font-family: "Roboto", sans-serif;
                 width: 70px;
                 text-align: center;
-                font-size: 16px;
+                font-size: 1rem;
             }
 
             a {

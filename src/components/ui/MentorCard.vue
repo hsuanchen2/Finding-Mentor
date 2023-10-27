@@ -9,8 +9,8 @@
             <p>&#x2B50 {{ user.jobRating }}</p>
         </figure>
         <footer>
-            <base-button link>Contac Me</base-button>
-            <base-button>Details</base-button>
+            <base-button link class="card-button">Contact Me</base-button>
+            <base-button class="card-button">Details</base-button>
         </footer>
     </article>
 </template>
@@ -32,13 +32,14 @@ const user = reactive({
 article {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     max-width: 260px;
     box-shadow: $light-card-shadow;
     border-radius: 10px;
-    padding: 10px 20px;
-    height: 350px;
+    padding: 15px 20px;
+    height: 380px;
+    background-color: #fff;
     img {
         width: 35%;
         margin-bottom: 15px;
@@ -73,7 +74,12 @@ article {
     }
 
     footer {
+        width: 90%;
         display: flex;
+        justify-content: space-around;
+        .card-button {
+            font-size: 14px;
+        }
     }
 }
 </style>
