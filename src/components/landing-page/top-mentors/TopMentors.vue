@@ -36,7 +36,7 @@ import "@splidejs/splide/css/core";
 import '@splidejs/splide/css';
 // or only core styles
 import '@splidejs/splide/css/core';
-import MentorCard from "@/components/ui/MentorCard.vue";
+import MentorCard from "@/components/ui/main-page/MentorCard.vue";
 const splideSettings = ref({
     pagination: false,
     rewind: true,

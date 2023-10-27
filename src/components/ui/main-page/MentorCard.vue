@@ -2,7 +2,7 @@
     <article>
         <img src="@/../public/user-img/test.png" alt="">
         <h3 class="mentor-name">{{ user.userName }}</h3>
-        <h2>{{ user.jobTitle }}</h2>
+        <i><h2>{{ user.jobTitle }}</h2></i>
         <p>{{ user.desc }}</p>
         <figure>
             <p>From ${{ user.rate }}</p>
