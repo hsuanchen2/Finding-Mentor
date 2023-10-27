@@ -11,16 +11,18 @@
                     transformative journey to discover and secure their dream jobs.
                 </p>
             </div>
-            <div class="col col-lg-7 col-12 row cards-container">
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
-                <genre-card class="col col-4"></genre-card>
+            <div class="col col-lg-7 col-12 cards-container">
+                <div class="row">
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                    <genre-card class="col col-4"></genre-card>
+                </div>
             </div>
         </div>
     </section>
@@ -38,6 +40,7 @@ import GenreCard from "@/components/ui/main-page/GenreCard.vue"
 .cards-container {
     justify-content: space-around;
     align-items: center;
+
     .col {
         margin-bottom: 25px;
     }
