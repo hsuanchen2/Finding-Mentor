@@ -126,23 +126,23 @@ const copies = ref([
       },
       {
         iconUrl: "@/../public/svg-icons/arrow.svg",
-        text: "Gain industry-specific insights and recommendations from professionals",
+        text: "Gain industry-specific insights",
       },
       {
         iconUrl: "@/../public/svg-icons/arrow.svg",
-        text: "Tailored support to create a resume matching dream job requirements ",
+        text: "Tailored resume support for your dream job ",
       },
       {
         iconUrl: "@/../public/svg-icons/arrow.svg",
-        text: "Access effective methods to highlight skills and achievements in software roles",
+        text: "Access effective methods to highlight skills",
       },
       {
         iconUrl: "@/../public/svg-icons/arrow.svg",
-        text: "Learn from experts who facilitated 1000+ successful software engineering career transitions",
+        text: "1000+ successful software engineering career transitions",
       },
       {
         iconUrl: "@/../public/svg-icons/arrow.svg",
-        text: "Find motivation in success stories showcasing career transformations in software engineering",
+        text: "Find success stories showcasing career transformations",
       },
     ],
   },
@@ -181,7 +181,7 @@ const buttons = ref([
   { buttonUrl: "@/../public/company-logo/facebook.png", alt: "button" },
 ]);
 
-const show = ref(1);
+const show = ref(0);
 </script>
 <style scoped lang="scss">
 .wrapper {
