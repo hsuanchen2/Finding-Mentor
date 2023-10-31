@@ -23,8 +23,11 @@
         </div>
       </div>
       <div class="hero-image-container col-lg-6 col-md-12">
+        <img src="@/../public/index/star.png" class="star1" data-aos-delay="600" data-aos="zoom-in">
+        <!-- <img src="@/../public/index/starfill.png" class="star2" data-aos-delay="600" data-aos="zoom-in"> -->
+        <img src="@/../public/index/star.png" class="star3" data-aos-delay="600" data-aos="zoom-in">
         <img
-          src="../../../../public/index/hero-image.png"
+          src="@/../public/index/hero-image.png"
           alt="profession"
           class="hero-image-main"
           data-aos="fade-up"
@@ -242,16 +245,13 @@ typeText();
     position: relative;
     height: 100%;
 
-    // max-height: 467.29px;
     .hero-image-main {
       width: 100%;
       max-width: 500px;
       box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
         0 8px 16px -8px rgba(0, 0, 0, 0.3);
       border-radius: 10px;
-    //   border: 5px solid $main-purple;
     }
-
     .hero-image-miner-one {
       width: 45%;
       position: absolute;
@@ -269,6 +269,29 @@ typeText();
       border-radius: 10px;
       bottom: 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    }
+    .star1 {
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      top: 20px;
+      left: 45px;
+      z-index:100;
+    }
+    .star2 {
+      width: 30px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index:100;
+    }
+    .star3 {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      bottom: -30px;
+      left: 30px;
+      z-index:100;
     }
   }
 

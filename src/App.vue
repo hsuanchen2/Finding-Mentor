@@ -3,9 +3,12 @@
   <router-view #default="slotProps">
     <component :is="slotProps.Component"></component>
   </router-view>
+  <the-footer></the-footer>
 </template>
 <script setup>
 import TheHeader from "./components/layout/TheHeader.vue";
+import TheFooter from "./components/layout/TheFooter.vue";
+
 import { useStore } from "vuex";
 import { watch, computed } from "vue";
 import { useRouter } from "vue-router";
@@ -37,7 +40,7 @@ watch(didAutoLogout, (currentValue, oldValue) => {
 body {
   margin: 0;
   background-color: #f6f9fc;
-  font-family: "Roboto", sans-serif !important
+  font-family: "Roboto", sans-serif !important;
 }
 
 .route-enter-from {

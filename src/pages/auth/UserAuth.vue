@@ -1,39 +1,40 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="不知名的錯誤" @close="handleError">
+    <base-dialog
+      :show="!!error"
+      title="Something went wrong"
+      @close="handleError"
+    >
       <p>{{ error }}</p>
     </base-dialog>
 
     <base-dialog :show="isLoading" fixed title="Authenticating">
       <base-spinner></base-spinner>
     </base-dialog>
-    <base-card>
-      <form @submit.prevent="submitForm">
-        <div class="form-control">
-          <label for="email">電子信箱</label>
-          <input type="email" id="email" v-model.trim="formData.email.val" />
 
-          <p v-if="!formData.email.isValid">
-            請輸入有效的電子信箱
-          </p>
-        </div>
-        <div class="form-control">
-          <label for="password">密碼</label>
-          <input
-            type="password"
-            id="password"
-            v-model.trim="formData.password.val"
-          />
-          <p v-if="!formData.password.isValid">
-            密碼長度至少為6個字
-          </p>
-        </div>
-        <base-button>{{ submittedButtonCaption }}</base-button>
-        <base-button mode="flat" type="button" @click="switchAuthMode">{{
-          switchModeCaption
-        }}</base-button>
-      </form>
-    </base-card>
+    <form @submit.prevent="submitForm">
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model.trim="formData.email.val" />
+
+        <p v-if="!formData.email.isValid">Please enter a valid email</p>
+      </div>
+      <div class="form-control">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          v-model.trim="formData.password.val"
+        />
+        <p v-if="!formData.password.isValid">
+          The password must be at least 6 characters long
+        </p>
+      </div>
+      <base-button>{{ submittedButtonCaption }}</base-button>
+      <base-button mode="flat" type="button" @click="switchAuthMode">{{
+        switchModeCaption
+      }}</base-button>
+    </form>
   </div>
 </template>
 <script setup>
@@ -42,7 +43,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 const store = useStore();
 const router = useRouter();
-const route = useRoute();  
+const route = useRoute();
 const formData = reactive({
   email: {
     val: "",
@@ -90,7 +91,7 @@ async function submitForm() {
         password: formData.password.val,
       });
     }
-    // console.log(route);
+
     const redirectUrl = "/" + (route.query.redirect || "coaches");
     router.replace(redirectUrl);
   } catch (err) {
@@ -114,16 +115,16 @@ function handleError() {
 
 const submittedButtonCaption = computed(() => {
   if (mode.value === "login") {
-    return "登入";
+    return "Login";
   } else {
-    return "註冊";
+    return "Register";
   }
 });
 const switchModeCaption = computed(() => {
   if (mode.value === "login") {
-    return "註冊";
+    return "Register";
   } else {
-    return "登入";
+    return "Login";
   }
 });
 </script>
