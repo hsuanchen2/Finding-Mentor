@@ -6,7 +6,8 @@ import CoachesRegistration from "./pages/coaches/CoachRegistration.vue";
 import ContactCoach from "./pages/requests/ContactCoach.vue";
 import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
 import NotFound from "./pages/NotFound.vue";
-import UserAuth from "./pages/auth/UserAuth.vue";
+// import UserAuth from "./pages/auth/UserAuth.vue";
+import UserAuth2 from "./pages/auth/UserAuth2.vue";
 import store from "./store/index.js";
 
 const router = createRouter({
@@ -43,7 +44,7 @@ const router = createRouter({
     },
     {
       path: "/auth",
-      component: UserAuth,
+      component: UserAuth2,
       meta: { requireUnAuth: true },
     },
     {

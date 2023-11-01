@@ -205,11 +205,13 @@
   ]);
 
   const show = ref(0);
+  const i = ref(0);
   const toggle = (index) => {
     imageData.value.forEach((image) => {
       image.show = false;
     });
     show.value = index;
+    i.value = index;
     imageData.value[index].show = true;
   };
 </script>
@@ -295,5 +297,16 @@
     .cards-container {
       margin-top: 2rem;
     }
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
   }
 </style>
