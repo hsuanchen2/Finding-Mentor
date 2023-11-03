@@ -6,8 +6,8 @@ import CoachesRegistration from "./pages/coaches/CoachRegistration.vue";
 import ContactCoach from "./pages/requests/ContactCoach.vue";
 import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
 import NotFound from "./pages/NotFound.vue";
-// import UserAuth from "./pages/auth/UserAuth.vue";
-import UserAuth2 from "./pages/auth/UserAuth2.vue";
+import SignUp from "./pages/auth/SignUp.vue";
+import SignIn from "./pages/auth/SignIn.vue";
 import store from "./store/index.js";
 
 const router = createRouter({
@@ -43,8 +43,13 @@ const router = createRouter({
       meta: { requireAuth: true },
     },
     {
-      path: "/auth",
-      component: UserAuth2,
+      path: "/signIn",
+      component: SignIn,
+      meta: { requireUnAuth: true },
+    },
+    {
+      path: "/signUp",
+      component: SignUp,
       meta: { requireUnAuth: true },
     },
     {
@@ -56,7 +61,7 @@ const router = createRouter({
 // 根據是否登入來跳轉不同頁面
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth && !store.getters.isAuthenticated) {
-    next("/auth");
+    next("/SignIn");
   } else if (to.meta.requireUnAuth && store.getters.isAuthenticated) {
     next("coaches");
   } else {
