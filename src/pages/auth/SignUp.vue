@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <div class="row">
-            <div class="col col-5">
+            <div class="col col-lg-5 px-sm-0 copy">
                 <ul>
                     <li v-for="copy in copies" :key="copy.h3">
                         <div class="header-wrapper">
@@ -13,7 +13,7 @@
                     <li class="auth-img"><img src="@/../public/auth/rocket.png" alt="rocket"></li>
                 </ul>
             </div>
-            <div class="col col-5">
+            <div class="col col-lg-5">
                 <form @submit.prevent="submitForm" class="auth-form">
                     <div class="form-content-wrapper">
                         <h2>Create your Stripe account</h2>
@@ -131,6 +131,7 @@
             display: flex;
             justify-content: center;
             margin-top: 50px;
+
             img {
                 width: 70%;
                 box-shadow: $light-card-shadow;
@@ -289,5 +290,24 @@
             color: #818078;
             background-color: #fcfcfa;
         }
+    }
+
+    @media (max-width:768px) {
+        .container {
+            margin-top: 50px;
+            .copy {
+                display: none;
+            }
+            .auth-form {
+                padding: 30px 10px;
+                h2 {
+                    font-size: 1.4rem;
+                }
+                p {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
     }
 </style>

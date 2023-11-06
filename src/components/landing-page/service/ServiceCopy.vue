@@ -1,19 +1,22 @@
 <template>
-  <div v-if="props.index === props.show" :key="props.copy" class="copy-container">
-    <p class="text-start">{{ props.textStart }}</p>
-    <h2>{{ props.h2 }}</h2>
-    <p class="copy">{{ props.copy }}</p>
-    <ul>
-      <li v-for="text in props.list" :text="text.text" :key="text.text">
-        <img src="@/../public/svg-icons/arrow.svg" alt="" />
-        {{ text.text }}
-      </li>
-    </ul>
-    <base-button class="cta-button">Start now</base-button>
-  </div>
+  <!-- <div v-if="props.index === props.show" :key="props.copy" class="copy-container"> -->
+  <transition name="fade" mode="out-in">
+    <div v-if="props.show" :key="props.copy" class="copy-container">
+      <p class="text-start">{{ props.textStart }}</p>
+      <h2>{{ props.h2 }}</h2>
+      <p class="copy">{{ props.copy }}</p>
+      <ul>
+        <li v-for="text in props.list" :text="text.text" :key="text.text">
+          <img src="@/../public/svg-icons/arrow.svg" alt="" />
+          {{ text.text }}
+        </li>
+      </ul>
+      <base-button class="cta-button">Start now</base-button>
+    </div>
+  </transition>
 </template>
 <script setup>
-  import { ref, reactive, defineProps, watch } from "vue";
+  import { ref, reactive, defineProps, onMounted } from "vue";
   const props = defineProps(["textStart", "h2", "copy", "list", "index", "show"]);
   const copies = ref([
     {
@@ -159,6 +162,19 @@
   ]);
 </script>
 <style scoped lang="scss">
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity .1s !important;
+    transform: translateX(0) !important;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    transform: translateX(0) !important;
+    opacity: 1;
+  }
+
+
   h2 {
     font-weight: 700;
     color: $main-text-color;

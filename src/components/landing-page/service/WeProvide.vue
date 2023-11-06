@@ -2,17 +2,18 @@
   <div class="wrapper">
     <section class="container">
       <div class="row">
-        <div class="col col-xl-5 col-12">
-          <service-copy v-for="(copy, index) in copies" :index="index" :textStart="copy.textStart" :h2="copy.h2"
-            :copy="copy.copy" :list="copy.lis" :show="show" :key="copy"></service-copy>
+        <div class="col col-12 col-lg-5">
+          <service-copy v-for="(copy, index) in whichCopy" :index="index" :textStart="copy.textStart" :h2="copy.h2"
+            :copy="copy.copy" :list="copy.lis" :show="copy.show"></service-copy>
         </div>
-        <div class="col col-12 col-xl-7 cards-container">
+        <div class="col col-12 col-lg-7 cards-container">
           <div class="row">
-            <genre-card class="col col-12" :imageData="imageData"></genre-card>
+            <genre-card v-for="(image, index) in whichImage" class="col col-12" :src="image.imgUrl" :copy="image.copy"
+              :show="image.show" :alt="image.alt" :index="index"></genre-card>
             <!-- toggle buttons -->
             <div class="container toggle-buttons">
               <div class="row">
-                <img :class="{ col: true, 'col-3': true, active: index === show }" v-for="(button, index) in buttons"
+                <img v-for="(button, index) in buttons" :class="{ col: true, 'col-3': true, active: button.active }"
                   :src="button.buttonUrl" :alt="button.alt" @click="toggle(index)" :key="index" />
               </div>
             </div>
@@ -23,7 +24,7 @@
   </div>
 </template>
 <script setup>
-  import { ref, reactive, onMounted } from "vue";
+  import { ref, reactive, onMounted, computed } from "vue";
   import GenreCard from "@/components/ui/main-page/GenreCard.vue";
   import ServiceCopy from "./ServiceCopy.vue";
 
@@ -32,6 +33,7 @@
       textStart: "Thinking about getting into software?",
       h2: "That's exactly what we're here for !",
       copy: "We have successfully matched over 1000+ career consultations, guiding individuals on their transformative journey to secure their dream jobs.",
+      show: true,
       lis: [
         {
           iconUrl: "@/../public/svg-icons/arrow.svg",
@@ -67,6 +69,7 @@
       textStart: "Not sure if your resume is ready ?",
       h2: "Let our experienced engineers review it for you",
       copy: "We offer resume review services conducted by experienced engineers from diverse fields. Whether front-end, full-stack.",
+      show: false,
       lis: [
         {
           iconUrl: "@/../public/svg-icons/arrow.svg",
@@ -102,6 +105,7 @@
       textStart: "Looking for experienced pro to consult?",
       h2: "Expert Guidance for Your Career",
       copy: "Our team of experienced engineers is here to provide personalized guidance for your career journey. Whether you're in front-end, back-end, or any other software-related domains.",
+      show: false,
       lis: [
         {
           iconUrl: "@/../public/svg-icons/arrow.svg",
@@ -137,6 +141,7 @@
       textStart: "Feeling stuck?",
       h2: "Don't worry, you're not alone. Talking to someone can be the key to your breakthrough.",
       copy: "Our team of experienced engineers is dedicated to providing personalized guidance for your career journey",
+      show: false,
       lis: [
         {
           iconUrl: "@/../public/svg-icons/arrow.svg",
@@ -198,22 +203,42 @@
   ]);
 
   const buttons = ref([
-    { buttonUrl: "@/../public/index/test.png", alt: "button" },
-    { buttonUrl: "@/../public/index/test2.png", alt: "button" },
-    { buttonUrl: "@/../public/index/test3.png", alt: "button" },
-    { buttonUrl: "@/../public/index/test4.png", alt: "button" },
+    { buttonUrl: "@/../public/index/test.png", alt: "button", active: true },
+    { buttonUrl: "@/../public/index/test2.png", alt: "button", active: false },
+    { buttonUrl: "@/../public/index/test3.png", alt: "button", active: false },
+    { buttonUrl: "@/../public/index/test4.png", alt: "button", active: false },
   ]);
 
-  const show = ref(0);
-  const i = ref(0);
   const toggle = (index) => {
-    imageData.value.forEach((image) => {
-      image.show = false;
-    });
-    show.value = index;
-    i.value = index;
-    imageData.value[index].show = true;
+    imageData.value = imageData.value.map((image, idx) => ({
+      ...image,
+      // 檢查是否為需要顯示的文字
+      show: idx === index
+    }));
+
+    copies.value = copies.value.map((copy, idx) => ({
+      ...copy,
+      // 檢查是否為需要顯示的圖片
+      show: idx === index
+    }));
+
+    buttons.value = buttons.value.map((button, idx) => ({
+      ...button,
+      active: idx === index
+    }))
   };
+
+  const whichCopy = computed(() => {
+    return copies.value.filter(copy => {
+      return copy.show;
+    })
+  });
+
+  const whichImage = computed(() => {
+    return imageData.value.filter(image => {
+      return image.show;
+    })
+  })
 </script>
 <style scoped lang="scss">
   .wrapper {

@@ -1,23 +1,31 @@
 <template>
-    <div class="genre-card" v-for="image in imageData" v-show="image.show">
+    <transition name="fade" mode="out-in">
+        <div class="genre-card" v-if="props.show" :key="props.copy">
+            <img :src="props.src" :alt="props.alt" />
+            <h3>{{ props.copy }}</h3>
+        </div>
+    </transition>
+    <!-- <div class="genre-card" v-for="image in imageData" v-show="image.show">
         <img :src="image.imgUrl" :alt="image.alt" />
         <h3>{{ image.copy }}</h3>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
     import { ref, reactive, defineProps, computed } from "vue";
-    const props = defineProps(["imageData"]);
+    const props = defineProps(["show", "src", "copy", "alt", "index"]);
 </script>
 <style scoped lang="scss">
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity 0.5s;
+        transition: opacity .1s !important;
+        transform: translateX(0) !important;
     }
 
-    .fade-enter-from,
+    .fade-enter,
     .fade-leave-to {
-        opacity: 0;
+        transform: translateX(0) !important;
+        opacity: 1;
     }
 
     .genre-card {
