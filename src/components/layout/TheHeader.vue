@@ -25,11 +25,11 @@
               <router-link to="/request" class="nav-link" @click="closeMenu">Your Requests</router-link>
             </li>
             <li class="nav-item register-button" v-if="!isLoggedIn">
-              <router-link to="/auth" class="nav-link" @click="closeMenu">Register
+              <router-link to="/signUp" class="nav-link" @click="closeMenu">Register
               </router-link>
             </li>
             <li class="nav-item" v-if="!isLoggedIn">
-              <router-link to="/auth" class="nav-link" @click="closeMenu">Login</router-link>
+              <router-link to="/signIn" class="nav-link" @click="closeMenu">Login</router-link>
             </li>
             <li class="nav-item" v-if="isLoggedIn">
               <base-button @click="logOut">Logout</base-button>

@@ -26,7 +26,12 @@
                         <label for="exampleInputPassword1">Password</label>
                         <span><router-link to="/" class="forgot-password">Forgot Your Password ?</router-link> </span>
                     </div>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <span class="password-field">
+                        <input :type="showPassword ? 'text' : 'password'" class="form-control"
+                            id="exampleInputPassword1" placeholder="Password">
+                        <i @click="togglePassword" class="fa-regular eye fa-eye show" v-if="showPassword"></i>
+                        <i @click="togglePassword" class="fa-regular eye fa-eye-slash" v-else></i>
+                    </span>
                 </div>
                 <button type="submit" class="btn submit-btn">Continue</button>
                 <hr class="hr-text" data-content="Or">
@@ -49,8 +54,9 @@
     import { useStore } from "vuex";
     import { useRouter, useRoute } from "vue-router";
     const invalidEmail = ref(false);
-    const submitForm = () => {
-        console.log("clicked")
+    const showPassword = ref(false);
+    const togglePassword = () => {
+        showPassword.value = !showPassword.value;
     }
 </script>
 <style scoped lang="scss">
@@ -60,7 +66,7 @@
         justify-content: center;
         margin-bottom: 100px;
         margin-top: 100px;
-        
+
         .auth-form {
 
             width: 550px;
@@ -105,6 +111,19 @@
 
             .form-group {
                 margin-bottom: 25px;
+            }
+
+            .password-field {
+                position: relative;
+
+                .eye {
+                    position: absolute;
+                    right: 0.7rem;
+                    top: 32%;
+                    /* transform: translateY(-50%); */
+                    cursor: pointer;
+                    color: lightgray;
+                }
             }
         }
 
@@ -167,6 +186,7 @@
                 display: flex;
                 gap: 10px;
                 align-items: center;
+
                 a {
                     text-decoration: none;
                     /* color: $miner-text-color; */

@@ -1,54 +1,56 @@
 <template>
-  <section class="wrapper container">
-    <div class="text">
-      <h2>Contact Us</h2>
-      <p>Got questions? Reach out!</p>
-    </div>
-    <form @submit.prevent="sendMessage">
-      <div class="row">
-        <div class="form-group col-sm-6">
-          <div class="col-sm-12">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" placeholder="First Name" />
-          </div>
-        </div>
-        <div class="form-group col-sm-6">
-          <div class="col-sm-12">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" placeholder="Last Name" />
-          </div>
-        </div>
+  <div class="wrapper">
+    <section class="container">
+      <div class="text">
+        <h2>Contact Us</h2>
+        <p>Got questions? Reach out!</p>
       </div>
+      <form @submit.prevent="sendMessage">
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <div class="col-sm-12">
+              <label for="firstName">First Name</label>
+              <input type="text" class="form-control" id="firstName" placeholder="First Name" />
+            </div>
+          </div>
+          <div class="form-group col-sm-6">
+            <div class="col-sm-12">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" id="lastName" placeholder="Last Name" />
+            </div>
+          </div>
+        </div>
 
-      <div class="row">
-        <div class="form-group col-sm-6">
-          <div class="col-sm-12">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Your Email" />
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <div class="col-sm-12">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="Your Email" />
+            </div>
+          </div>
+          <div class="form-group col-sm-6">
+            <label for="inputState">Choose question type</label>
+            <select id="inputState" class="form-select">
+              <option disabled selected>Choose a question</option>
+              <option>Pricing</option>
+              <option>Account</option>
+              <option>Refund</option>
+              <option>Affiliate</option>
+            </select>
           </div>
         </div>
-        <div class="form-group col-sm-6">
-          <label for="inputState">Choose question type</label>
-          <select id="inputState" class="form-control">
-            <option disabled selected>Choose a question</option>
-            <option>Pricing</option>
-            <option>Account</option>
-            <option>Refund</option>
-            <option>Affiliate</option>
-          </select>
+        <div class="row">
+          <div class="form-group col-12">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Your Message" class="form-control" rows="6"></textarea>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-12">
-          <label for="message">Message</label>
-          <textarea id="message" placeholder="Your Message" class="form-control" rows="6"></textarea>
+        <div class="submit-button">
+          <base-button type="submit">Send Message</base-button>
         </div>
-      </div>
-      <div class="submit-button">
-        <base-button type="submit">Send Message</base-button>
-      </div>
-    </form>
-  </section>
+      </form>
+    </section>
+  </div>
 </template>
 <script setup>
   import { ref, reactive } from "vue";
@@ -59,9 +61,13 @@
 </script>
 <style scoped lang="scss">
   .wrapper {
+    background-color: #fff;
+  }
+  .container {
     max-width: 800px;
-    margin: 100px auto;
-
+    margin: 0 auto;
+    padding-top: 70px;
+    padding-bottom: 70px;
     .text {
       text-align: center;
       margin-bottom: 40px;

@@ -123,7 +123,7 @@
 <script setup></script>
 <style scoped lang="scss">
 .wrapper {
-  background-color: white;
+  /* background-color: white; */
   padding-top: 50px;
 }
 section.container {

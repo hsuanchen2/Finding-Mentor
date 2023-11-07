@@ -51,8 +51,13 @@
                             <div class="password-wrapper">
                                 <label for="exampleInputPassword1">Password</label>
                             </div>
-                            <input type="password" class="form-control" id="exampleInputPassword1"
-                                placeholder="Password">
+                            <span class="password-field">
+                                <input :type="showPassword ? 'text' : 'password'" class="form-control"
+                                    id="exampleInputPassword1" placeholder="Password">
+                                <i @click="togglePassword" class="fa-regular eye fa-eye show" v-if="showPassword"></i>
+                                <i @click="togglePassword" class="fa-regular eye fa-eye-slash" v-else></i>
+                            </span>
+
                         </div>
                         <button type="submit" class="btn submit-btn">Continue</button>
                         <hr class="hr-text" data-content="Or">
@@ -89,7 +94,12 @@
             p: "Stripe is trusted by ambitious startups and enterprises of every size.",
         }
     ])
-    const invalidEmail = ref(false); 
+    const invalidEmail = ref(false);
+    const showPassword = ref(false);
+    const togglePassword = () => {
+        console.log("clicked");
+        showPassword.value = !showPassword.value;
+    }
 </script>
 <style lang="scss" scoped>
     .container {
@@ -189,6 +199,19 @@
             .form-group {
                 margin-bottom: 25px;
             }
+
+            .password-field {
+                position: relative;
+
+                .eye {
+                    position: absolute;
+                    right: 0.7rem;
+                    top: 32%;
+                    /* transform: translateY(-50%); */
+                    cursor: pointer;
+                    color: lightgray;
+                }
+            }
         }
 
         .submit-btn {
@@ -220,6 +243,9 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 5px;
+            position: relative;
+
+
         }
 
         .google-login {
@@ -295,14 +321,18 @@
     @media (max-width:768px) {
         .container {
             margin-top: 50px;
+
             .copy {
                 display: none;
             }
+
             .auth-form {
                 padding: 30px 10px;
+
                 h2 {
                     font-size: 1.4rem;
                 }
+
                 p {
                     margin-bottom: 0;
                 }
