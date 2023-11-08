@@ -8,6 +8,7 @@ import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
 import NotFound from "./pages/NotFound.vue";
 import SignUp from "./pages/auth/SignUp.vue";
 import SignIn from "./pages/auth/SignIn.vue";
+import Talents from "./pages/talents/MentorPage.vue";
 import store from "./store/index.js";
 
 const router = createRouter({
@@ -52,6 +53,10 @@ const router = createRouter({
       component: SignUp,
       meta: { requireUnAuth: true },
     },
+    {
+      path: "/talents",
+      component: Talents,
+    }, 
     {
       path: "/:notFound(.*)",
       component: NotFound,

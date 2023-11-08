@@ -27,8 +27,7 @@
                         <span><router-link to="/" class="forgot-password">Forgot Your Password ?</router-link> </span>
                     </div>
                     <span class="password-field">
-                        <input :type="showPassword ? 'text' : 'password'" class="form-control"
-                            id="exampleInputPassword1" placeholder="Password">
+                        <input :type="showPassword ? 'text' : 'password'" class="form-control" id="exampleInputPassword1" placeholder="Password">
                         <i @click="togglePassword" class="fa-regular eye fa-eye show" v-if="showPassword"></i>
                         <i @click="togglePassword" class="fa-regular eye fa-eye-slash" v-else></i>
                     </span>
