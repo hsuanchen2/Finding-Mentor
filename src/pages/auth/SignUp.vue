@@ -267,6 +267,10 @@
                 justify-content: center;
                 gap: 10px;
             }
+
+            &:hover {
+                background-color: #f3f3f3;
+            }
         }
 
         .create-account-text {

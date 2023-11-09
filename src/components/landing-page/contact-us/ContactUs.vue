@@ -1,6 +1,6 @@
 <template>
-  <base-toast :firstName="firstName" :show="emailSent" :copy="toastCopy.copy" :header="toastCopy.header"
-    :imgUrl="toastCopy.imgUrl" class="toast"></base-toast>
+  <base-toast :show="emailSent" :copy="toastCopy.copy" :header="toastCopy.header" :imgUrl="toastCopy.imgUrl"
+    class="toast"></base-toast>
   <div class="wrapper">
     <section class="container">
       <div class="text">
@@ -61,15 +61,9 @@
   </div>
 </template>
 <script setup>
-  import { ref, onMounted, reactive } from "vue";
+  import { ref, onMounted, reactive, computed } from "vue";
   import emailjs from '@emailjs/browser';
   import BaseToast from "@/components/ui/BaseToast.vue";
-  const firstName = ref("");
-  const toastCopy = reactive({
-    header: "We've got your message",
-    imgUrl: "@/../public/svgs/email.svg",
-    copy: `Hi ${firstName.value} , email sent successfully!`,
-  })
   const formData = reactive({
     firstName: "",
     lastName: "",
@@ -77,22 +71,27 @@
     question_type: "default",
     message: "",
   });
-  // const toggle = () => {
-  //   emailSent.value = !emailSent.value;
-  // }
+
+  const toastCopy = computed(() => {
+    return {
+      header: "We've got your message",
+      imgUrl: "@/../public/svgs/email.svg",
+      copy: `Hi ${formData.firstName}! Email sent successfully!`,
+    }
+  })
+
   const form = ref(null);
   const emailSent = ref(false);
-
   onMounted(() => {
     form.value = document.querySelector("form");
   });
   const sendMessage = async () => {
     try {
       await emailjs.sendForm('service_w4z3oxy', 'template_h1gup0h', form.value, 'VJLl9wAnKWUY9SO6G');
-      firstName.value = formData.firstName;
       emailSent.value = true;
       await new Promise(resolve => setTimeout(resolve, 2000));
       emailSent.value = false;
+
       // reset form input fields
       formData.firstName = "";
       formData.lastName = "";

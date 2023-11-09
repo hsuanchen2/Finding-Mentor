@@ -91,7 +91,7 @@ header {
 
   a {
     display: block;
-    padding: 0.75rem 1.5rem;
+    /* padding: 0.75rem 1.5rem; */
     border: 1px solid transparent;
     border-radius: 5px;
   }
@@ -104,7 +104,7 @@ header {
 header .navbar {
   width: 100%;
   max-width: 1200px;
-  // border: 1px solid red;
+  /* // border: 1px solid red; */
   margin: 10px auto;
   display: flex;
   justify-content: space-between;
