@@ -1,0 +1,31 @@
+{
+    "title": "Hourly rate",
+    "name": "hourlyRate",
+    "hourlyRateRange": [
+        {
+            "title": "Any hourly rate",
+            "type": "radio",
+            "id": "any-hourly-rate"
+        },
+        {
+            "title": "$10 and below",
+            "type": "radio",
+            "id": "belowTen"
+        },
+        {
+            "title": "$10 - $30",
+            "type": "radio",
+            "id": "tenToThirty"
+        },
+        {
+            "title": "$30 - $60",
+            "type": "radio",
+            "id": "thirtyToSixty"
+        },
+        {
+            "title": "Above $60",
+            "type": "radio",
+            "id": "aboveSixty"
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "title": "Skills",
+    "languages": [
+        {
+            "title": "JavaScript",
+            "name": "JavaScript",
+            "id": "JavaScript",
+            "type": "checkbox"
+        },
+        {
+            "title": "Python",
+            "name": "Python",
+            "id": "Python",
+            "type": "checkbox"
+        },
+        {
+            "title": "C#",
+            "name": "C#",
+            "id": "CSharp",
+            "type": "checkbox"
+        },
+        {
+            "title": "PHP",
+            "name": "PHP",
+            "id": "PHP",
+            "type": "checkbox"
+        },
+        {
+            "title": "Java",
+            "name": "Java",
+            "id": "Java",
+            "type": "checkbox"
+        },
+        {
+            "title": "React",
+            "name": "React",
+            "id": "React",
+            "type": "checkbox"
+        },
+        {
+            "title": "Vue",
+            "name": "Vue",
+            "id": "Vue",
+            "type": "checkbox"
+        },
+        {
+            "title": "Nodejs",
+            "name": "Nodejs",
+            "id": "Nodejs",
+            "type": "checkbox"
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import CoachDetails from "./pages/coaches/CoachDetails.vue";
 // import CoachesList from "./pages/coaches/CoachesList.vue";
-import MainPage from "./pages/main-page/MainPage.vue";
+// import MainPage from "./pages/main-page/MainPage.vue";
 import CoachesRegistration from "./pages/coaches/CoachRegistration.vue";
 import ContactCoach from "./pages/requests/ContactCoach.vue";
 import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
@@ -19,8 +19,9 @@ const router = createRouter({
       redirect: "/coaches",
     },
     {
+      name: "landing-page",
       path: "/coaches",
-      component: MainPage,
+      component: () => import("./pages/main-page/MainPage.vue"),
     },
     {
       path: "/coaches/:id",
@@ -56,7 +57,7 @@ const router = createRouter({
     {
       path: "/talents",
       component: Talents,
-    }, 
+    },
     {
       path: "/:notFound(.*)",
       component: NotFound,

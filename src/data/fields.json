@@ -1,0 +1,47 @@
+{
+    "title": "Field",
+    "fieldData": [
+        {
+            "id": "Front-End",
+            "title": "Front-End",
+            "name": "Front-End",
+            "type": "checkbox"
+        },
+        {
+            "id": "Back-End",
+            "title": "Back-End",
+            "name": "Back-End",
+            "type": "checkbox"
+        },
+        {
+            "id": "Full-Stack",
+            "title": "Full-Stack",
+            "name": "Full-Stack",
+            "type": "checkbox"
+        },
+        {
+            "id": "UI/UX",
+            "title": "UI/UX",
+            "name": "UI/UX",
+            "type": "checkbox"
+        },
+        {
+            "id": "Data Scientist",
+            "title": "Data Scientist",
+            "name": "Data Scientist",
+            "type": "checkbox"
+        },
+        {
+            "id": "DevOps",
+            "title": "DevOps",
+            "name": "DevOps",
+            "type": "checkbox"
+        },
+        {
+            "id": "Product Management",
+            "title": "Product Management",
+            "name": "Product Management",
+            "type": "checkbox"
+        }
+    ]
+}

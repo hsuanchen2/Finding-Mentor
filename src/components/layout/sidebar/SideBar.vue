@@ -15,7 +15,7 @@
                         <div class="accordion-body">
                             <ul>
                                 <li v-for="(field, index) in props.fieldData.fieldData" :key="index">
-                                    <input :type="field.type" :id="field.id">
+                                    <input :type="field.type" :id="field.id" :name="field.name">
                                     <label :for="field.id">{{field.title}}</label>
                                 </li>
                             </ul>
@@ -27,41 +27,65 @@
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                             aria-controls="panelsStayOpen-collapseTwo">
-                            Accordion Item #2
+                            {{props.skills.title}}
                         </button>
                     </h2>
                     <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
                         aria-labelledby="panelsStayOpen-headingTwo">
                         <div class="accordion-body">
                             <ul>
-                                <li>Front-End</li>
-                                <li>Back-End</li>
-                                <li>Full-Stack</li>
-                                <li>UI/UX</li>
+                                <li v-for="(language, index) in props.skills.languages" :key="index">
+                                    <input :type="language.type" :id="language.id" :name="language.name">
+                                    <label :for="language.id">{{language.title}}</label>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item show">
                     <h2 class="accordion-header" id="panelsStayOpen-headingThree">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
                             aria-controls="panelsStayOpen-collapseThree">
-                            Accordion Item #3
+                            {{props.rating.title}}
                         </button>
                     </h2>
                     <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
                         aria-labelledby="panelsStayOpen-headingThree">
                         <div class="accordion-body">
                             <ul>
-                                <li>Front-End</li>
-                                <li>Back-End</li>
-                                <li>Full-Stack</li>
-                                <li>UI/UX</li>
+                                <li v-for="(rate, index) in props.rating.rateRange" :key="index">
+                                    <input :type="rate.type" :id="rate.id" :name="props.rating.name">
+                                    <label :for="rate.id">{{rate.title}}</label>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                <div class="accordion-item show">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseFour">
+                            {{props.hourlyRateData.title}}
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse show"
+                        aria-labelledby="panelsStayOpen-headingFour">
+                        <div class="accordion-body">
+                            <ul>
+                                <li v-for="(hourlyRate, index) in props.hourlyRateData.hourlyRateRange" :key="index">
+                                    <input :type="hourlyRate.type" :id="hourlyRate.id"
+                                        :name="props.hourlyRateData.name">
+                                    <label :for="hourlyRate.id">{{hourlyRate.title}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -70,6 +94,15 @@
     import { defineProps } from "vue";
     const props = defineProps({
         fieldData: {
+            type: Object
+        },
+        skills: {
+            type: Object
+        },
+        rating: {
+            type: Object
+        },
+        hourlyRateData: {
             type: Object
         }
     })
@@ -128,7 +161,7 @@
             cursor: pointer;
         }
 
-        input[type="checkbox"] {
+        input[type="checkbox"], input[type="radio"] {
             width: 15px;
             height: 15px;
             accent-color: $main-purple;

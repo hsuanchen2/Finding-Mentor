@@ -1,65 +1,33 @@
 <template>
     <div class="wrapper">
-        <side-bar :fieldData="fields"></side-bar>
+        <side-bar :fieldData="fields" :skills="skills" :rating="rating" :hourlyRateData="hourlyRate"></side-bar>
     </div>
 </template>
 <script setup>
     import { ref, reactive } from "vue";
     import SideBar from "@/components/layout/sidebar/SideBar.vue";
-    const fields = reactive({
-        title: "Field",
-        fieldData: [
-            {
-                id: "Front-End",
-                title: "Front-End",
-                name: "Front-End",
-                type: "checkbox",
-            },
-            {
-                id: "Back-End",
-                title: "Back-End",
-                name: "Back-End",
-                type: "checkbox"
-            },
-            {
-                id: "Full-Stack",
-                title: "Full-Stack",
-                name: "Full-Stack",
-                type: "checkbox"
-            },
-            {
-                id: "UI/UX",
-                title: "UI/UX",
-                name: "UI/UX",
-                type: "checkbox"
-            },
-            {
-                id: "Data Scientist",
-                title: "Data Scientist",
-                name: "Data Scientist",
-                type: "checkbox"
-            },
-            {
-                id: "DevOps",
-                title: "DevOps",
-                name: "DevOps",
-                type: "checkbox"
-            },
-            {
-                id: "Product Management",
-                title: "Product Management",
-                name: "Product Management",
-                type: "checkbox"
-            }
-        ]
-    });
+    import skillData from "@/data/skills.json";
+    import fieldsData from "@/data/fields.json";
+    import ratingData from "@/data/rating.json";
+    import hourlyRateData from "@/data/hourlyRate.json";
+    const fields = reactive(fieldsData);
+    const skills = reactive(skillData);
+    const rating = reactive(ratingData)
+    const hourlyRate = reactive(hourlyRateData);
 
-
+    const getLocation = async (location) => {
+        try {
+            const response = await fetch(`https://restcountries.com/v3.1/name/${location}`);
+            console.log(response.json());
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getLocation("india"); 
 </script>
 <style scoped lang="scss">
     .wrapper {
         max-width: 1200px;
         margin: 100px auto;
-        /* border: 1px solid red; */
     }
 </style>
