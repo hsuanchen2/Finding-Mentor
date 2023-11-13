@@ -14,20 +14,18 @@
     const skills = reactive(skillData);
     const rating = reactive(ratingData)
     const hourlyRate = reactive(hourlyRateData);
-
-    const getLocation = async (location) => {
-        try {
-            const response = await fetch(`https://restcountries.com/v3.1/name/${location}`);
-            console.log(response.json());
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    getLocation("india"); 
 </script>
 <style scoped lang="scss">
     .wrapper {
         max-width: 1200px;
         margin: 100px auto;
+    }
+
+    * {
+        list-style-type: none;
+
+        li {
+            padding-left: 0;
+        }
     }
 </style>

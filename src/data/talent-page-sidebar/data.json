@@ -1,0 +1,147 @@
+[
+    {
+        "title": "Field",
+        "type": "checkbox",
+        "id": "first",
+        "fieldData": [
+            {
+                "id": "Front-End",
+                "title": "Front-End",
+                "name": "Front-End"
+            },
+            {
+                "id": "Back-End",
+                "title": "Back-End",
+                "name": "Back-End"
+            },
+            {
+                "id": "Full-Stack",
+                "title": "Full-Stack",
+                "name": "Full-Stack"
+            },
+            {
+                "id": "UI/UX",
+                "title": "UI/UX",
+                "name": "UI/UX"
+            },
+            {
+                "id": "Data Scientist",
+                "title": "Data Scientist",
+                "name": "Data Scientist"
+            },
+            {
+                "id": "DevOps",
+                "title": "DevOps",
+                "name": "DevOps"
+            },
+            {
+                "id": "Product Management",
+                "title": "Product Management",
+                "name": "Product Management"
+            }
+        ]
+    },
+    {
+        "title": "Skills",
+        "type": "checkbox",
+        "id": "second",
+        "fieldData": [
+            {
+                "title": "JavaScript",
+                "name": "JavaScript",
+                "id": "JavaScript"
+            },
+            {
+                "title": "Python",
+                "name": "Python",
+                "id": "Python"
+            },
+            {
+                "title": "C#",
+                "name": "C#",
+                "id": "CSharp"
+            },
+            {
+                "title": "PHP",
+                "name": "PHP",
+                "id": "PHP"
+            },
+            {
+                "title": "Java",
+                "name": "Java",
+                "id": "Java"
+            },
+            {
+                "title": "React",
+                "name": "React",
+                "id": "React"
+            },
+            {
+                "title": "Vue",
+                "name": "Vue",
+                "id": "Vue"
+            },
+            {
+                "title": "Nodejs",
+                "name": "Nodejs",
+                "id": "Nodejs"
+            }
+        ]
+    },
+    {
+        "title": "Rating",
+        "name": "rating",
+        "type": "radio",
+        "id": "third",
+        "fieldData": [
+            {
+                "title": "Any rating",
+                "id": "anyRating",
+                "name": "any-rating"
+            },
+            {
+                "title": "4.5 stars above",
+                "id": "4.5-above",
+                "name": "above-4.5"
+            },
+            {
+                "title": "4 - 4.5",
+                "id": "4to5",
+                "name": "four-to-five"
+            },
+            {
+                "title": "Below 4",
+                "id": "belowFour",
+                "name": "below-four"
+            }
+        ]
+    },
+    {
+        "title": "Hourly rate",
+        "name": "hourlyRate",
+        "type": "radio",
+        "id": "fourth",
+        "fieldData": [
+            {
+                "title": "Any hourly rate",
+                "id": "any-hourly-rate"
+            },
+            {
+                "title": "$10 and below",
+                "id": "belowTen"
+            },
+            {
+                "title": "$10 - $30",
+                "id": "tenToThirty"
+            },
+            {
+                "title": "$30 - $60",
+                "id": "thirtyToSixty"
+            },
+            {
+                "title": "Above $60",
+                "id": "aboveSixty"
+            }
+        ]
+    }
+]

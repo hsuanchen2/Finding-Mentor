@@ -22,6 +22,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -86,12 +87,30 @@
                     </div>
                 </div>
 
+                <div class="accordion-item show">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseFive">
+                            Location
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"
+                        aria-labelledby="panelsStayOpen-headingFive">
+                        <div class="accordion-body">
+                            <sidebar-search class="sidebar-search" :country="countryData"></sidebar-search>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 </template>
 <script setup>
-    import { defineProps } from "vue";
+    import { ref, reactive, defineProps, onMounted } from "vue";
+    import sidebarSearch from "./SidebarSearch.vue";
+    import countryData from "@/data/countries.json";
     const props = defineProps({
         fieldData: {
             type: Object
@@ -104,10 +123,17 @@
         },
         hourlyRateData: {
             type: Object
-        }
-    })
+        },
+    });
+
 </script>
 <style lang="scss" scoped>
+    * {
+        list-style-type: none;
+        li {
+            padding-left: 0;
+        }
+    }
     .accordion {
         background-color: transparent;
         padding-right: 50px;
@@ -147,7 +173,6 @@
 
     ul {
         padding-left: 0;
-
         li {
             list-style-type: none;
             color: $miner-text-color;
@@ -156,15 +181,27 @@
             gap: 10px;
         }
 
-        label,
-        input {
+        label {
             cursor: pointer;
+            display: block;
         }
 
-        input[type="checkbox"], input[type="radio"] {
+        input[type="checkbox"],
+        input[type="radio"] {
             width: 15px;
             height: 15px;
             accent-color: $main-purple;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            border-radius: 5px;
+            border: 2px solid $miner-text-color;
+            padding-left: 10px;
+        }
+
+        input[type="search"] {
+            width: 100%;
         }
     }
 </style>
