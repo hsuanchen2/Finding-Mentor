@@ -48,10 +48,5 @@
 </script>
 <style lang="scss" scoped>
     @import url('https://cdn.jsdelivr.net/npm/@tarekraafat/autoComplete.js/dist/css/autoComplete.min.css');
-    #autoComplete_list {
-        #autoComplete_result_0 {
-            list-style: none;
-            color: red;
-        }
-    }
+    /* https://codepen.io/tarekraafat/pen/rQopdW */
 </style>
