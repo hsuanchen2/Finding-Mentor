@@ -37,6 +37,15 @@
             position: "afterend",
             maxResults: 5,
             noResults: true,
+            element: (list, data) => {
+                const info = document.createElement("p");
+                if (data.results.length > 0) {
+                    info.innerHTML = `Displaying <strong>${data.results.length}</strong> out of <strong>${data.matches.length}</strong> results`;
+                } else {
+                    info.innerHTML = `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`;
+                }
+                list.prepend(info);
+            },
         },
         resultsItem: {
             id: "list-item"
@@ -48,5 +57,9 @@
 </script>
 <style lang="scss" scoped>
     @import url('https://cdn.jsdelivr.net/npm/@tarekraafat/autoComplete.js/dist/css/autoComplete.min.css');
+
     /* https://codepen.io/tarekraafat/pen/rQopdW */
+    input {
+        width: 100%;
+    }
 </style>
