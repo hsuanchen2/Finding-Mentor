@@ -1,28 +1,35 @@
 <template>
-    <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-        autocapitalize="off">
+    <div class="wrapper" ref="autoComplete_wrapper">
+        <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
+            autocapitalize="off">
+    </div>
 </template>
 <script setup>
-    import { ref, reactive, onMounted, defineProps } from "vue";
-    import autoComplete from '@tarekraafat/autoComplete.js';
-    const props = defineProps({
-        country: {
-            type: Array
-        }
-    })
-    const autoCompleteJS = ref(null);
-    const autoCompleteData = ref({
+import { ref, reactive, onMounted, defineProps } from "vue";
+import autoComplete from '@tarekraafat/autoComplete.js';
+const autoComplete_wrapper = ref(null);
+const props = defineProps({
+    country: {
+        type: Array
+    }
+})
+const autoCompleteJS = ref(null);
+
+onMounted(() => {
+    const autoCompleteData = {
         placeHolder: "Search location",
         wrapper: false,
         data: {
-            src: props.country.map(el => el.name),
+            src: props.country.map(country => ({ name: country.name, flag: country.flag })),
+            // use the key "name" as keyword for searching
+            keys: ["name"],
             cache: true
         },
 
         events: {
             input: {
                 selection: (event) => {
-                    const selection = event.detail.selection.value;
+                    const selection = event.detail.selection.value.name;
                     autoCompleteJS.value.input.value = selection;
                 }
             }
@@ -30,13 +37,13 @@
         threshold: 2,
         debounce: 300,
         resultsList: {
-            tag: "ul",
+            tag: "div",
             id: "autoComplete_list",
-            class: "results_list",
             destination: "#autoComplete",
             position: "afterend",
             maxResults: 5,
             noResults: true,
+            tabSelect: true,
             element: (list, data) => {
                 const info = document.createElement("p");
                 if (data.results.length > 0) {
@@ -47,28 +54,29 @@
                 list.prepend(info);
             },
         },
-        resultsItem: {
-            id: "list-item"
+        resultItem: {
+            tag: "div",
+            class: "result_item",
+            element: (item, data) => {
+                const flag = document.createElement("img");
+                flag.src = data.value.flag;
+                item.prepend(flag);
+            }
         }
-    });
-    onMounted(() => {
-        autoCompleteJS.value = new autoComplete(autoCompleteData.value);
-    });
+    }
+    autoCompleteJS.value = new autoComplete(autoCompleteData);
+});
 </script>
-<style lang="scss" scoped>
-    /* @import url('https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css'); */
+<style lang="scss" scoped> /* https://codepen.io/tarekraafat/pen/rQopdW */
 
-    /* https://codepen.io/tarekraafat/pen/rQopdW */
-    input {
-        width: 100%;
-        padding-left: 7px;
-    }
+ #autoComplete {
+     width: 100%;
+     padding-left: 7px;
+     border-radius: 5px;
+     border: 1px solid $miner-text-color;
 
-    ul {
-        padding-inline-start: 0 !important;
-    }
-
-    #autoComplete_list.result_list {
-        padding-left: 0 !important;
-    }
+     &:focus {
+         outline: none;
+     }
+ }
 </style>

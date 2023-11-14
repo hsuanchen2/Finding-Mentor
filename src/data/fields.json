@@ -2,6 +2,12 @@
     "title": "Field",
     "fieldData": [
         {
+            "id": "any-field",
+            "title": "Any field",
+            "name": "any-field",
+            "type": "checkbox"
+        },
+        {
             "id": "Front-End",
             "title": "Front-End",
             "name": "Front-End",

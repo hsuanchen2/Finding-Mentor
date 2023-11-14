@@ -136,12 +136,8 @@ header .navbar {
     top: 72px;
     left: 2.5%;
     border-radius: 10px;
-    // animation: 0.5s slideright;
+    z-index: 100;
   }
-
-  // .navbar-collapse.leave {
-  //   animation: 0.5s slideleft;
-  // }
 
   @keyframes slideleft {
     from {
@@ -177,7 +173,6 @@ header ul {
   }
 }
 
-/* 標題樣式 */
 h1 {
   margin: 0;
 

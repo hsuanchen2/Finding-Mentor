@@ -2,6 +2,12 @@
     "title": "Skills",
     "languages": [
         {
+            "title": "Any language",
+            "name": "any-language",
+            "id": "any-language",
+            "type": "checkbox"
+        },
+        {
             "title": "JavaScript",
             "name": "JavaScript",
             "id": "JavaScript",
