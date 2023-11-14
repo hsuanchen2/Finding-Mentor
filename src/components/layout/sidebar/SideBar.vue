@@ -203,5 +203,6 @@
         input[type="search"] {
             width: 100%;
         }
+
     }
 </style>

@@ -21,11 +21,4 @@
         margin: 100px auto;
     }
 
-    * {
-        list-style-type: none;
-
-        li {
-            padding-left: 0;
-        }
-    }
 </style>

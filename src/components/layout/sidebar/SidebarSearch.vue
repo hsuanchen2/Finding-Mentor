@@ -40,9 +40,9 @@
             element: (list, data) => {
                 const info = document.createElement("p");
                 if (data.results.length > 0) {
-                    info.innerHTML = `Displaying <strong>${data.results.length}</strong> out of <strong>${data.matches.length}</strong> results`;
+                    info.innerHTML = `Found ${data.results.length}</strong> out of <strong>${data.matches.length}</strong> results`;
                 } else {
-                    info.innerHTML = `Found <strong>${data.matches.length}</strong> matching results for <strong>"${data.query}"</strong>`;
+                    info.innerHTML = `No result found`;
                 }
                 list.prepend(info);
             },
@@ -56,10 +56,19 @@
     });
 </script>
 <style lang="scss" scoped>
-    @import url('https://cdn.jsdelivr.net/npm/@tarekraafat/autoComplete.js/dist/css/autoComplete.min.css');
+    /* @import url('https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css'); */
 
     /* https://codepen.io/tarekraafat/pen/rQopdW */
     input {
         width: 100%;
+        padding-left: 7px;
+    }
+
+    ul {
+        padding-inline-start: 0 !important;
+    }
+
+    #autoComplete_list.result_list {
+        padding-left: 0 !important;
     }
 </style>
