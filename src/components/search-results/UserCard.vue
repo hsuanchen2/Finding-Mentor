@@ -24,7 +24,8 @@
             <p>🚀 Top Rated | Certified Developer with 3+ Years of Experience | 100% Job Success | 100% Customer
                 Satisfaction 🌟</p>
         </div>
-        <div class="skill-tags" id="skill-tags" ref="scroll" @scroll="hitEnd">
+        <div :class="{ 'skill-tags': true, 'left-side-fade': scrollPosition.end, 'right-side-fade': scrollPosition.start, 'both-side-fade': scrollPosition.mid }"
+            ref="scroll" @scroll="hitEnd">
             <skill-tag>Java</skill-tag>
             <skill-tag>Java</skill-tag>
             <skill-tag>Java</skill-tag>
@@ -52,11 +53,20 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 const scroll = ref(null);
-const end = ref(null);
+const scrollPosition = reactive({
+    start: true,
+    mid: null,
+    end: null,
+});
 const hitEnd = () => {
-    console.log(scroll.value.scrollWidth);
-    // end.value = scroll.value.scrollLeft === scroll.value.offsetWidth;
-    // console.log(end.value);
+    const scrollLeft = Math.ceil(scroll.value.scrollLeft);
+    const offsetWidth = scroll.value.offsetWidth;
+    const width = scroll.value.scrollWidth;
+    scrollPosition.start = scrollLeft === 0;
+    scrollPosition.mid = scrollLeft !== 0 && scrollLeft + offsetWidth !== width;
+    scrollPosition.end = scrollLeft + offsetWidth === width;
+
+    console.log(scrollPosition.mid);
 }
 import SkillTag from "@/components/ui/SkillTag.vue"; 
 </script>
@@ -167,6 +177,17 @@ import SkillTag from "@/components/ui/SkillTag.vue";
     gap: 10px;
     overflow-x: auto;
     padding: 0 0 15px 0;
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0));
+}
+
+.left-side-fade {
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
+}
+
+.right-side-fade {
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
+}
+
+.both-side-fade {
+    -webkit-mask-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 5%, rgba(255,255,255,1) 95%, rgba(255,255,255,0) 100%);
 }
 </style>
