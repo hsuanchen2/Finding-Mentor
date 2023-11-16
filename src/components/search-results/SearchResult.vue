@@ -8,6 +8,8 @@
             <search-tag>Full-Stack</search-tag>
         </div>
         <user-card></user-card>
+        <user-card></user-card>
+        <user-card></user-card>
     </section>
 </template>
 <script setup>
@@ -18,13 +20,11 @@ import UserCard from "@/components/search-results/UserCard.vue";
 </script>
 <style lang="scss" scoped>
 .search-result {
-    border: 1px solid lightgray;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     padding-left: 0;
     padding-right: 0;
-
     h3 {
         color: $main-text-color;
         font-weight: 700;
@@ -36,6 +36,7 @@ import UserCard from "@/components/search-results/UserCard.vue";
         flex-direction: row;
         gap: 10px;
         flex-wrap: wrap;
+        margin-bottom: 25px;
     }
 }
 </style>

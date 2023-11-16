@@ -11,7 +11,7 @@
                 <h4>ex Google ex Facebook techlead</h4>
                 <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>United State</p>
             </div>
-            <button class="add-to-favorite">
+            <button class="add-to-favorite" @click="addToFavorite">
                 <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
             </button>
         </header>
@@ -25,8 +25,8 @@
                 Satisfaction 🌟</p>
         </div>
         <div :class="{ 'skill-tags': true, 'left-side-fade': scrollPosition.end, 'right-side-fade': scrollPosition.start, 'both-side-fade': scrollPosition.mid }"
-            ref="scroll" @scroll="hitEnd">
-            <skill-tag>Java</skill-tag>
+            ref="scroll" @scroll="detactPosition">
+            <skill-tag>JavaScript</skill-tag>
             <skill-tag>Java</skill-tag>
             <skill-tag>Java</skill-tag>
             <skill-tag>Java</skill-tag>
@@ -52,30 +52,36 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import SkillTag from "@/components/ui/SkillTag.vue";
 const scroll = ref(null);
 const scrollPosition = reactive({
     start: true,
     mid: null,
     end: null,
 });
-const hitEnd = () => {
+const detactPosition = () => {
     const scrollLeft = Math.ceil(scroll.value.scrollLeft);
     const offsetWidth = scroll.value.offsetWidth;
     const width = scroll.value.scrollWidth;
     scrollPosition.start = scrollLeft === 0;
     scrollPosition.mid = scrollLeft !== 0 && scrollLeft + offsetWidth !== width;
     scrollPosition.end = scrollLeft + offsetWidth === width;
-
-    console.log(scrollPosition.mid);
 }
-import SkillTag from "@/components/ui/SkillTag.vue"; 
+
+
+const addToFavorite = (e) => {
+    console.log(e.target);
+    console.log("clicked")
+}
 </script>
 <style lang="scss" scoped>
 .user-card {
     transition: .2s ease;
     cursor: pointer;
     padding: 15px 25px;
-
+    border-top: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
     &:hover {
         background-color: #f4eeff;
     }
@@ -139,13 +145,17 @@ import SkillTag from "@/components/ui/SkillTag.vue";
     border-radius: 50%;
     margin-left: auto;
     margin-right: 20px;
+    transition: .2s;
+    &:hover {
+        background-color: lightgray;
+    }
 }
 
 .hourly-rate {
     p {
         font-size: 0.95rem;
         color: $main-text-color;
-
+        margin-bottom: 10px;
         span {
             font-weight: 700;
         }
@@ -188,6 +198,6 @@ import SkillTag from "@/components/ui/SkillTag.vue";
 }
 
 .both-side-fade {
-    -webkit-mask-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 5%, rgba(255,255,255,1) 95%, rgba(255,255,255,0) 100%);
+    -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(255, 255, 255, 0) 100%);
 }
 </style>
