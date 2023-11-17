@@ -64,8 +64,8 @@ const detactPosition = () => {
     const offsetWidth = scroll.value.offsetWidth;
     const width = scroll.value.scrollWidth;
     scrollPosition.start = scrollLeft === 0;
-    scrollPosition.mid = scrollLeft !== 0 && scrollLeft + offsetWidth !== width;
-    scrollPosition.end = scrollLeft + offsetWidth === width;
+    scrollPosition.mid = scrollLeft !== 0 && (scrollLeft + offsetWidth < width);
+    scrollPosition.end = (scrollLeft + offsetWidth) >= width;
 }
 
 
@@ -79,9 +79,20 @@ const addToFavorite = (e) => {
     transition: .2s ease;
     cursor: pointer;
     padding: 15px 25px;
-    border-top: 1px solid lightgray;
-    border-left: 1px solid lightgray;
-    border-right: 1px solid lightgray;
+    // border: 1px solid lightgray;
+    // border-top: none;
+    box-shadow: $light-card-shadow;
+    border-radius: 10px;
+
+    &:last-child {
+        // border-radius: 0 0 10px 10px;
+    }
+
+    &:first-child {
+        // border-top: 1px solid lightgray;
+        // border-radius: 10px 10px 0 0;
+    }
+
     &:hover {
         background-color: #f4eeff;
     }
@@ -146,6 +157,7 @@ const addToFavorite = (e) => {
     margin-left: auto;
     margin-right: 20px;
     transition: .2s;
+
     &:hover {
         background-color: lightgray;
     }
@@ -156,6 +168,7 @@ const addToFavorite = (e) => {
         font-size: 0.95rem;
         color: $main-text-color;
         margin-bottom: 10px;
+
         span {
             font-weight: 700;
         }
@@ -190,14 +203,14 @@ const addToFavorite = (e) => {
 }
 
 .left-side-fade {
-    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
 }
 
 .right-side-fade {
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0));
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 98%, rgba(0, 0, 0, 0));
 }
 
 .both-side-fade {
-    -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(255, 255, 255, 0) 100%);
+    -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 2%, rgba(255, 255, 255, 1) 98%, rgba(255, 255, 255, 0) 100%);
 }
 </style>

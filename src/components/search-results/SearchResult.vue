@@ -7,9 +7,11 @@
             <search-tag>Back-End</search-tag>
             <search-tag>Full-Stack</search-tag>
         </div>
-        <user-card></user-card>
-        <user-card></user-card>
-        <user-card></user-card>
+        <div class="user-card-container">
+            <user-card></user-card>
+            <user-card></user-card>
+            <user-card></user-card>
+        </div>
     </section>
 </template>
 <script setup>
@@ -25,6 +27,7 @@ import UserCard from "@/components/search-results/UserCard.vue";
     flex-direction: column;
     padding-left: 0;
     padding-right: 0;
+    gap: 10px;
     h3 {
         color: $main-text-color;
         font-weight: 700;
@@ -37,6 +40,12 @@ import UserCard from "@/components/search-results/UserCard.vue";
         gap: 10px;
         flex-wrap: wrap;
         margin-bottom: 25px;
+    }
+
+    .user-card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 }
 </style>
