@@ -6,6 +6,7 @@
             <search-result class="col col-12 col-lg-9 px-2 px-lg-0" :showSidebarToggle="showSidebarToggle"></search-result>
         </div>
     </div>
+    <!-- 感覺要多做一個modal -->
 </template>
 <script setup>
 import { ref, reactive, onMounted, nextTick } from "vue";
