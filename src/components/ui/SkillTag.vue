@@ -15,5 +15,8 @@ button {
     align-items: center;
     gap: 5px;
     font-size: 0.875rem;
+    &:hover {
+        background-color: lighten($main-purple, 5%);
+    }
 }
 </style>

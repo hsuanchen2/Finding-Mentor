@@ -124,7 +124,7 @@ const props = defineProps({
 </script>
 <style lang="scss" scoped>
 h3 {
-    margin-bottom: 25px;
+    margin-bottom: 57px;
     color: $main-text-color;
     font-size: 1.4rem;
 }

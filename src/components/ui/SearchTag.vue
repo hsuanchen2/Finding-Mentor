@@ -1,9 +1,14 @@
 <template>
     <button>
-        <slot></slot><i class="fa-solid fa-xmark"></i>
+        {{ props.tagName }}<i class="fa-solid fa-xmark"></i>
     </button>
 </template>
-<script setup></script>
+<script setup>
+import { ref, reactive, defineProps } from "vue";
+const props = defineProps({
+    tagName: String,
+})
+</script>
 <style lang="scss" scoped>
 button {
     background-color: $main-purple;
@@ -16,6 +21,7 @@ button {
     gap: 5px;
     font-size: 0.875rem;
     transition: .3s;
+
     &:hover {
         background-color: lighten($main-purple, 5%);
     }
