@@ -1,5 +1,4 @@
 <template>
-    <keep-alive>
         <div class="accordion pe-lg-5 ps-0" v-show="!props.showSidebarToggle">
             <h3>Filter by</h3>
             <div class="accordion-item">
@@ -102,7 +101,6 @@
                 </div>
             </div>
         </div>
-    </keep-alive>
 </template>
 <script setup>
 import { ref, reactive, defineProps, onMounted } from "vue";
