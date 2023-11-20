@@ -3,7 +3,8 @@
         <div class="text-wrapper">
             <h3>Search results</h3>
             <p>25 matched results were found</p>
-
+            <button v-if="props.showSidebarToggle" class="search-bar-toggle"><i class="fa-solid fa-sliders"
+                    style="color: #635bff;"></i></button>
             <div class="search-tags">
                 <search-tag :tagName="searchedTags.tag1"></search-tag>
                 <search-tag :tagName="searchedTags.tag2"></search-tag>
@@ -28,11 +29,16 @@
 import { ref, reactive, defineProps } from "vue";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
+const props = defineProps({
+    showSidebarToggle: Boolean,
+})
 const searchedTags = reactive({
     tag1: "Front-End",
     tag2: "Back-End",
     tag3: "Full-Stack",
-})
+});
+
+
 </script>
 <style lang="scss" scoped>
 .search-result {
@@ -79,9 +85,20 @@ const searchedTags = reactive({
         // border-radius: 10px;
         // box-shadow: $light-card-shadow;
         border-bottom: 2px solid lightgray;
+        position: relative;
 
         p {
             color: $miner-text-color;
+        }
+
+        .search-bar-toggle {
+            position: absolute;
+            right: 0;
+            top: 0;
+            border: 1px solid lightgray;
+            background-color: transparent;
+            border-radius: 50%;
+            font-size: 1.4rem;
         }
     }
 }

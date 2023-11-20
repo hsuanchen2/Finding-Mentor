@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 <style lang="scss" scoped>
 button {
-    background-color: $main-purple;
+    background-color: $main-button-color;
     border-radius: 20px;
     color: white;
     padding: 4px 15px;
@@ -23,7 +23,7 @@ button {
     transition: .3s;
 
     &:hover {
-        background-color: lighten($main-purple, 5%);
+        background-color: lighten($main-button-color, 5%);
     }
 }
 </style>
