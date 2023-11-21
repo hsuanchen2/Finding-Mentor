@@ -206,7 +206,7 @@ ul {
 }
 
 // sidebar for mobile
-@media (max-width:992px) {
+@media (max-width:991px) {
     .backdrop {
         background-color: rgba(0, 0, 0, 0.75);
         position: fixed;
