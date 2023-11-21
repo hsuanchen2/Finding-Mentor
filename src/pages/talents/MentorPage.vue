@@ -1,16 +1,19 @@
 <template>
-    <div class="container">
-        <div class="row px-xl-0 px-1">
-            <side-bar class="col col-lg-3" :fieldData="fields" :skills="skills" :rating="rating"
-                :hourlyRateData="hourlyRate" :showSidebarToggle="showSidebarToggle"></side-bar>
-            <search-result class="col col-12 col-lg-9 px-2 px-lg-0" :showSidebarToggle="showSidebarToggle"></search-result>
+    <!-- <sidebar-mobile :showSidebarDialog="showSidebarDialog" @close="sidebarToggle"></sidebar-mobile> -->
+    <div class="container mt-lg-5 mt-5">
+        <div class="row px-xl-0 px-md-3 px-1">
+            <side-bar v-show="showSidebar" class="col col-lg-3" :fieldData="fields" :skills="skills" :rating="rating"
+                :hourlyRateData="hourlyRate"></side-bar>
+            <search-result class="col col-12 col-lg-9 px-2 px-lg-0" :showSidebarToggle="showToggleBtn"
+                @toggleSidebar="sidebarToggle"></search-result>
         </div>
     </div>
     <!-- 感覺要多做一個modal -->
 </template>
 <script setup>
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted, nextTick, computed } from "vue";
 import SideBar from "@/components/layout/sidebar/SideBar.vue";
+import SidebarMobile from "@/components/layout/sidebar/SidebarMobile.vue";
 import SearchResult from "@/components/search-results/SearchResult.vue";
 import skillData from "@/data/skills.json";
 import fieldsData from "@/data/fields.json";
@@ -20,28 +23,47 @@ import { handleResize } from "@/utils/resize.js";
 
 const fields = reactive(fieldsData);
 const skills = reactive(skillData);
-const rating = reactive(ratingData)
+const rating = reactive(ratingData);
 const hourlyRate = reactive(hourlyRateData);
+const showSidebar = ref(true);
+const showMobileSidebar = ref(false);
+const showToggleBtn = ref(false);
 
-const showSidebarToggle = ref(false);
-
+const checkWidth = () => {
+    const isMobile = window.innerWidth < 992; // check width when mounting
+    showSidebar.value = !isMobile;
+    showToggleBtn.value = isMobile;
+    showMobileSidebar.value = !isMobile;
+}
 onMounted(() => {
-    nextTick(() => {
-        showSidebarToggle.value = 992 > window.innerWidth;
-        window.addEventListener("resize", () => {
-            handleResize(992, showSidebarToggle)
-        });
-    })
-});
+    checkWidth();
+    window.addEventListener("resize", () => {
+        const isMobile = window.innerWidth < 992;
+        if (window.innerWidth > 992) {
+            showSidebar.value = true;
+            showMobileSidebar.value = false;
+            showToggleBtn.value = false;
+            // document.body.style.overflow = "auto";
+        } else if (window.innerWidth < 992 && showMobileSidebar.value) {
+            showSidebar.value = true;
+            showToggleBtn.value = true;
+        } else if (window.innerWidth < 992 && !showMobileSidebar.value) {
+            showSidebar.value = false;
+            showToggleBtn.value = true;
+        }
+    });
+})
+
+const sidebarToggle = () => {
+    showMobileSidebar.value = !showMobileSidebar.value;
+    showSidebar.value = !showSidebar.value;
+}
 
 </script>
 <style lang="scss" scoped>
 .container {
     max-width: 1200px;
-    margin: 100px auto;
-
-    .row {
-        // align-items: start;
-    }
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

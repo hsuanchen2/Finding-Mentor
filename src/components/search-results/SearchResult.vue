@@ -4,7 +4,7 @@
             <h3>Search results</h3>
             <p>25 matched results were found</p>
             <button v-if="props.showSidebarToggle" class="search-bar-toggle"><i class="fa-solid fa-sliders"
-                    style="color: #635bff;"></i></button>
+                    style="color: #635bff;" @click="toggleSidebar"></i></button>
             <div class="search-tags">
                 <search-tag :tagName="searchedTags.tag1"></search-tag>
                 <search-tag :tagName="searchedTags.tag2"></search-tag>
@@ -26,17 +26,25 @@
     </section>
 </template>
 <script setup>
-import { ref, reactive, defineProps } from "vue";
+import { ref, reactive, defineProps, defineEmits } from "vue";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
 const props = defineProps({
     showSidebarToggle: Boolean,
 })
+
+
+const emits = defineEmits(["toggleSidebar"]);
+const toggleSidebar = () => {
+    emits("toggleSidebar");
+}
+
 const searchedTags = reactive({
     tag1: "Front-End",
     tag2: "Back-End",
     tag3: "Full-Stack",
 });
+
 
 
 </script>
