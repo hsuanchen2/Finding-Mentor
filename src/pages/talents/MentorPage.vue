@@ -1,23 +1,11 @@
 <template>
-  <!-- <sidebar-mobile :showSidebarDialog="showSidebarDialog" @close="sidebarToggle"></sidebar-mobile> -->
-  <div class="container mt-lg-5 mt-5">
-    <div class="row px-xl-0 px-md-3 px-1">
-      <side-bar
-        v-show="showSidebar"
-        class="col col-lg-3"
-        :fieldData="fields"
-        :skills="skills"
-        :rating="rating"
-        :hourlyRateData="hourlyRate"
-      ></side-bar>
-      <search-result
-        class="col col-12 col-lg-9 px-2 px-lg-0"
-        :showSidebarToggle="showToggleBtn"
-        @toggleSidebar="sidebarToggle"
-      ></search-result>
+    <div class="container mt-lg-5 mt-5">
+        <div class="row px-xl-0 px-md-3 px-1">
+            <side-bar v-show="showSidebar" class="col col-lg-3" :fieldData="fields" :skills="skills" :rating="rating"
+                :hourlyRateData="hourlyRate"></side-bar>
+            <search-result class="col col-12 col-lg-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle"></search-result>
+        </div>
     </div>
-  </div>
-  <!-- 感覺要多做一個modal -->
 </template>
 <script setup>
 import { ref, reactive, onMounted, nextTick, computed } from "vue";
@@ -37,49 +25,44 @@ const hourlyRate = reactive(hourlyRateData);
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
 const showToggleBtn = ref(false);
+const mobileBreakpoint = ref(991);
 
-const checkWidth = () => {
-  const isMobile = window.innerWidth < 991; // check width when mounting
-  showSidebar.value = !isMobile;
-  showToggleBtn.value = isMobile;
-  showMobileSidebar.value = !isMobile;
+const adaptWidth = () => {
+    const isMobile = window.innerWidth <= mobileBreakpoint.value; // check width when mounting
+    showSidebar.value = !isMobile;
+    showToggleBtn.value = isMobile;
+    showMobileSidebar.value = !isMobile;
 };
+
 onMounted(() => {
-  checkWidth();
-  window.addEventListener("resize", () => {
-    const isMobile = window.innerWidth <= 991;
-    if (window.innerWidth > 991) {
-      showSidebar.value = true;
-      showMobileSidebar.value = false;
-      showToggleBtn.value = false;
-      // document.body.style.overflow = "auto";
-    } else if (window.innerWidth < 991 && showMobileSidebar.value) {
-      showSidebar.value = true;
-      showToggleBtn.value = true;
-    } else if (window.innerWidth < 991 && !showMobileSidebar.value) {
-      showSidebar.value = false;
-      showToggleBtn.value = true;
-    }
-  });
-  //   checkWidth();
-  //   window.addEventListener("resize", () => {
-  //     const isMobile = window.innerWidth < 992;
-  //     const shouldShowMobileSidebar = showMobileSidebar.value;
-  //     showToggleBtn.value = isMobile;
-  //     showMobileSidebar.value = isMobile;
-  //     showSidebar.value = !isMobile || (isMobile && shouldShowMobileSidebar);
-  //   });
+    adaptWidth();
+    window.addEventListener("resize", () => {
+        const isMobile = window.innerWidth <= mobileBreakpoint.value
+        showSidebar.value = !isMobile || (showMobileSidebar.value && isMobile);
+        showMobileSidebar.value = isMobile && showMobileSidebar.value;
+    });
+
+
+
+    //   checkWidth();
+    //   window.addEventListener("resize", () => {
+    //     const isMobile = window.innerWidth < 992;
+    //     const shouldShowMobileSidebar = showMobileSidebar.value;
+    //     showToggleBtn.value = isMobile;
+    //     showMobileSidebar.value = isMobile;
+    //     showSidebar.value = !isMobile || (isMobile && shouldShowMobileSidebar);
+    //   });
 });
 
 const sidebarToggle = () => {
-  showMobileSidebar.value = !showMobileSidebar.value;
-  showSidebar.value = !showSidebar.value;
+    showMobileSidebar.value = !showMobileSidebar.value;
+    showSidebar.value = !showSidebar.value;
 };
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

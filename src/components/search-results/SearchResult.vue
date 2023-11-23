@@ -3,8 +3,10 @@
         <div class="text-wrapper">
             <h3>Search results</h3>
             <p>25 matched results were found</p>
-            <button v-if="props.showSidebarToggle" class="search-bar-toggle"><i class="fa-solid fa-sliders"
-                    style="color: #635bff;" @click="toggleSidebar"></i></button>
+            <!-- <button v-if="props.showSidebarToggle" class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
+                    style="color: #635bff;" @click="toggleSidebar"></i></button> -->
+            <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders" style="color: #635bff;"
+                    @click="toggleSidebar"></i></button>
             <div class="search-tags">
                 <search-tag :tagName="searchedTags.tag1"></search-tag>
                 <search-tag :tagName="searchedTags.tag2"></search-tag>
@@ -101,12 +103,23 @@ const searchedTags = reactive({
 
         .search-bar-toggle {
             position: absolute;
-            right: 0;
+            right: 11px;
             top: 0;
             border: 1px solid lightgray;
             background-color: transparent;
             border-radius: 50%;
             font-size: 1.4rem;
+            display: none;
+        }
+    }
+}
+
+@media (max-width:991px) {
+    .search-result {
+        .text-wrapper {
+            .search-bar-toggle {
+                display: block;
+            }
         }
     }
 }
