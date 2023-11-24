@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- 雙驚嘆號會把string改成boolean -->
-    <base-dialog
-      :show="!!error"
-      title="Something went wrong"
-      @close="handleError"
-    >
+    <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -15,12 +11,8 @@
         </header>
         <base-spinner v-if="isLoading"></base-spinner>
         <ul v-if="hasRequests">
-          <request-item
-            v-for="request in receivedRequests"
-            :key="request.id"
-            :email="request.userEmail"
-            :message="request.message"
-          ></request-item>
+          <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
+            :message="request.message"></request-item>
         </ul>
         <h3 v-else>目前沒有訊息</h3>
       </base-card>

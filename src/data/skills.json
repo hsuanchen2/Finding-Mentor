@@ -1,5 +1,6 @@
 {
     "title": "Skills",
+    "icon": "fa-solid fa-code",
     "languages": [
         {
             "title": "Any language",

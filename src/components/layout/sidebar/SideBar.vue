@@ -1,110 +1,112 @@
 <template>
-    <!-- <div class="backdrop" v-show="!props.showSidebarToggle"></div> -->
-    <div class="accordion pe-lg-5 ps-0">
-        <h3>Filter by</h3>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapseOne">
-                    {{ props.fieldData.title }}
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingOne">
-                <div class="accordion-body">
-                    <ul>
-                        <li v-for="(field, index) in props.fieldData.fieldData" :key="index">
-                            <input :type="field.type" :id="field.id" :name="field.name">
-                            <label :for="field.id">{{ field.title }}</label>
-                        </li>
-                    </ul>
+    <aside>
+        <div v-if="props.showBackdrop" class="backdrop" @click="toggleSidebar"></div>
+        <div class="accordion pe-md-5 ps-md-0 py-md-0 px-3 pt-5 pb-5">
+            <h3>Filter by</h3>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapseOne">
+                        <i :class="props.fieldData.icon"></i> {{ props.fieldData.title }}
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingOne">
+                    <div class="accordion-body">
+                        <ul>
+                            <li v-for="(field, index) in props.fieldData.fieldData" :key="index">
+                                <input :type="field.type" :id="field.id" :name="field.name">
+                                <label :for="field.id">{{ field.title }}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseTwo">
-                    {{ props.skills.title }}
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingTwo">
-                <div class="accordion-body">
-                    <ul>
-                        <li v-for="(language, index) in props.skills.languages" :key="index">
-                            <input :type="language.type" :id="language.id" :name="language.name">
-                            <label :for="language.id">{{ language.title }}</label>
-                        </li>
-                    </ul>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                        aria-controls="panelsStayOpen-collapseTwo">
+                        <i :class="props.skills.icon"></i> {{ props.skills.title }}
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <ul>
+                            <li v-for="(language, index) in props.skills.languages" :key="index">
+                                <input :type="language.type" :id="language.id" :name="language.name">
+                                <label :for="language.id">{{ language.title }}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="accordion-item show">
-            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapseThree">
-                    {{ props.rating.title }}
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingThree">
-                <div class="accordion-body">
-                    <ul>
-                        <li v-for="(rate, index) in props.rating.rateRange" :key="index">
-                            <input :type="rate.type" :id="rate.id" :name="props.rating.name">
-                            <label :for="rate.id">{{ rate.title }}</label>
-                        </li>
-                    </ul>
+            <div class="accordion-item show">
+                <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapseThree">
+                        <i :class="props.rating.icon"></i>{{ props.rating.title }}
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingThree">
+                    <div class="accordion-body">
+                        <ul>
+                            <li v-for="(rate, index) in props.rating.rateRange" :key="index">
+                                <input :type="rate.type" :id="rate.id" :name="props.rating.name">
+                                <label :for="rate.id">{{ rate.title }}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="accordion-item show">
-            <h2 class="accordion-header" id="panelsStayOpen-headingFour">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapseFour">
-                    {{ props.hourlyRateData.title }}
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingFour">
-                <div class="accordion-body">
-                    <ul>
-                        <li v-for="(hourlyRate, index) in props.hourlyRateData.hourlyRateRange" :key="index">
-                            <input :type="hourlyRate.type" :id="hourlyRate.id" :name="props.hourlyRateData.name">
-                            <label :for="hourlyRate.id">{{ hourlyRate.title }}</label>
-                        </li>
-                    </ul>
+            <div class="accordion-item show">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapseFour">
+                        <i :class="props.hourlyRateData.icon"></i> {{ props.hourlyRateData.title }}
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingFour">
+                    <div class="accordion-body">
+                        <ul>
+                            <li v-for="(hourlyRate, index) in props.hourlyRateData.hourlyRateRange" :key="index">
+                                <input :type="hourlyRate.type" :id="hourlyRate.id" :name="props.hourlyRateData.name">
+                                <label :for="hourlyRate.id">{{ hourlyRate.title }}</label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="accordion-item show">
-            <h2 class="accordion-header" id="panelsStayOpen-headingFive">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapseFive">
-                    Location
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingFive">
-                <div class="accordion-body">
-                    <sidebar-search class="sidebar-search" :country="countryData"></sidebar-search>
+            <div class="accordion-item show">
+                <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapseFive">
+                        <i class="fa-solid fa-location-dot"></i> Location
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"
+                    aria-labelledby="panelsStayOpen-headingFive">
+                    <div class="accordion-body">
+                        <sidebar-search class="sidebar-search" :country="countryData"></sidebar-search>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </aside>
 </template>
 <script setup>
-import { ref, reactive, defineProps, onMounted } from "vue";
+import { defineProps, defineEmits } from "vue";
 import sidebarSearch from "./SidebarSearch.vue";
 import countryData from "@/data/countries.json";
 const props = defineProps({
@@ -120,11 +122,14 @@ const props = defineProps({
     hourlyRateData: {
         type: Object
     },
-    showSidebarToggle: {
+    showBackdrop: {
         type: Boolean,
     }
 });
-
+const emits = defineEmits(["toggleSidebar"]);
+const toggleSidebar = () => {
+    emits("toggleSidebar");
+}
 </script>
 <style lang="scss" scoped>
 h3 {
@@ -136,7 +141,6 @@ h3 {
 .accordion {
     background-color: transparent;
 
-    // padding-right: 50px;
     .accordion-item {
         background-color: transparent;
         border: none;
@@ -167,6 +171,14 @@ h3 {
             font-weight: 700;
             color: $main-text-color;
         }
+
+        i {
+            margin-right: 8px;
+            color: #6672E4;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-style: bold;
+        }
     }
 }
 
@@ -190,7 +202,7 @@ ul {
     input[type="radio"] {
         width: 15px;
         height: 15px;
-        accent-color: $main-purple;
+        accent-color: #6672E4;
         cursor: pointer;
     }
 
@@ -206,10 +218,11 @@ ul {
 }
 
 // sidebar for mobile
-@media (max-width:991px) {
+@media (max-width:767px) {
     .backdrop {
         background-color: rgba(0, 0, 0, 0.75);
         position: fixed;
+        top: 0;
         width: 100%;
         height: 100vh;
         z-index: 50;
@@ -226,6 +239,10 @@ ul {
         z-index: 60;
         left: 0;
         top: 0;
+    }
+
+    h3 {
+        margin-bottom: 25px;
     }
 }
 </style>

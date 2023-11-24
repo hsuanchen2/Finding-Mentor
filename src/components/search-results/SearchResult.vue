@@ -3,10 +3,9 @@
         <div class="text-wrapper">
             <h3>Search results</h3>
             <p>25 matched results were found</p>
-            <!-- <button v-if="props.showSidebarToggle" class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
-                    style="color: #635bff;" @click="toggleSidebar"></i></button> -->
-            <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders" style="color: #635bff;"
-                    @click="toggleSidebar"></i></button>
+            <span @click="toggleSidebar">
+                <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
+                        style="color: #635bff;"></i></button></span>
             <div class="search-tags">
                 <search-tag :tagName="searchedTags.tag1"></search-tag>
                 <search-tag :tagName="searchedTags.tag2"></search-tag>
@@ -25,12 +24,14 @@
             <user-card></user-card>
             <user-card></user-card>
         </div>
+        <the-pagination></the-pagination>
     </section>
 </template>
 <script setup>
 import { ref, reactive, defineProps, defineEmits } from "vue";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
+import ThePagination from "@/components/ui/ThePagination.vue";
 const props = defineProps({
     showSidebarToggle: Boolean,
 })
@@ -58,7 +59,6 @@ const searchedTags = reactive({
     padding-left: 0;
     padding-right: 0;
     gap: 10px;
-
     h3 {
         color: $main-text-color;
         font-weight: 700;
@@ -92,8 +92,6 @@ const searchedTags = reactive({
     }
 
     .text-wrapper {
-        // border-radius: 10px;
-        // box-shadow: $light-card-shadow;
         border-bottom: 2px solid lightgray;
         position: relative;
 
@@ -114,7 +112,7 @@ const searchedTags = reactive({
     }
 }
 
-@media (max-width:991px) {
+@media (max-width:767px) {
     .search-result {
         .text-wrapper {
             .search-bar-toggle {

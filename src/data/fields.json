@@ -1,5 +1,6 @@
 {
     "title": "Field",
+    "icon": "fa-solid fa-scroll",
     "fieldData": [
         {
             "id": "any-field",

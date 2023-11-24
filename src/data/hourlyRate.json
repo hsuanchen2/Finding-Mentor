@@ -1,6 +1,7 @@
 {
     "title": "Hourly rate",
     "name": "hourlyRate",
+    "icon": "fa-solid fa-dollar-sign", 
     "hourlyRateRange": [
         {
             "title": "Any hourly rate",

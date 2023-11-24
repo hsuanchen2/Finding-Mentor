@@ -1,6 +1,7 @@
 {
     "title": "Rating",
     "name": "rating",
+    "icon": "fa-solid fa-star",
     "rateRange": [
         {
             "title": "Any rating",

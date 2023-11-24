@@ -1,11 +1,8 @@
 <template>
-  <!-- 給class -->
   <button v-if="!link" :class="mode">
-    <!-- <slot></slot> -->
     <slot></slot> <span><i class="fas fa-arrow-right"></i></span>
   </button>
   <router-link v-else :class="mode" :to="to">
-    <!-- <slot></slot> -->
     <slot></slot> <span><i class="fas fa-arrow-right"></i></span>
   </router-link>
 </template>
@@ -59,7 +56,6 @@ span {
   transition: 0.3s ease;
   position: relative;
   font-family: "Roboto", sans-serif;
-  // width: 70px;
   text-align: center;
   font-size: 16px;
 
