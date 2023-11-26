@@ -23,9 +23,7 @@
 import { ref, defineProps, computed, onBeforeMount, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
-// import router from "../../router";
 
-// const router = useRouter(); 
 const store = useStore();
 const route = useRoute();
 const router = useRouter(); 
@@ -36,15 +34,7 @@ const props = defineProps({
   }
 });
 const selectedCoach = ref(null);
-console.log(props.id); 
-// function setCoach() {
-//    selectedCoach.value = store.getters["coaches/coaches"].find((coach) => {
-//     return coach.id === props.id;
-//   });
-// };
 async function setCoach() {
-      // If the user refreshes the page inside this Component
-      // The component needs to download the data to work
       try {
         if (store.getters['coaches/coaches'].length === 0) {
           await store.dispatch('coaches/loadCoaches', { forceRefresh: true })
@@ -64,7 +54,6 @@ async function setCoach() {
 
 onBeforeMount(async()=> {
   await setCoach();
-  console.log(selectedCoach.value); 
 })
 
 const fullName = computed(() => {
@@ -82,7 +71,6 @@ const areas = computed(() => {
 });
 
 const contactLink = computed(() => {
-  // return route.path + "/contact";
   if (!route.path.endsWith("/contact")) {
     return route.path + "/contact";
   } else {

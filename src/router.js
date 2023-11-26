@@ -13,6 +13,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: "/mentor-detail",
+      name: "test-case",
+      component: () => import("./pages/coaches/MentorDetail.vue"),
+    },
+    {
       path: "/",
       redirect: "/coaches",
     },
