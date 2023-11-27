@@ -83,16 +83,6 @@ const addToFavorite = (e) => {
     // border-top: none;
     box-shadow: $light-card-shadow;
     border-radius: 10px;
-
-    &:last-child {
-        // border-radius: 0 0 10px 10px;
-    }
-
-    &:first-child {
-        // border-top: 1px solid lightgray;
-        // border-radius: 10px 10px 0 0;
-    }
-
     &:hover {
         background-color: #f4eeff;
     }

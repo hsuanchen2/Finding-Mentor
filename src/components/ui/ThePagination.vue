@@ -26,11 +26,11 @@ nav {
 
             a {
                 color: $miner-text-color;
-                border: 1px solid $main-purple;
+                // border: 1px solid $main-purple;
 
                 &:hover {
                     color: $miner-text-color;
-                    border: 1px solid $main-purple;
+                    // border: 1px solid $main-purple;
                 }
             }
         }
