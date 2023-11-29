@@ -9,7 +9,8 @@
             <div class="user-info-text">
                 <h3>Patrick Shyu</h3>
                 <h4>ex Google ex Facebook techlead</h4>
-                <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>United State</p>
+                    <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>United State</p>
+                    <p>&#x2B50 4.2 (25)</p>
             </div>
             <button class="add-to-favorite" @click="addToFavorite">
                 <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
@@ -83,6 +84,7 @@ const addToFavorite = (e) => {
     // border-top: none;
     box-shadow: $light-card-shadow;
     border-radius: 10px;
+
     &:hover {
         background-color: #f4eeff;
     }

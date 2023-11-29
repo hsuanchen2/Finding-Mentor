@@ -7,7 +7,7 @@
     <contact-us></contact-us>
     <back-to-top></back-to-top>
 </template>
-<script setup>
+<script setup lang="ts">
     import HeroSection from "@/components/landing-page/hero/HeroSection.vue";
     import ClientResult from "@/components/landing-page/companies/TheResult.vue";
     import TopMentors from "@/components/landing-page/top-mentors/TopMentors.vue";

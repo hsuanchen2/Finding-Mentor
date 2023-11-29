@@ -2,7 +2,9 @@
     <article>
         <img src="@/../public/user-img/test.png" alt="">
         <h3 class="mentor-name">{{ user.userName }}</h3>
-        <i><h2>{{ user.jobTitle }}</h2></i>
+        <i>
+            <h2>{{ user.jobTitle }}</h2>
+        </i>
         <p>{{ user.desc }}</p>
         <figure>
             <p>From ${{ user.rate }}</p>
@@ -14,7 +16,7 @@
         </footer>
     </article>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, defineProps } from "vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 const props = defineProps(["userId", "jobTitle", "userName", "desc", "rate", "jobRating"]);
@@ -40,9 +42,20 @@ article {
     padding: 15px 20px;
     height: 380px;
     background-color: #fff;
+    position: relative;
+    &::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 7px;
+        top: 0;
+        border-radius: 10px 10px 0 0 ;
+        background-color: $main-cyan;
+    }
     img {
         width: 35%;
         margin-bottom: 15px;
+        margin-top: 7px;
     }
 
     h3 {
@@ -77,9 +90,9 @@ article {
         width: 90%;
         display: flex;
         justify-content: space-around;
+
         .card-button {
             font-size: 14px;
         }
     }
-}
-</style>
+}</style>

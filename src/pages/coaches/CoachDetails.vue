@@ -19,9 +19,9 @@
     </section>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, defineProps, computed, onBeforeMount, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
+c
 import { useStore } from "vuex";
 
 const store = useStore();

@@ -8,15 +8,15 @@ import "bootstrap/dist/css/bootstrap.css";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js";
 import router from "./router";
 import store from "./store/index.js";
+import firebaseApp from "../config/firebaseAuth.ts";
 import App from "./App.vue";
 
-
 const app = createApp(App);
+app.config.globalProperties.$firebase = firebaseApp;
 app.component("base-card", BaseCard);
 app.component("base-button", BaseButton);
 app.component("base-badge", BaseBadge);
 app.component("base-spinner", BaseSpinner);
 app.component("base-dialog", BaseDialog);
-app.use(bootstrap);
 app.use(store);
 app.use(router).mount("#app");

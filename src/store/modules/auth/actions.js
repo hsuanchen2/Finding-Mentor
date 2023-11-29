@@ -1,6 +1,36 @@
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 // 透過logintimer來控制計時器
 let loginTimer;
 export default {
+  // firebase google authentication
+  async signInWithGoogle(context) {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(getAuth(), provider);
+      const responseData = userCredential._tokenResponse;
+      localStorage.setItem("token", responseData.idToken);
+      localStorage.setItem("userId", responseData.localId);
+      const expiresIn = +responseData.expiresIn * 1000;
+      const expireDate = new Date().getTime() + expiresIn;
+      localStorage.setItem("tokenExpiration", expireDate);
+
+      // 定時自動登出
+      loginTimer = setTimeout(() => {
+        context.dispatch("autoLogout");
+      }, expiresIn);
+
+      //傳資料到setuser mutations中
+      context.commit("setUser", {
+        token: responseData.idToken,
+        userId: responseData.localId,
+        tokenExpiration: expireDate,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   // 登入
   async login(context, payload) {
     return context.dispatch("auth", {
@@ -73,7 +103,6 @@ export default {
       }),
     });
     const responseData = await response.json();
-    console.log(responseData);
     if (!response.ok) {
       const error = new Error(responseData.message || "Failed to authenticate");
       throw error;
@@ -97,12 +126,6 @@ export default {
       token: responseData.idToken,
       userId: responseData.localId,
       tokenExpiration: expireDate,
-    });
-    console.log(responseData);
-    console.log({
-      token: responseData.idToken,
-      userId: responseData.localId,
-      tokenExpiration: responseData.expiresIn,
     });
   },
 

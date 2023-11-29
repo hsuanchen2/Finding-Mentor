@@ -17,8 +17,10 @@
     "aos": "^2.3.4",
     "bootstrap": "^5.3.2",
     "bootstrap-vue": "^2.23.1",
+    "firebase": "^10.7.0",
     "npm": "^10.2.4",
     "pinia": "^2.1.7",
+    "typescript": "^5.3.2",
     "vue": "^3.3.7",
     "vue-router": "^4.2.4",
     "vuex": "^4.0.2"

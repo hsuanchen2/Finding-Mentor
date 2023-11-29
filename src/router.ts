@@ -16,6 +16,12 @@ const router = createRouter({
       path: "/mentor-detail",
       name: "test-case",
       component: () => import("./pages/coaches/MentorDetail.vue"),
+      children: [
+        {
+          path: "contact", 
+          component: () => import("./pages/coaches/ContactMentor.vue"), 
+        }, 
+      ],
     },
     {
       path: "/",

@@ -5,7 +5,7 @@
     <section class="container">
       <div class="text">
         <h2>Contact Us</h2>
-        <p>Got questions? Reach out!</p>
+        <p>You've got questions, we've got answers</p>
       </div>
       <form @submit.prevent="sendMessage">
         <div class="row">
@@ -60,7 +60,7 @@
     <!-- <button @click="toggle"> toggle</button> -->
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
   import { ref, onMounted, reactive, computed } from "vue";
   import emailjs from '@emailjs/browser';
   import BaseToast from "@/components/ui/BaseToast.vue";

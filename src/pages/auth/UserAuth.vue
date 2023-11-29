@@ -91,7 +91,6 @@ async function submitForm() {
         password: formData.password.val,
       });
     }
-
     const redirectUrl = "/" + (route.query.redirect || "coaches");
     router.replace(redirectUrl);
   } catch (err) {

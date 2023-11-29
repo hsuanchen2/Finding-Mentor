@@ -62,7 +62,6 @@ export default {
         hourlyRate: responseData[key].hourlyRate,
         areas: responseData[key].areas,
       };
-      console.log(coaches);
       coaches.push(coach);
     }
     // console.log(coaches);
