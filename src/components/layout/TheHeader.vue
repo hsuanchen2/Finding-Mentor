@@ -5,42 +5,42 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNav">
         <span class="navbar-toggler-icon"></span>
-      </button> 
-        <div class="collapse navbar-collapse" :class="{ show: showNav, leave: !showNav }" id="navbarNav"
-          ref="mobileDropdown">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link to="/coaches" class="nav-link" @click="closeMenu">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/coaches" class="nav-link" @click="closeMenu">About Us</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/" class="nav-link" @click="closeMenu">Pricing</router-link>
-            </li>
-          </ul>
+      </button>
+      <div class="collapse navbar-collapse" :class="{ show: showNav, leave: !showNav }" id="navbarNav"
+        ref="mobileDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link to="/coaches" class="nav-link" @click="closeMenu">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/coaches" class="nav-link" @click="closeMenu">About Us</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/" class="nav-link" @click="closeMenu">Pricing</router-link>
+          </li>
+        </ul>
 
-          <ul class="navbar-nav">
-            <li class="nav-item" v-if="isLoggedIn">
-              <router-link to="/request" class="nav-link" @click="closeMenu">Your Requests</router-link>
-            </li>
-            <li class="nav-item register-button" v-if="!isLoggedIn">
-              <router-link to="/signUp" class="nav-link" @click="closeMenu">Register
-              </router-link>
-            </li>
-            <li class="nav-item" v-if="!isLoggedIn">
-              <router-link to="/signIn" class="nav-link" @click="closeMenu">Login</router-link>
-            </li>
-            <li class="nav-item" v-if="isLoggedIn">
-              <base-button @click="logOut">Logout</base-button>
-            </li>
-          </ul>
-        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item" v-if="isLoggedIn">
+            <router-link to="/requests" class="nav-link" @click="closeMenu">Your Requests</router-link>
+          </li>
+          <li class="nav-item register-button" v-if="!isLoggedIn">
+            <router-link to="/signUp" class="nav-link" @click="closeMenu">Register
+            </router-link>
+          </li>
+          <li class="nav-item" v-if="!isLoggedIn">
+            <router-link to="/signIn" class="nav-link" @click="closeMenu">Login</router-link>
+          </li>
+          <li class="nav-item" v-if="isLoggedIn">
+            <base-button @click="logOut">Logout</base-button>
+          </li>
+        </ul>
+      </div>
     </nav>
   </header>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { Ref, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -51,8 +51,8 @@ const isLoggedIn = computed(() => {
   return store.getters.isAuthenticated;
 });
 
-const showNav = ref(false);
-const mobileDropdown = ref(null);
+const showNav: Ref<boolean> = ref(false);
+const mobileDropdown: Ref<null | HTMLElement> = ref(null);
 
 const logOut = () => {
   store.dispatch("logout");
@@ -230,4 +230,5 @@ h1 {
       }
     }
   }
-}</style>
+}
+</style>
