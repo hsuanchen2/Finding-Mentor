@@ -7,46 +7,26 @@
         over 1000, from various industries. They are here to offer a wide array
         of consultation services tailored to your needs.
         <router-link to="/" class="cta-link">
-          Discover More <i class="fas fa-arrow-right"></i
-        ></router-link>
+          Discover More <i class="fas fa-arrow-right"></i></router-link>
       </p>
     </div>
     <Splide ref="splide" :options="splideSettings" aria-label="Senpai Card">
-      <SplideSlide
-        v-for="mentor in userArray"
-        :key="mentor.userId"
-        class="splide__slide"
-      >
-        <mentor-card
-          :userId="mentor.userId"
-          :jobTitle="mentor.jobTitle"
-          :userName="mentor.userName"
-          :desc="mentor.desc"
-          :rate="mentor.rate"
-          :jobRating="mentor.jobRating"
-        >
+      <SplideSlide v-for="mentor in userArray" :key="mentor.userId" class="splide__slide">
+        <mentor-card :userId="mentor.userId" :jobTitle="mentor.jobTitle" :userName="mentor.userName" :desc="mentor.desc"
+          :rate="mentor.rate" :jobRating="mentor.jobRating">
         </mentor-card>
       </SplideSlide>
     </Splide>
     <div class="button-group">
       <button @click="btnPrev">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-          <path
-            d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z"
-          />
+          <path d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z" />
         </svg>
       </button>
 
       <button @click="btnNext">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          class="flip"
-        >
-          <path
-            d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="flip">
+          <path d="m12.718 4.707-1.413-1.415L2.585 12l8.72 8.707 1.413-1.415L6.417 13H20v-2H6.416l6.302-6.293z" />
         </svg>
       </button>
     </div>
@@ -164,12 +144,12 @@ const userArray = ref([
 ]);
 const splide = ref(null);
 const btnPrev = () => {
-  console.log(splide.value);
+
   splide.value.go("-1");
 };
 
 const btnNext = () => {
-  console.log(splide.value);
+
   splide.value.go("+1");
 };
 </script>
@@ -188,6 +168,7 @@ const btnNext = () => {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 50px;
+
   .row {
     width: 100%;
     display: flex;

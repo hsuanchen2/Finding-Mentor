@@ -19,24 +19,27 @@
                         <h2>Create your Stripe account</h2>
                         <div class="form-group">
                             <label for="exampleInputEmail1" class="email-label">Email</label>
-                            <input v-model="signupData.email" type="email" class="form-control" id="exampleInputEmail1"
+                            <input v-model.trim="signupData.email" class="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp" placeholder="Enter email">
                             <span class="email-error" v-if="invalidEmail">
                                 <i class="fa-solid fa-circle-exclamation"></i>
                                 Invalid
                                 email address</span>
+                            <span class="email-error" v-if="duplicateEmail">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                Email already exists</span>
                         </div>
                         <!-- bootstrap 5 中已移除form-row class -->
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="first-name">First Name</label>
-                                <input v-model="signupData.firstName" type="text" class="form-control" id="first-name"
-                                    placeholder="First Name">
+                                <input v-model.trim="signupData.firstName" type="text" class="form-control" id="first-name"
+                                    placeholder="First Name" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="last-name">Last Name</label>
-                                <input v-model="signupData.lastName" type="text" class="form-control" id="last-name"
-                                    placeholder="Last Name">
+                                <input v-model.trim="signupData.lastName" type="text" class="form-control" id="last-name"
+                                    placeholder="Last Name" required>
                             </div>
                         </div>
 
@@ -44,17 +47,21 @@
                             <div class="password-wrapper">
                                 <label for="exampleInputPassword1">Password</label>
                             </div>
-                            <span class="password-field">
+                            <div class="password-field">
                                 <input v-model="signupData.password" :type="showPassword ? 'text' : 'password'"
-                                    class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    class="form-control" id="exampleInputPassword1" placeholder="Password" required>
                                 <i @click="togglePassword" class="fa-regular eye fa-eye show" v-if="showPassword"></i>
                                 <i @click="togglePassword" class="fa-regular eye fa-eye-slash" v-else></i>
-                            </span>
-
+                            </div>
+                            <span v-if="invalidPassword" class="password-error"><i
+                                    class="fa-solid fa-circle-exclamation"></i>Password needs to have at least 6
+                                characters</span>
                         </div>
-                        <button type="submit" class="btn submit-btn">Continue</button>
+                        <button type="submit" class="btn submit-btn">{{ isLoading ?
+                            "Validating..." :
+                            "Continue" }}</button>
                         <hr class="hr-text" data-content="Or">
-                        <button class="btn google-login">
+                        <button class="btn google-login" @click="continueWithGoogle">
                             <span class="google-button-text-wrapper">
                                 <img src="@/../public/auth/google-icon.png" alt="google-icon"><span>Continue With
                                     Google</span>
@@ -72,9 +79,15 @@
     </section>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive } from "vue";
-import isValidEmail from "@/utils/validateEmail.ts";
-import isValidUsername from "@/utils/validateUsername.ts";
+import { Ref, ref, reactive, computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter, useRoute } from "vue-router";
+import isValidEmail from "@/utils/validateEmail";
+import isValidPassword from "@/utils/validatePassword";
+import isValidUsername from "@/utils/validateUsername";
+const store = useStore();
+const router = useRouter();
+const route = useRoute();
 const copies = ref([
     {
         h3: "Get started quickly",
@@ -90,7 +103,10 @@ const copies = ref([
     }
 ])
 const invalidEmail: Ref<boolean> = ref(false);
+const invalidPassword: Ref<boolean> = ref(false);
 const showPassword: Ref<boolean> = ref(false);
+const isLoading: Ref<boolean> = ref(false);
+const duplicateEmail: Ref<boolean> = ref(false);
 interface signupForm {
     email: string,
     firstName: string,
@@ -110,16 +126,51 @@ const togglePassword = (): void => {
 }
 
 const submitForm = async (): Promise<any> => {
-    const validEmail = isValidEmail(signupData.email);
-    const validFirstName = isValidUsername(signupData.firstName);
-    const validLastName = isValidUsername(signupData.lastName);
-    if (!validEmail || signupData.password === "") {
-        invalidEmail.value = true;
+    const { email, password } = signupData;
+    const validEmail = isValidEmail(email);
+    const validPassword = isValidPassword(password);
+    invalidEmail.value = !validEmail;
+    invalidPassword.value = !validPassword;
+    if (!validEmail || !validPassword) {
         return;
     } else {
+        try {
+            isLoading.value = true;
+            duplicateEmail.value = false;
+            await store.dispatch("signup", signupData);
+            isLoading.value = false;
+            setTimeout(() => {
+                const redirectUrl = "/" + (route.query.redirect || "coaches");
+                router.replace(redirectUrl);
+            }, 500);
+        } catch (error) {
+            if (error === "EMAIL_EXISTS") {
+                duplicateEmail.value = true;
+            }
+        } finally {
+            isLoading.value = false;
+        }
+    }
+};
 
+
+const isAuthenticated = computed((): boolean => {
+    return localStorage.getItem("token") !== null && localStorage.getItem("userId") !== null;
+})
+
+const continueWithGoogle = async (): Promise<any> => {
+    try {
+        await store.dispatch("signInWithGoogle");
+        const loggedIn = isAuthenticated;
+        if (loggedIn) { // 確認登入後才跳轉
+            const redirectUrl = "/" + (route.query.redirect || "coaches");
+            router.replace(redirectUrl);
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
+
 </script>
 <style lang="scss" scoped>
 .container {
@@ -199,9 +250,11 @@ const submitForm = async (): Promise<any> => {
         .email-label {
             margin-bottom: 5px;
         }
+
         i {
             padding-right: 3px;
         }
+
         .form-content-wrapper {
             width: 95%;
             margin: 0 auto;
@@ -232,6 +285,16 @@ const submitForm = async (): Promise<any> => {
                 /* transform: translateY(-50%); */
                 cursor: pointer;
                 color: lightgray;
+            }
+        }
+
+        .password-error {
+            margin-top: 6px;
+            color: #cd3d64;
+            font-size: 14px;
+
+            i {
+                padding-right: 5px;
             }
         }
     }

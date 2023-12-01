@@ -35,7 +35,8 @@
                     </span>
                 </button>
                 <div class="create-account-text">
-                    <p>Don't have an account?<span><router-link to="/signup" class="sign-up-link">Sign up</router-link></span>
+                    <p>Don't have an account?<span><router-link to="/signup" class="sign-up-link">Sign
+                                up</router-link></span>
                     </p>
                 </div>
             </div>
@@ -64,7 +65,6 @@ const loginData: loginForm = reactive({
     password: "",
 })
 
-// const apiUrl: Ref<string> = ref(import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY || "");
 const togglePassword = (): void => {
     showPassword.value = !showPassword.value;
 }
@@ -93,14 +93,14 @@ const submitForm = async (): Promise<any> => {
     }
 }
 
-const isAuthenticated = (): boolean => {
+const isAuthenticated = computed((): boolean => {
     return localStorage.getItem("token") !== null && localStorage.getItem("userId") !== null;
-}
+})
 
 const continueWithGoogle = async (): Promise<any> => {
     try {
         await store.dispatch("signInWithGoogle");
-        const loggedIn = isAuthenticated();
+        const loggedIn = isAuthenticated;
         if (loggedIn) {
             const redirectUrl = "/" + (route.query.redirect || "coaches");
             router.replace(redirectUrl);

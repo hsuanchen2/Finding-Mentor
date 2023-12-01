@@ -1,4 +1,4 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 
 // 透過logintimer來控制計時器
 let loginTimer;
@@ -8,24 +8,44 @@ export default {
     const provider = new GoogleAuthProvider();
     try {
       const userCredential = await signInWithPopup(getAuth(), provider);
-      const responseData = userCredential._tokenResponse;
-      localStorage.setItem("token", responseData.idToken);
-      localStorage.setItem("userId", responseData.localId);
-      const expiresIn = +responseData.expiresIn * 1000;
-      const expireDate = new Date().getTime() + expiresIn;
-      localStorage.setItem("tokenExpiration", expireDate);
+      if (userCredential.user) {
+        // store user data to db
+        const responseData = userCredential._tokenResponse;
+        const dbApi = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+        const uid = responseData.localId;
+        const token = responseData.idToken;
+        const userData = {
+          firstName: responseData.firstName,
+          lastName: responseData.lastName,
+          userId: uid,
+        }
+        const storeUserDataToDb = await fetch(`${dbApi}/users/${uid}.json?auth=` +
+          token, {
+          method: "PUT",
+          body: JSON.stringify(userData),
+        })
+        localStorage.setItem("token", responseData.idToken);
+        localStorage.setItem("userId", responseData.localId);
+        const expiresIn = +responseData.expiresIn * 1000;
+        const expireDate = new Date().getTime() + expiresIn;
+        localStorage.setItem("tokenExpiration", expireDate);
 
-      // 定時自動登出
-      loginTimer = setTimeout(() => {
-        context.dispatch("autoLogout");
-      }, expiresIn);
+        // 定時自動登出
+        loginTimer = setTimeout(() => {
+          context.dispatch("autoLogout");
+        }, expiresIn);
 
-      //傳資料到setuser mutations中
-      context.commit("setUser", {
-        token: responseData.idToken,
-        userId: responseData.localId,
-        tokenExpiration: expireDate,
-      });
+        //傳資料到setuser mutations中
+        context.commit("setUser", {
+          token: responseData.idToken,
+          userId: responseData.localId,
+          tokenExpiration: expireDate,
+        })
+      } else {
+        // const responseData = await response.json();
+        const error = new Error("Failed to authenticate");
+        throw error;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -87,49 +107,64 @@ export default {
 
   //將登入以及註冊重複的部分統稱叫做auth
   async auth(context, payload) {
-    const mode = payload.mode;
-    let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCL5a4JjWpnQbQygwWUKyt9eOTMQSCLiSs";
-    if (mode === "signup") {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCL5a4JjWpnQbQygwWUKyt9eOTMQSCLiSs";
+    try {
+      const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+      const mode = payload.mode;
+      const url = mode === "signup"
+        ? `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
+        : `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(errorMessage.error.message);
+      }
+
+      const responseData = await response.json();
+      const { localId, idToken, expiresIn } = responseData;
+
+      const dbApi = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+      const userData = {
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        userId: localId,
+      };
+
+      await fetch(`${dbApi}/users/${localId}.json?auth=${idToken}`, {
+        method: "PUT",
+        body: JSON.stringify(userData)
+      });
+
+      localStorage.setItem("token", idToken);
+      localStorage.setItem("userId", localId);
+      const expireDate = new Date().getTime() + (+expiresIn * 1000);
+      localStorage.setItem("tokenExpiration", expireDate);
+
+      loginTimer = setTimeout(() => {
+        context.dispatch("autoLogout");
+      }, +expiresIn * 1000);
+
+      context.commit("setUser", {
+        token: idToken,
+        userId: localId,
+        tokenExpiration: expireDate,
+      });
+    } catch (error) {
+      throw error.message;
     }
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: payload.email,
-        password: payload.password,
-        returnSecureToken: true,
-      }),
-    });
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || "Failed to authenticate");
-      throw error;
-    }
-    // 將token, userId, tokenexpiration 存入localStorage
-    localStorage.setItem("token", responseData.idToken);
-    localStorage.setItem("userId", responseData.localId);
-
-    const expiresIn = +responseData.expiresIn * 1000;
-    // const expiresIn = 5000;
-    const expireDate = new Date().getTime() + expiresIn;
-    localStorage.setItem("tokenExpiration", expireDate);
-
-    // 定時自動登出
-    loginTimer = setTimeout(() => {
-      context.dispatch("autoLogout");
-    }, expiresIn);
-
-    //傳資料到setuser mutations中
-    context.commit("setUser", {
-      token: responseData.idToken,
-      userId: responseData.localId,
-      tokenExpiration: expireDate,
-    });
   },
 
-  //
   autoLogout(context) {
     context.dispatch("logout");
     context.commit("setAutoLogout");

@@ -11,9 +11,10 @@ export default {
     };
     const token = context.rootGetters.token;
     // 將用戶註冊成為mentor的資料傳到資料庫
+    const dbApi = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
     const response = await fetch(
-      `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches/${userId}.json?auth=` +
-        token,
+      `${dbApi}/coaches/${userId}.json?auth=` +
+      token,
       {
         // data will be created if exisits, if not, create a new one.
         // POST will crate a new entry.

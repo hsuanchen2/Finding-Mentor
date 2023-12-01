@@ -8,8 +8,6 @@ export default {
   isCoach(state, getters, rootState, rootGetters) {
     const coaches = getters.coaches;
     const userId = rootGetters.userId;
-    console.log(coaches);
-    console.log(userId);
     // some 方法用於檢查陣列中是否至少有一個元素符合指定的條件
     return coaches.some((coach) => {
       return coach.id === userId;

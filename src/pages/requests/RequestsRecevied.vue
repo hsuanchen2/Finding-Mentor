@@ -7,20 +7,20 @@
     <section>
       <base-card>
         <header>
-          <h2>收到的訊息</h2>
+          <h2>Message Recevied</h2>
         </header>
         <base-spinner v-if="isLoading"></base-spinner>
         <ul v-if="hasRequests">
           <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
             :message="request.message"></request-item>
         </ul>
-        <h3 v-else>目前沒有訊息</h3>
+        <h3 v-else>No message yet</h3>
       </base-card>
     </section>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import RequestItem from "../../components/requests/RequestsItem.vue";
 import { computed, ref, onBeforeMount } from "vue";
 import { useStore } from "vuex";
@@ -54,6 +54,7 @@ onBeforeMount(() => {
   loadRequests();
 });
 </script>
+
 <style scoped lang="scss">
 header {
   text-align: center;
