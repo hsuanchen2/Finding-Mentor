@@ -118,17 +118,6 @@ header .navbar {
     justify-content: space-between;
   }
 
-
-  // @keyframes slideright {
-  //   from {
-  //     transform: translateX(100%);
-  //   }
-
-  //   to {
-  //     transform: translateX(0%);
-  //   }
-  // }
-
   .navbar-collapse.show {
     background-color: white;
     position: absolute;

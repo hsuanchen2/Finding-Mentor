@@ -4,10 +4,10 @@
   </div>
 </template>
 <script setup></script>
-<style scoped>
+<style scoped lang="scss">
 .base-card {
   border-radius: 10px;
-  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: $light-card-shadow;
   padding: 1rem;
   margin: 2rem auto;
   max-width: 800px;

@@ -110,9 +110,10 @@ export default {
     try {
       const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
       const mode = payload.mode;
-      const url = mode === "signup"
-        ? `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
-        : `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+      let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`;
+      if (mode === "signup") {
+        url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`;
+      }
 
       const response = await fetch(url, {
         method: "POST",
@@ -140,11 +141,13 @@ export default {
         lastName: payload.lastName,
         userId: localId,
       };
-
-      await fetch(`${dbApi}/users/${localId}.json?auth=${idToken}`, {
-        method: "PUT",
-        body: JSON.stringify(userData)
-      });
+      // put user data to db only when mode is signup
+      if (mode === "signup") {
+        await fetch(`${dbApi}/users/${localId}.json?auth=${idToken}`, {
+          method: "PUT",
+          body: JSON.stringify(userData)
+        });
+      }
 
       localStorage.setItem("token", idToken);
       localStorage.setItem("userId", localId);

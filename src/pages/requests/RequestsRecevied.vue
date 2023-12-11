@@ -10,11 +10,14 @@
           <h2>Message Recevied</h2>
         </header>
         <base-spinner v-if="isLoading"></base-spinner>
+      </base-card>
+      <base-card>
         <ul v-if="hasRequests">
           <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
             :message="request.message"></request-item>
         </ul>
         <h3 v-else>No message yet</h3>
+        
       </base-card>
     </section>
   </div>
