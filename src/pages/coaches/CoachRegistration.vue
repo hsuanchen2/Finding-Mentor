@@ -1,12 +1,9 @@
 <template>
   <section>
-    <base-card>
-      <h2>Register as a coach now!</h2>
       <coach-form @save-data="saveData"></coach-form>
-    </base-card>
   </section>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

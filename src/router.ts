@@ -16,11 +16,12 @@ const router = createRouter({
       path: "/mentor-detail",
       name: "test-case",
       component: () => import("./pages/coaches/MentorDetail.vue"),
+      props: true,
       children: [
         {
-          path: "contact", 
-          component: () => import("./pages/coaches/ContactMentor.vue"), 
-        }, 
+          path: "contact",
+          component: () => import("./pages/coaches/ContactMentor.vue"),
+        },
       ],
     },
     {

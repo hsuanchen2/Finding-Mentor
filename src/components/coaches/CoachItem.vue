@@ -18,7 +18,7 @@
     </div>
   </li>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, computed, defineProps, onMounted } from "vue";
 import { useRouter } from "vue-router";
 

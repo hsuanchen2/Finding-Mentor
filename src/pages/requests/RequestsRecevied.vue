@@ -1,48 +1,52 @@
 <template>
-  <div>
+  <div class="wrapper">
     <!-- 雙驚嘆號會把string改成boolean -->
     <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
     <section>
-      <base-card>
-        <header>
-          <h2>Message Recevied</h2>
-        </header>
-        <base-spinner v-if="isLoading"></base-spinner>
-      </base-card>
-      <base-card>
-        <ul v-if="hasRequests">
-          <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
-            :message="request.message"></request-item>
-        </ul>
-        <h3 v-else>No message yet</h3>
-        
-      </base-card>
+      <header>
+        <h2>Message Recevied</h2>
+      </header>
+      <base-spinner v-if="isLoading"></base-spinner>
+      <ul v-if="hasRequests">
+        <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
+          :message="request.message"></request-item>
+      </ul>
+      <section v-else class="no-request row">
+        <div class="img-wrapper col col-12 col-md-3">
+          <img src="@/../public/request/no_message_yet.png" alt="no request yet">
+        </div>
+        <div class="text-wrapper col col-12 col-md-9">
+          <h4>No message yet</h4>
+          <p>No messages received yet. Feel free to explore our mentor page for more information.</p>
+        </div>
+      </section>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import RequestItem from "../../components/requests/RequestsItem.vue";
-import { computed, ref, onBeforeMount } from "vue";
+import RequestItem2 from "../../components/requests/RequestItem2.vue";
+import { Ref, computed, ref, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
-const isLoading = ref(false);
-const error = ref(null);
-const receivedRequests = computed(() => {
+const isLoading: Ref<boolean> = ref(false);
+const error: Ref<any> = ref(null);
+const receivedRequests = computed((): any => {
   return store.getters["requests/receivedRequest"];
 });
 
-const hasRequests = computed(() => {
+const hasRequests = computed((): any => {
   return store.getters["requests/hasRequests"];
 });
 
-async function loadRequests() {
+const loadRequests = async () => {
   isLoading.value = true;
   try {
     await store.dispatch("requests/fetchRequests");
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     error.value = err.message;
   }
@@ -59,8 +63,17 @@ onBeforeMount(() => {
 </script>
 
 <style scoped lang="scss">
+.wrapper {
+  max-width: 1200px;
+  margin: 100px auto;
+}
+
 header {
-  text-align: center;
+  h2 {
+    text-align: start;
+    font-size: 2rem;
+    color: $main-text-color;
+  }
 }
 
 ul {
@@ -70,7 +83,37 @@ ul {
   max-width: 30rem;
 }
 
-h3 {
-  text-align: center;
+.no-request {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 50px;
+  img {
+    border-radius: 50%;
+    width: 100%;
+    max-width: 300px;
+    box-shadow: $light-card-shadow;
+  }
+
+  h4 {
+    color: $miner-text-color;
+  }
+}
+
+@media (max-width:768px) {
+  .no-request {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    .img-wrapper {
+      text-align: center;
+    }
+    .text-wrapper {
+      text-align: center;
+    }
+  }
 }
 </style>

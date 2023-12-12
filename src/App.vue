@@ -68,6 +68,32 @@ body {
   transition: all 0.3s ease-in;
 }
 
+p {
+  padding-left: 8px;
+  margin-bottom: 5px;
+}
+
+div[role="option"] {
+  cursor: pointer;
+  border-radius: 5px;
+  padding-left: 8px;
+  transition: .3s ease;
+
+  &:hover {
+    background-color: lightgray;
+  }
+}
+
+.result_item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 8%;
+  }
+}
+
 #autoComplete_list {
   border: 1px solid lightgray;
   background-color: white;
@@ -75,29 +101,15 @@ body {
   box-shadow: $light-card-shadow;
   margin-top: 5px;
   padding: 5px 5px;
-  p {
-    padding-left: 8px;
-    margin-bottom: 5px;
-  }
+}
 
-  div[role="option"] {
-    cursor: pointer;
-    border-radius: 5px;
-    padding-left: 8px;
-    transition: .3s ease;
-
-    &:hover {
-      background-color: lightgray;
-    }
-  }
-
-  .result_item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    img {
-      width: 8%;
-    }
-  }
+#register_autoComplete_list {
+  position: absolute;
+  border: 1px solid lightgray;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: $light-card-shadow;
+  margin-top: 5px;
+  padding: 5px 5px;
 }
 </style>

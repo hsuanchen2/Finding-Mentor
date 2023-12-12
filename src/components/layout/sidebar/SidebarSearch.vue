@@ -79,4 +79,13 @@ onMounted(() => {
          outline: none;
      }
  }
+
+ #autoComplete_list {
+     border: 1px solid lightgray;
+     background-color: white;
+     border-radius: 5px;
+     box-shadow: $light-card-shadow;
+     margin-top: 5px;
+     padding: 5px 5px;
+ }
 </style>

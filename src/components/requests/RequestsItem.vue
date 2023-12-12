@@ -6,8 +6,8 @@
     <p>{{ message }}</p>
   </li>
 </template>
-<script setup>
-import { ref, reactive, defineProps, computed } from "vue";
+<script setup lang="ts">
+import { Ref, ref, reactive, defineProps, computed } from "vue";
 const props = defineProps(["email", "message"]);
 const emailLink = computed(() => {
   return "mailto:" + props.email;
