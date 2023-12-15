@@ -7,7 +7,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import CoachForm from "../../components/coaches/CoachForm.vue";
+import CoachForm from "@/components/coaches/CoachForm.vue";
 const store = useStore();
 const router = useRouter();
 function saveData(submittedForm) {

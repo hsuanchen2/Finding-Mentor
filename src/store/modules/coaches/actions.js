@@ -1,6 +1,8 @@
+import { imageDb } from "@/../config/firebaseAuth";
 export default {
   // 用actions 觸發mutations
   async registerCoach(context, payload) {
+
     const userId = context.rootGetters.userId;
     const coachData = {
       firstName: payload.first,

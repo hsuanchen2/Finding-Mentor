@@ -92,17 +92,19 @@
     <div class="row">
       <div class="form-group col-md-6">
         <label for="first-name">First Name</label>
-        <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
+        <input type="text" class="form-control" id="first-name" placeholder="First Name" required
+          v-model.trim="formData.firstName.value">
       </div>
       <div class="form-group col-md-6">
         <label for="last-name">Last Name</label>
-        <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
+        <input type="text" class="form-control" id="last-name" placeholder="Last Name" required
+          v-model.trim="formData.lastName.value">
       </div>
     </div>
     <div class="row">
       <div class="form-group col-md-6">
         <label for="hourly-rate">Hourly Rate</label>
-        <input type="text" class="form-control" id="hourly-rate" placeholder="Hourly Rate" required>
+        <input type="number" class="form-control" id="hourly-rate" placeholder="Hourly Rate" required v-model.number="formData.hourlyRate.value">
       </div>
       <div class="form-group col-md-6" id="autoComplete_wrapper">
         <label for="location">Location</label>
@@ -119,15 +121,15 @@
     <div class="row">
       <div class="form-group col-12">
         <label for="job-title">Job Title</label>
-        <input class="form-control" type="text" placeholder="Your job title, ex: ex Google, ex Facebook Techlead"
-          name="job-title">
+        <input class="form-control" type="text" placeholder="Your job title, ex: Google Techlead" name="job-title">
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <label class="typo__label">Field</label>
         <multiselect v-model="valuee" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name"
-          track-by="code" :options="options" :multiple="true" :taggable="true" @tag="addTag" class="form-control"></multiselect>
+          track-by="code" :options="options" :multiple="true" :taggable="false" @tag="addTag">
+        </multiselect>
         <pre class="language-json"><code>{{ valuee.name }}</code></pre>
       </div>
     </div>
@@ -145,14 +147,18 @@
           class="experience"></textarea>
       </div>
     </div>
+    <button type="submit" class="submit-form-btn">Register</button>
   </form>
 </template>
 
+
 <script setup lang="ts">
 import { ref, reactive, defineEmits, onMounted } from "vue";
+import 'vue-multiselect/dist/vue-multiselect.css';
 import countryData from "@/data/countries.json";
 import autoComplete from '@tarekraafat/autoComplete.js';
 import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.css';
 
 const valuee = ref([]);
 const options = ref([
@@ -229,24 +235,24 @@ onMounted((): void => {
 
 const emits = defineEmits(["save-data"]);
 const formData = reactive({
-  firstName: {
-    val: "",
+  "firstName": {
+    value: "",
     isValid: true,
   },
-  lastName: {
-    val: "",
+  "lastName": {
+    value: "",
     isValid: true,
   },
-  description: {
-    val: "",
+  "description": {
+    value: "",
     isValid: true,
   },
-  rate: {
-    val: null,
+  "hourlyRate": {
+    value: "",
     isValid: true,
   },
-  areas: {
-    val: [],
+  "areas": {
+    value: [],
     isValid: true,
   },
 });
@@ -294,17 +300,19 @@ const submitForm = () => {
     rate: formData.rate.val,
     areas: formData.areas.val,
   };
-  emits("save-data", submittedForm);
+  // emits("save-data", submittedForm);
 }
 </script>
+
 <style scoped lang="scss">
 form {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 70px auto;
   background-color: white;
   border-radius: 10px;
   box-shadow: $light-card-shadow;
-  padding: 30px 30px;
+  padding: 56px 48px;
+  position: relative;
 
   .row {
     margin-bottom: 5px;
@@ -314,6 +322,8 @@ form {
     color: $main-text-color;
     font-size: 1.5rem;
     margin-bottom: 20px;
+    border-left: 5px solid $main-cyan;
+    padding-left: 12px;
   }
 
   label {
@@ -324,10 +334,20 @@ form {
   textarea {
     border-radius: 5px;
     resize: none;
-    overflow: scroll;
     padding: 5px 10px;
     margin-top: 0.5rem;
   }
+}
+
+form::before {
+  content: "";
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  background-color: $main-button-color;
+  border-radius: 10px 10px 0 0;
 }
 
 .form-control {
@@ -383,5 +403,51 @@ h3 {
 .invalid input,
 .invalid textarea {
   border: 1px solid red;
+}
+
+.multiselect {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+}
+
+.multiselect__content-wrapper {
+  box-sizing: border-box;
+}
+
+.multiselect__placeholder {
+  font-size: 1rem;
+}
+
+.multiselect__tag {
+  line-height: 0;
+}
+
+.submit-form-btn {
+  width: 100%;
+  border: none;
+  background-color: $main-purple;
+  color: white;
+  border-radius: 5px;
+  margin-top: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  transition: .3s;
+
+  &:hover {
+    background-color: lighten($main-purple, 5%);
+  }
+}
+
+@media (max-width:768px) {
+  form {
+    padding: 28px 24px;
+    margin: 40px 10px;
+
+    h4 {
+      font-size: 1.4rem;
+    }
+  }
 }
 </style>
