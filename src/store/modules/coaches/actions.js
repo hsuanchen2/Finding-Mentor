@@ -1,18 +1,39 @@
 import { imageDb } from "@/../config/firebaseAuth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// const storageDbUrl = import.meta.env.VITE_FIREBASE_STORAGE_URL;
+const storage = getStorage();
 export default {
   // 用actions 觸發mutations
   async registerCoach(context, payload) {
-
+    let imageUrl;
     const userId = context.rootGetters.userId;
+    const file = payload.uploadedImage;
+    // upload user's image to firebase storage
+    try {
+      // the second parameter is the path and file name.
+      const imageRef = ref(storage, `userImages/${userId}.${file.name.split('.').pop()}`);
+      await uploadBytes(imageRef, file);
+      imageUrl = (await getDownloadURL(imageRef)).split("?")[0] + "?alt=media";
+      // console.log(imageUrl);
+    } catch (error) {
+      return error;
+    };
+
     const coachData = {
-      firstName: payload.first,
-      lastName: payload.last,
-      description: payload.description,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
       hourlyRate: payload.rate,
-      areas: payload.areas,
+      location: payload.location,
+      jobTitle: payload.jobTitle,
+      fields: payload.fields,
+      skills: payload.skills,
+      aboutMe: payload.aboutMe,
+      experience: payload.experience,
+      userImage: imageUrl,
     };
     const token = context.rootGetters.token;
-    // 將用戶註冊成為mentor的資料傳到資料庫
+
+    // 將用戶註冊成為mentor的文字資料傳到資料庫
     const dbApi = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
     const response = await fetch(
       `${dbApi}/coaches/${userId}.json?auth=` +
@@ -26,7 +47,7 @@ export default {
     );
 
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
 
     context.commit("registerCoach", {
       ...coachData,

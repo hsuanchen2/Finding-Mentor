@@ -103,48 +103,64 @@
     </div>
     <div class="row">
       <div class="form-group col-md-6">
-        <label for="hourly-rate">Hourly Rate</label>
-        <input type="number" class="form-control" id="hourly-rate" placeholder="Hourly Rate" required v-model.number="formData.hourlyRate.value">
+        <label for="hourly-rate">Hourly Rate (USD)</label>
+        <input type="number" class="form-control" id="hourly-rate" placeholder="Hourly Rate" required
+          v-model.number="formData.hourlyRate.value">
       </div>
       <div class="form-group col-md-6" id="autoComplete_wrapper">
         <label for="location">Location</label>
         <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-          autocapitalize="off" class="form-control">
+          autocapitalize="off" class="form-control" v-model.trim="formData.location.value" required>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <label for="user-photo">Upload a Photo</label>
-        <input id="user-photo" class="form-control" type="file" accept="image/png, image/jpeg" name="user-photo">
+        <input id="user-photo" class="form-control" type="file" accept="image/png, image/jpeg" name="user-photo" required
+          @change="uploadPhoto">
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <label for="job-title">Job Title</label>
-        <input class="form-control" type="text" placeholder="Your job title, ex: Google Techlead" name="job-title">
+        <input class="form-control" type="text" placeholder="Your job title, ex: Google Techlead" name="job-title"
+          required v-model.trim="formData.jobTitle.value">
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <label class="typo__label">Field</label>
-        <multiselect v-model="valuee" tag-placeholder="Add this as new tag" placeholder="Search or add a tag" label="name"
-          track-by="code" :options="options" :multiple="true" :taggable="false" @tag="addTag">
+        <multiselect rules="required" v-model="fields" tag-placeholder="Add this as new tag"
+          placeholder="Search your field" label="name" track-by="code" :options="fieldsOptions" :multiple="true"
+          :taggable="false" @tag="addFieldTag">
         </multiselect>
-        <pre class="language-json"><code>{{ valuee.name }}</code></pre>
+        <pre class="language-json"><code>{{ fields.name }}</code></pre>
       </div>
     </div>
+
+    <div class="row">
+      <div class="form-group col-12">
+        <label class="typo__label">Skills</label>
+        <multiselect rules="required" v-model="skills" tag-placeholder="Add this as new tag"
+          placeholder="Search your field" label="name" track-by="code" :options="skillsOptions" :multiple="true"
+          :taggable="false" @tag="addSkillTag">
+        </multiselect>
+        <pre class="language-json"><code>{{ skills.name }}</code></pre>
+      </div>
+    </div>
+
     <div class="row">
       <div class="form-group col-12">
         <label for="about-me">About Me</label>
-        <textarea name="about-me" id="about-me" cols="30" rows="6" placeholder="Introduce yourself"
-          class="about-me"></textarea>
+        <textarea v-model="formData.aboutMe.value" name="about-me" id="about-me" cols="30" rows="6"
+          placeholder="Introduce yourself" class="about-me"></textarea>
       </div>
     </div>
     <div class="row">
       <div class="form-group col-12">
         <label for="about-me">Experience</label>
-        <textarea name="experience" id="about-me" cols="30" rows="6" placeholder="Your experience in related fields"
-          class="experience"></textarea>
+        <textarea v-model="formData.experience.value" name="experience" id="about-me" cols="30" rows="6"
+          placeholder="Your experience in related fields" class="experience"></textarea>
       </div>
     </div>
     <button type="submit" class="submit-form-btn">Register</button>
@@ -160,8 +176,52 @@ import autoComplete from '@tarekraafat/autoComplete.js';
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.css';
 
-const valuee = ref([]);
-const options = ref([
+interface coachForm {
+  firstName: {
+    value: string,
+    isValid: boolean,
+  }
+  lastName: {
+    value: string,
+    isValid: boolean,
+  }
+  hourlyRate: {
+    value: string,
+    isValid: boolean,
+  }
+  location: {
+    value: string,
+    isValid: boolean,
+  }
+  uploadedImage: {
+    value: File | null,
+    isValid: boolean,
+  }
+  jobTitle: {
+    value: string,
+    isValid: boolean,
+  }
+  fields: {
+    value: string[],
+    isValid: boolean,
+  }
+  skills: {
+    value: string[],
+    isValid: boolean,
+  }
+  aboutMe: {
+    value: string,
+    isValid: boolean,
+  }
+  experience: {
+    value: string,
+    isValid: boolean,
+  }
+}
+
+
+const fields = ref([] as { name: string; code: string }[])
+const fieldsOptions = ref([
   { name: 'Front-End', code: 'fe' },
   { name: 'Back-End', code: 'be' },
   { name: 'Full-Stack', code: 'fs' },
@@ -170,13 +230,42 @@ const options = ref([
   { name: 'UI/UX Designer', code: 'uiux' },
   { name: 'Product Management', code: 'pm' },
 ])
-const addTag = (newTag: any) => {
+const addFieldTag = (newTag: any) => {
   const tag = {
     name: newTag,
     code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
   }
-  options.value.push(tag)
-  value.value.push(tag)
+  fieldsOptions.value.push(tag)
+  fields.value.push(tag)
+}
+
+
+const skills = ref([] as { name: string; code: string }[])
+const skillsOptions = ref([
+  { name: 'JavaScript', code: 'js' },
+  { name: 'Python', code: 'py' },
+  { name: 'C#', code: 'cs' },
+  { name: 'PHP', code: 'php' },
+  { name: 'Java', code: 'java' },
+  { name: 'React', code: 'react' },
+  { name: 'Vue', code: 'vue' },
+  { name: 'NodeJS', code: 'node' },
+])
+
+
+const addSkillTag = (newTag: any) => {
+  const tag: any = {
+    name: newTag,
+    code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+  }
+  skillsOptions.value.push(tag)
+  skills.value.push(tag);
+}
+
+
+const uploadPhoto = (event: any) => {
+  const file = event.target.files[0];
+  formData.uploadedImage.value = file;
 }
 
 const autoCompleteJS = ref(null);
@@ -196,6 +285,7 @@ onMounted((): void => {
       input: {
         selection: (event) => {
           const selection = event.detail.selection.value.name;
+          // formData.location.value = selection;
           autoCompleteJS.value.input.value = selection;
         }
       }
@@ -234,27 +324,47 @@ onMounted((): void => {
 })
 
 const emits = defineEmits(["save-data"]);
-const formData = reactive({
-  "firstName": {
+const formData: coachForm = reactive({
+  firstName: {
     value: "",
     isValid: true,
   },
-  "lastName": {
+  lastName: {
     value: "",
     isValid: true,
   },
-  "description": {
+  hourlyRate: {
     value: "",
     isValid: true,
   },
-  "hourlyRate": {
+  location: {
     value: "",
     isValid: true,
   },
-  "areas": {
+  uploadedImage: {
+    value: null,
+    isValid: true,
+  },
+  jobTitle: {
+    value: "",
+    isValid: true,
+  },
+  fields: {
     value: [],
     isValid: true,
   },
+  skills: {
+    value: [],
+    isValid: true,
+  },
+  aboutMe: {
+    value: "",
+    isValid: true,
+  },
+  experience: {
+    value: "",
+    isValid: true,
+  }
 });
 const formIsValid = ref(true);
 
@@ -289,18 +399,33 @@ function clearValidity(input) {
 
 const submitForm = () => {
   // validate form before submit
-  validateForm();
-  if (!formIsValid.value) {
-    return;
-  }
+  // validateForm();
+  // if (!formIsValid.value) {
+  //   return;
+  // } 
+
+  // const test = fields.value.map(el => {
+  //   return el.name;
+  // })
+  // console.log(test);
   const submittedForm = {
-    first: formData.firstName.val,
-    last: formData.lastName.val,
-    description: formData.description.val,
-    rate: formData.rate.val,
-    areas: formData.areas.val,
+    firstName: formData.firstName.value,
+    lastName: formData.lastName.value,
+    hourlyRate: formData.hourlyRate.value,
+    location: autoCompleteJS.value.feedback.selection.match,
+    uploadedImage: formData.uploadedImage.value,
+    jobTitle: formData.jobTitle.value,
+    fields: fields.value.map(el => {
+      return el.name;
+    }),
+    skills: skills.value.map(el => {
+      return el.name;
+    }),
+    aboutMe: formData.aboutMe.value,
+    experience: formData.experience.value,
   };
-  // emits("save-data", submittedForm);
+  // console.log(submittedForm);
+  emits("save-data", submittedForm);
 }
 </script>
 

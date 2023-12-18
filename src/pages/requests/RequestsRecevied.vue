@@ -89,6 +89,8 @@ ul {
   align-items: center;
   flex-direction: row;
   margin-top: 50px;
+  max-width: 1200px;
+
   img {
     border-radius: 50%;
     width: 100%;
@@ -108,12 +110,13 @@ ul {
     flex-direction: column;
     gap: 40px;
     align-items: center;
+
     .img-wrapper {
       text-align: center;
     }
+
     .text-wrapper {
       text-align: center;
     }
   }
-}
-</style>
+}</style>

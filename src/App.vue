@@ -111,5 +111,8 @@ div[role="option"] {
   box-shadow: $light-card-shadow;
   margin-top: 5px;
   padding: 5px 5px;
+  width: 94%; 
+  box-sizing: border-box;
+  z-index: 200;
 }
 </style>
