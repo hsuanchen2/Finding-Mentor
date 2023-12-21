@@ -1,19 +1,19 @@
 <template>
+  <!-- 雙驚嘆號會把string改成boolean -->
+  <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <div class="wrapper">
-    <!-- 雙驚嘆號會把string改成boolean -->
-    <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
-      <p>{{ error }}</p>
-    </base-dialog>
-    <section>
-      <header>
-        <h2>Message Recevied</h2>
-      </header>
-      <base-spinner v-if="isLoading"></base-spinner>
-      <ul v-if="hasRequests">
-        <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
-          :message="request.message"></request-item>
-      </ul>
-      <section v-else class="no-request row">
+    <header class="container">
+      <h2 class="col col-12">Message Recevied</h2>
+    </header>
+    <base-spinner v-if="isLoading"></base-spinner>
+    <ul v-if="hasRequests">
+      <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
+        :message="request.message"></request-item>
+    </ul>
+    <div class="container" v-else>
+      <section class="no-request row">
         <div class="img-wrapper col col-12 col-md-3">
           <img src="@/../public/request/no_message_yet.png" alt="no request yet">
         </div>
@@ -22,7 +22,7 @@
           <p>No messages received yet. Feel free to explore our mentor page for more information.</p>
         </div>
       </section>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -84,12 +84,11 @@ ul {
 }
 
 .no-request {
-  display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  flex-direction: row;
   margin-top: 50px;
-  max-width: 1200px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 
   img {
     border-radius: 50%;
@@ -104,6 +103,11 @@ ul {
 }
 
 @media (max-width:768px) {
+  header {
+    h2 {
+      text-align: center;
+    }
+  }
   .no-request {
     justify-content: center;
     display: flex;
@@ -119,4 +123,5 @@ ul {
       text-align: center;
     }
   }
-}</style>
+}
+</style>

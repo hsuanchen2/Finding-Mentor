@@ -1,5 +1,8 @@
 <template>
   <header>
+    <transition name="fade">
+      <mobileNav v-if="isMobile" @close-nav="toggleNav"></mobileNav>
+    </transition>
     <nav class="navbar navbar-expand-md">
       <router-link to="/" class="navbar-brand">Finding Mentor</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -40,13 +43,16 @@
   </header>
 </template>
 <script setup lang="ts">
+// import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Ref, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import mobileNav from "./MobileNav.vue";
 
 const store = useStore();
 const router = useRouter();
 const windowWidth = ref(window.innerWidth);
+const isMobile = ref(false);
 const isLoggedIn = computed(() => {
   return store.getters.isAuthenticated;
 });
@@ -60,7 +66,9 @@ const logOut = () => {
 };
 
 const toggleNav = () => {
-  showNav.value = !showNav.value;
+  // showNav.value = !showNav.value
+  console.log("123");
+  isMobile.value = !isMobile.value;
 };
 
 const closeMenu = () => {
@@ -73,6 +81,7 @@ const handleResize = () => {
     closeMenu();
   }
 };
+
 
 onMounted(() => {
   window.addEventListener("resize", handleResize);
@@ -109,6 +118,7 @@ header .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-left: 12px;
 
   .navbar-brand {
     font-weight: 700;
@@ -122,7 +132,7 @@ header .navbar {
     background-color: white;
     position: absolute;
     width: 95%;
-    top: 72px;
+    top: 5px;
     left: 2.5%;
     border-radius: 10px;
     z-index: 100;
@@ -189,12 +199,26 @@ h1 {
   }
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0
+}
+
 @media (max-width: 768px) {
   .navbar-collapse.show {
     background-color: white;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  }
+
+  header .navbar {
+    margin-top: 25px;
   }
 
   .register-button {

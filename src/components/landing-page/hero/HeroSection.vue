@@ -14,10 +14,10 @@
           secure their dream jobs.
         </p>
         <div class="hero-section-cta-button">
-          <router-link to="/signUp" class="hero-start-now"
+          <router-link to="/register" class="hero-start-now"
             ><span>Start now <i class="fas fa-arrow-right"></i></span>
           </router-link>
-          <router-link to="/signIn" class="hero-register"
+          <router-link to="/register" class="hero-register"
             ><span>Register <i class="fas fa-arrow-right"></i></span
           ></router-link>
         </div>

@@ -69,8 +69,8 @@ body {
 }
 
 p {
-  padding-left: 8px;
-  margin-bottom: 5px;
+  // padding-left: 8px;
+  // margin-bottom: 5px;
 }
 
 div[role="option"] {

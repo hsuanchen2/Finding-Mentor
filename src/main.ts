@@ -5,7 +5,7 @@ import BaseBadge from "./components/ui/BaseBadge.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
 import BaseDialog from "./components/ui/BaseDialog.vue";
 import "bootstrap/dist/css/bootstrap.css";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js";
+// import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import router from "./router";
 import store from "./store/index.js";
 import { firebaseApp } from "../config/firebaseAuth.ts";

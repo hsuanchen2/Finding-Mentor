@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="accordion-item show">
+            <div class="accordion-item show last-child">
                 <h2 class="accordion-header" id="panelsStayOpen-headingFive">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true"
@@ -101,6 +101,9 @@
                         <sidebar-search class="sidebar-search" :country="countryData"></sidebar-search>
                     </div>
                 </div>
+            </div>
+            <div>
+                <button class="search-btn ">Search</button>
             </div>
         </div>
     </aside>
@@ -161,6 +164,9 @@ h3 {
         border-bottom: 2px solid lightgray;
         margin-bottom: 10px;
     }
+    .accordion-item.last-child {
+        border-bottom: none;
+    }
 
     .accordion-body {
         padding: 10px 0 5px 0;
@@ -215,7 +221,26 @@ ul {
     input[type="search"] {
         width: 100%;
     }
+
+
 }
+
+.search-btn {
+    width: 100%;
+    border-radius: 10px;
+    background-color: $main-button-color;
+    border: none;
+    color: white;
+    line-height: 1.7;
+    margin-top: 10px;
+    transition: 0.3s ease;
+
+    &:hover {
+        background-color: lighten($main-button-color, 10%);
+    }
+}
+
+
 
 // sidebar for mobile
 @media (max-width:767px) {
