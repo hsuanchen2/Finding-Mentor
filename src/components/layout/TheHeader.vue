@@ -137,17 +137,6 @@ header .navbar {
     border-radius: 10px;
     z-index: 100;
   }
-
-  @keyframes slideleft {
-    from {
-      transform: translateX(100%);
-    }
-
-    to {
-      transform: translateX(0%);
-    }
-  }
-
 }
 
 /* 選單項目樣式 */
@@ -178,7 +167,6 @@ h1 {
   a {
     color: white;
     margin: 0;
-
     &:hover,
     &:active,
     &.router-link-active {
@@ -209,39 +197,4 @@ h1 {
   opacity: 0
 }
 
-@media (max-width: 768px) {
-  .navbar-collapse.show {
-    background-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  }
-
-  header .navbar {
-    margin-top: 25px;
-  }
-
-  .register-button {
-    background-color: transparent;
-    border: none;
-
-    a {
-      color: var(--bs-nav-link-color);
-    }
-  }
-
-  header {
-    div ul {
-      li {
-        width: 100%;
-
-        a {
-          display: block;
-          width: 100%;
-          text-align: center;
-        }
-      }
-    }
-  }
-}
 </style>

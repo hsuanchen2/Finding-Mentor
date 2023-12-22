@@ -37,7 +37,6 @@
     </header>
 </template>
 <script setup lang="ts">
-// import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Ref, ref, computed, onMounted, defineEmits } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -89,7 +88,7 @@ onMounted(() => {
     box-shadow: $light-card-shadow;
     margin-left: auto;
     margin-right: auto;
-    top: 20px;
+    top: 15px;
     left: 0;
     right: 0;
     background-color: white;
