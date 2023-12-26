@@ -46,14 +46,6 @@
           <h3>Work Experience</h3>
           <p>{{ wrokExp }}</p>
         </div>
-        <div class="work-experience">
-          <h3>Work Experience</h3>
-          <p>{{ wrokExp }}</p>
-        </div>
-        <div class="work-experience">
-          <h3>Work Experience</h3>
-          <p>{{ wrokExp }}</p>
-        </div>
       </main>
     </div>
     <router-view></router-view>
@@ -100,6 +92,8 @@ const contactLink2 = computed((): string => {
     .user-image {
       width: 70px;
       height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
     .user-info-text {

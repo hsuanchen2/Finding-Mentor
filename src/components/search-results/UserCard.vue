@@ -80,8 +80,6 @@ const addToFavorite = (e) => {
     transition: .2s ease;
     cursor: pointer;
     padding: 15px 25px;
-    // border: 1px solid lightgray;
-    // border-top: none;
     box-shadow: $light-card-shadow;
     border-radius: 10px;
 
@@ -137,8 +135,9 @@ const addToFavorite = (e) => {
     }
 
     .user-image {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
     }
 }
 

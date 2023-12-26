@@ -24,4 +24,7 @@ export default {
       return (currentTimeStamp - lastFetch) / 1000 > 60;
     }
   },
+  landingPageMentors(state) {
+    return state.landingPageMentors;
+  },
 };

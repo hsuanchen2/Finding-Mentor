@@ -1,34 +1,45 @@
 <template>
     <article>
-        <img src="@/../public/user-img/test.png" alt="">
-        <h3 class="mentor-name">{{ user.userName }}</h3>
+        <img :src="props.userImage" alt="">
+        <h3 class="mentor-name">{{ user.firstName }} {{ user.lastName }}</h3>
         <i>
             <h2>{{ user.jobTitle }}</h2>
         </i>
-        <p>{{ user.desc }}</p>
+        <p class="user-desc">{{ user.desc }}</p>
         <figure>
             <p>From ${{ user.rate }}</p>
             <p>&#x2B50 {{ user.jobRating }}</p>
         </figure>
         <footer>
-            <base-button link class="card-button">Contact Me</base-button>
-            <base-button class="card-button">Details</base-button>
+            <base-button link class="card-button" :to="contactLink">Contact Me</base-button>
+            <base-button class="card-button" :to="aboutLink">Details</base-button>
         </footer>
     </article>
 </template>
 <script setup lang="ts">
-import { ref, reactive, defineProps } from "vue";
+import { ref, reactive, defineProps, onBeforeMount, onMounted, computed } from "vue";
+import { useStore } from "vuex";
 import BaseButton from "@/components/ui/BaseButton.vue";
-const props = defineProps(["userId", "jobTitle", "userName", "desc", "rate", "jobRating"]);
+const props = defineProps(["userId", "jobTitle", "firstName", "lastName", "desc", "rate", "jobRating", "userImage"]);
+
 const user = reactive({
     userId: props.userId,
     jobTitle: props.jobTitle,
-    userName: props.userName,
+    firstName: props.firstName,
+    lastName: props.lastName,
     desc: props.desc,
     rate: props.rate,
+    userImage: props.userImage,
     jobRating: props.jobRating,
-})
+});
 
+const contactLink = computed(() => {
+    return `/coaches/${user.userId}/contact`;
+});
+
+const aboutLink = computed(() => {
+    return `/coaches/${user.userId}`;
+});
 </script>
 <style scoped lang="scss">
 article {
@@ -36,26 +47,31 @@ article {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    max-width: 260px;
+    width: 260px;
     box-shadow: $light-card-shadow;
     border-radius: 10px;
     padding: 15px 20px;
-    height: 380px;
+    height: 400px;
     background-color: #fff;
     position: relative;
+
     &::before {
         position: absolute;
         content: "";
         width: 100%;
         height: 7px;
         top: 0;
-        border-radius: 10px 10px 0 0 ;
+        border-radius: 10px 10px 0 0;
         background-color: $main-cyan;
     }
+
     img {
-        width: 35%;
+        width: 70px;
+        height: 70px;
         margin-bottom: 15px;
         margin-top: 7px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     h3 {
@@ -72,6 +88,12 @@ article {
     p {
         font-size: 0.9rem;
         text-align: center;
+    }
+
+    .user-desc {
+        max-height: 100px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     h2,
@@ -95,4 +117,5 @@ article {
             font-size: 14px;
         }
     }
-}</style>
+}
+</style>

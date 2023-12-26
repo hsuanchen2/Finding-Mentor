@@ -11,9 +11,10 @@
       </p>
     </div>
     <Splide ref="splide" :options="splideSettings" aria-label="Senpai Card">
-      <SplideSlide v-for="mentor in userArray" :key="mentor.userId" class="splide__slide">
-        <mentor-card :userId="mentor.userId" :jobTitle="mentor.jobTitle" :userName="mentor.userName" :desc="mentor.desc"
-          :rate="mentor.rate" :jobRating="mentor.jobRating">
+      <SplideSlide v-for="mentor in mentorsArray" :key="mentor.id" class="splide__slide">
+        <mentor-card :userId="mentor.id" :jobTitle="mentor.jobTitle" :firstName="mentor.firstName"
+          :lastName="mentor.lastName" :desc="mentor.experience" :rate="mentor.hourlyRate" :userImage="mentor.userImage"
+          :jobRating="mentor.jobRating">
         </mentor-card>
       </SplideSlide>
     </Splide>
@@ -32,9 +33,10 @@
     </div>
   </section>
 </template>
-<script setup>
+<script setup lang="ts">
 // https://splidejs.com/guides/options/
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, onBeforeMount, computed } from "vue";
+import { useStore } from "vuex";
 import { Splide, SplideSlide } from "@splidejs/vue-splide";
 import "@splidejs/vue-splide/css/core";
 import "@splidejs/splide/css/core";
@@ -43,13 +45,14 @@ import "@splidejs/splide/css";
 // or only core styles
 import "@splidejs/splide/css/core";
 import MentorCard from "@/components/ui/main-page/MentorCard.vue";
+const store = useStore();
 const splideSettings = ref({
   pagination: false,
   rewind: true,
   perPage: 4,
   speed: 500,
   perMove: 1,
-  lazyLoad: true,
+  lazyLoad: "nearby",
   drag: true,
   arrows: false,
   autoWidth: true,
@@ -75,13 +78,13 @@ const splideSettings = ref({
     left: "5px",
   },
 });
-
+const mentorsArray = ref([]);
 const userArray = ref([
   {
     userId: 123,
     jobTitle: "Ex Gooogle Techlead",
     userName: "Partick Shyu",
-    desc: "Tech Lead of App Architecture & Core Features for the YouTube iOS app.",
+    desc: "Tech Lead of App Architecture & Core Features for the YouTube iOS appTech.",
     rate: 15,
     jobRating: "4.6 (36)",
   },
@@ -142,16 +145,23 @@ const userArray = ref([
     jobRating: "3.6 (66)",
   },
 ]);
+
 const splide = ref(null);
 const btnPrev = () => {
-
   splide.value.go("-1");
 };
 
 const btnNext = () => {
-
   splide.value.go("+1");
 };
+
+onBeforeMount(async () => {
+  await store.dispatch("coaches/loadLandingPageMentors");
+  const coaches = store.getters["coaches/landingPageMentors"];
+  mentorsArray.value = coaches;
+  console.log(coaches);
+})
+
 </script>
 <style scoped lang="scss">
 .splide__list {

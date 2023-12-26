@@ -186,7 +186,7 @@ interface coachForm {
     isValid: boolean,
   }
   hourlyRate: {
-    value: string,
+    value: number | null,
     isValid: boolean,
   }
   location: {
@@ -334,7 +334,7 @@ const formData: coachForm = reactive({
     isValid: true,
   },
   hourlyRate: {
-    value: "",
+    value: null,
     isValid: true,
   },
   location: {

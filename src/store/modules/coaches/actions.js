@@ -18,11 +18,15 @@ export default {
     } catch (error) {
       return error;
     };
-
+    const generateJobRating = () => {
+      const rate = (Math.random() * 4 + 1).toFixed(1); // Generate a random number between 1 and 5
+      const count = Math.floor(Math.random() * 100); // Generate a random number less than 100
+      return `${rate} (${count})`;
+    };
     const coachData = {
       firstName: payload.firstName,
       lastName: payload.lastName,
-      hourlyRate: payload.rate,
+      hourlyRate: payload.hourlyRate,
       location: payload.location,
       jobTitle: payload.jobTitle,
       fields: payload.fields,
@@ -30,6 +34,7 @@ export default {
       aboutMe: payload.aboutMe,
       experience: payload.experience,
       userImage: imageUrl,
+      jobRating: generateJobRating(),
     };
     const token = context.rootGetters.token;
 
@@ -47,7 +52,7 @@ export default {
     );
 
     const responseData = await response.json();
-    // console.log(responseData);
+    console.log(responseData);
 
     context.commit("registerCoach", {
       ...coachData,
@@ -60,7 +65,7 @@ export default {
     if (!payload.forceRefresh && !context.getters.shouldUpdate) {
       return;
     }
-    // we load all coaches here, so dont have to set coach id in the url.
+    // load all coaches here, so dont have to set coach id in the url.
     const response = await fetch(
       `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json`,
       {
@@ -68,7 +73,7 @@ export default {
       }
     );
     const responseData = await response.json();
-
+    // console.log(responseData);
     if (!response.ok) {
       const error = new Error(response.message || "something went wrong");
       console.log(error);
@@ -80,16 +85,48 @@ export default {
     for (let key in responseData) {
       const coach = {
         id: key,
+        jobTitle: responseData[key].jobTitle,
         firstName: responseData[key].firstName,
         lastName: responseData[key].lastName,
-        description: responseData[key].description,
+        description: responseData[key].aboutMe,
         hourlyRate: responseData[key].hourlyRate,
-        areas: responseData[key].areas,
+        areas: responseData[key].fields,
+        userImage: responseData[key].userImage,
+        jobRating: responseData[key].jobRating,
       };
       coaches.push(coach);
     }
-    // console.log(coaches);
+    console.log(coaches);
     context.commit("setCoaches", coaches);
     context.commit("setFetchTimestamp");
   },
+
+
+  async loadLandingPageMentors(context, payload) {
+
+    const response = await fetch(
+      `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=8`,
+      {
+        method: "GET",
+      }
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to fetch.");
+      throw error;
+    }
+
+    const coaches = [];
+    for (let key in responseData) {
+      const coach = {
+        id: key,
+        ...responseData[key]
+      };
+      coaches.push(coach);
+    }
+    context.commit("setLandingPageCoaches", coaches);
+    context.commit("setFetchTimestamp");
+  }
 };
