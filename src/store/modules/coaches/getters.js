@@ -27,4 +27,8 @@ export default {
   landingPageMentors(state) {
     return state.landingPageMentors;
   },
+
+  currentMentor(state) {
+    return state.currentMentor;
+  }
 };

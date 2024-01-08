@@ -2,14 +2,15 @@
   <section class="mentor-profile mx-2 mx-md-auto">
     <header>
       <div class="user-image-wrapper">
-        <img src="@/../public/user-img/test.png" class="user-image" alt="">
+        <img :src="mentorDetail.userimage" class="user-image" alt="">
         <span class="status"></span>
       </div>
       <div class="user-info-text">
-        <h3>Patrick Shyu</h3>
-        <h4 class="user-title">ex Google ex Facebook techlead</h4>
-        <h4>&#x2B50 4.2 (25)</h4>
-        <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>United State</p>
+        <h3>{{ mentorDetail.firstName }} {{ mentorDetail.lastName }}</h3>
+        <h4 class="user-title">{{ mentorDetail.jobTitle }}</h4>
+        <h4>&#x2B50 {{ mentorDetail.jobRating }}</h4>
+        <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ mentorDetail.location }}
+        </p>
       </div>
 
       <div class="invitation-wrapper">
@@ -26,25 +27,28 @@
       <aside class="col col-12 col-md-4">
         <div class="aside-wrapper">
           <h3><i class="fa-solid fa-code"></i> Expertise</h3>
-          <p>Full-Stack Engineering</p>
+          <p>{{ mentorDetail.jobTitle }}</p>
           <h3><i class="fa-solid fa-dollar-sign"></i> Charge</h3>
-          <p>30$ / hour</p>
+          <p>{{ mentorDetail.hourlyRate }} /hour</p>
           <h3><i class="fa-solid fa-location-dot"></i> Location</h3>
-          <p>United State of America</p>
+          <p>{{ mentorDetail.location }}</p>
           <h3><i class="fa-solid fa-scroll"></i> Skills</h3>
           <p></p>
-          <span class="tags"> <skill-tag>Javascript</skill-tag>
-            <skill-tag>Java</skill-tag><skill-tag>Python</skill-tag><skill-tag>C#</skill-tag><skill-tag>C++</skill-tag></span>
+          <span class="tags">
+            <span class="tags">
+              <skill-tag v-for="(tag, index) in mentorDetail.skillsTag" :key="index">{{ tag }}</skill-tag>
+            </span>
+          </span>
         </div>
       </aside>
       <main class="col col-12 col-md-8">
         <div class="about-me">
           <h3>About Me</h3>
-          <p>{{ test }}</p>
+          <p>{{ mentorDetail.aboutMe }}</p>
         </div>
         <div class="work-experience">
           <h3>Work Experience</h3>
-          <p>{{ wrokExp }}</p>
+          <p>{{ mentorDetail.workExp }}</p>
         </div>
       </main>
     </div>
@@ -52,13 +56,31 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, Ref, reactive, computed } from "vue";
+import { ref, Ref, reactive, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
 import SkillTag from "@/components/ui/SkillTag.vue";
 const route = useRoute();
-const test: Ref<string> = ref("With a rich background in leading-edge technology development honed at industry giants Google and Facebook, I'm a seasoned tech professional passionate about creating impactful solutions and driving innovation. My journey in the tech realm spans years of hands-on experience, strategic leadership, and a relentless pursuit of excellence.");
-const wrokExp: Ref<string> = ref("📚 A firm believer in continuous learning, I embrace new technologies and methodologies, ensuring my skills are always at the cutting edge, ready to meet evolving industry demands.Let's collaborate and explore the possibilities of transforming innovative ideas into reality !");
+const store = useStore();
 
+class MentorDetail {
+  userimage = "";
+  firstName = "";
+  lastName = "";
+  jobTitle = "";
+  jobRating = "";
+  hourlyRate = "";
+  location = "";
+  skillsTag: string[] = [];
+  aboutMe = "";
+  workExp = "";
+}
+
+const mentorDetail = reactive(new MentorDetail());
+
+const currentMentor = computed(() => {
+  return store.getters["mentors/currentMentor"];
+});
 const contactLink = computed((): string => {
   if (!route.path.endsWith("/contact")) {
     return route.path + "/contact";
@@ -71,6 +93,28 @@ const contactLink2 = computed((): string => {
   const isContact = route.path.endsWith("contact");
   return isContact ? route.path : route.path + "/contact";
 })
+
+
+const setMentor = async () => {
+  await store.dispatch("coaches/loadSpecificMentorInfo", route.params.id);
+  const data = (store.getters["coaches/currentMentor"]);
+  console.log(data);
+  mentorDetail.userimage = data.userImage;
+  mentorDetail.firstName = data.firstName;
+  mentorDetail.lastName = data.lastName;
+  mentorDetail.jobTitle = data.jobTitle;
+  mentorDetail.jobRating = data.jobRating;
+  mentorDetail.hourlyRate = data.hourlyRate;
+  mentorDetail.location = data.location;
+  mentorDetail.skillsTag = data.skills;
+  mentorDetail.aboutMe = data.aboutMe;
+  mentorDetail.workExp = data.experience;
+}
+
+onMounted(async () => {
+  await setMentor();
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -172,6 +216,7 @@ const contactLink2 = computed((): string => {
 
   .user-info {
     border-bottom: 1px solid lightgray;
+
     i {
       color: $main-cyan;
       font-size: 1rem;

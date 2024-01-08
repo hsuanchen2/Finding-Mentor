@@ -33,7 +33,7 @@
     </div>
   </section>
 </template>
-<script setup lang="ts">
+<script setup>
 // https://splidejs.com/guides/options/
 import { ref, reactive, onMounted, onBeforeMount, computed } from "vue";
 import { useStore } from "vuex";
@@ -45,39 +45,9 @@ import "@splidejs/splide/css";
 // or only core styles
 import "@splidejs/splide/css/core";
 import MentorCard from "@/components/ui/main-page/MentorCard.vue";
+import { LOOP } from "@splidejs/splide";
 const store = useStore();
-const splideSettings = ref({
-  pagination: false,
-  rewind: true,
-  perPage: 4,
-  speed: 500,
-  perMove: 1,
-  lazyLoad: "nearby",
-  drag: true,
-  arrows: false,
-  autoWidth: true,
-  gap: "1.875rem",
-  type: "loop",
-  breakpoints: {
-    mediaQuery: "min",
-    1210: {
-      perPage: 3,
-      gap: "1rem",
-      focus: "center",
-    },
-    440: {
-      perPage: 1,
-      gap: "10px",
-      focus: "center",
-      padding: {
-        right: "15px",
-      },
-    },
-  },
-  padding: {
-    left: "5px",
-  },
-});
+const splideSettings = ref(null);
 const mentorsArray = ref([]);
 const userArray = ref([
   {
@@ -146,24 +116,74 @@ const userArray = ref([
   },
 ]);
 
-const splide = ref(null);
+const splide = ref();
 const btnPrev = () => {
   splide.value.go("-1");
+  console.log(splide.value);
 };
 
 const btnNext = () => {
   splide.value.go("+1");
+  console.log(splide.value);
 };
 
 onBeforeMount(async () => {
   await store.dispatch("coaches/loadLandingPageMentors");
   const coaches = store.getters["coaches/landingPageMentors"];
   mentorsArray.value = coaches;
-  console.log(coaches);
-})
+  console.log(mentorsArray.value);
+});
+onMounted(async () => {
+  splideSettings.value = {
+  pagination: false,
+  rewind: true,
+  perPage: 4, // default to 4 slides per page
+  speed: 500,
+  perMove: 1,
+  lazyLoad: "nearby",
+  drag: true,
+  arrows: false,
+  autoWidth: true,
+  gap: "1.875rem",
+  type: "loop",
+  focus: 'center',
+  breakpoints: {
+    mediaQuery: "max",
+    1200: {
+      perPage: 4, // 4 slides per page when window width is 1200px or less
+      gap: "1rem",
+      focus: "center",
+      type: "loop",
+      rewind: true,
+    },
+    768: {
+      perPage: 3, // 3 slides per page when window width is 768px or less
+      gap: "1rem",
+      focus: "center",
+      type: "loop",
+      gap: "1rem",
+      rewind: true,
+    },
+    440: {
+      perPage: 1, // 1 slide per page when window width is 440px or less
+      gap: "10px",
+      focus: "center",
+      type: "loop",
+      rewind: true,
+      padding: {
+        right: "15px",
+      },
+    },
+  },
+};
+});
 
 </script>
 <style scoped lang="scss">
+
+.splide {
+  -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 2%, rgba(255, 255, 255, 1) 98%, rgba(255, 255, 255, 0) 100%);
+}
 .splide__list {
   li {
     width: auto;
@@ -184,7 +204,7 @@ onBeforeMount(async () => {
     display: flex;
     gap: 5px;
     justify-content: space-around;
-    // align-items: center;
+    align-items: center;
   }
 
   .button-group {

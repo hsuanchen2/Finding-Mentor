@@ -13,4 +13,7 @@ export default {
   setFetchTimestamp(state) {
     state.lastFetch = new Date().getTime();
   },
+  setCurrentMentor(state, payload) {
+    state.currentMentor = payload;
+  }
 };

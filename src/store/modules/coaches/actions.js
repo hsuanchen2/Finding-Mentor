@@ -128,5 +128,25 @@ export default {
     }
     context.commit("setLandingPageCoaches", coaches);
     context.commit("setFetchTimestamp");
-  }
+  },
+
+  async loadSpecificMentorInfo(context, payload) {
+    const response = await fetch(
+      `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches/${payload}.json`,
+      {
+        method: "GET",
+      }
+    );
+    const responseData = await response.json();
+    // console.log(responseData);
+    if (!response.ok) {
+      const error = new Error(responseData.message || "Failed to fetch.");
+      throw error;
+    }
+    const coach = {
+      id: payload,
+      ...responseData
+    };
+    context.commit("setCurrentMentor", coach);
+  },
 };

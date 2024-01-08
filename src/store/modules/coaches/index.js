@@ -9,6 +9,7 @@ export default {
       lastFetch: null,
       coaches: [],
       landingPageCoaches: [],
+      currentMentor: null,
     };
   },
   mutations: mutations,

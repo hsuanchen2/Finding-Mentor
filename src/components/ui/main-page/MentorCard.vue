@@ -12,13 +12,14 @@
         </figure>
         <footer>
             <base-button link class="card-button" :to="contactLink">Contact Me</base-button>
-            <base-button class="card-button" :to="aboutLink">Details</base-button>
+            <base-button link class="card-button" :to="aboutLink">Details</base-button>
         </footer>
     </article>
 </template>
 <script setup lang="ts">
 import { ref, reactive, defineProps, onBeforeMount, onMounted, computed } from "vue";
 import { useStore } from "vuex";
+
 import BaseButton from "@/components/ui/BaseButton.vue";
 const props = defineProps(["userId", "jobTitle", "firstName", "lastName", "desc", "rate", "jobRating", "userImage"]);
 
@@ -92,8 +93,8 @@ article {
 
     .user-desc {
         max-height: 100px;
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow-y: scroll !important;
+        // overflow-x: hidden;
     }
 
     h2,

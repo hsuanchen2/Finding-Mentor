@@ -66,8 +66,6 @@ const logOut = () => {
 };
 
 const toggleNav = () => {
-  // showNav.value = !showNav.value
-  console.log("123");
   isMobile.value = !isMobile.value;
 };
 
@@ -100,7 +98,6 @@ header {
 
   a {
     display: block;
-    /* padding: 0.75rem 1.5rem; */
     border: 1px solid transparent;
     border-radius: 5px;
   }

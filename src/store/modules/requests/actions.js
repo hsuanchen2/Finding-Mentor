@@ -2,8 +2,11 @@ export default {
   // send contact data to firebase
   async contactCoach(context, payload) {
     const newRequests = {
+      firstName: payload.firstName,
+      lastName: payload.lastName,
       userEmail: payload.email,
       message: payload.message,
+      date: payload.date,
     };
 
     const response = await fetch(
@@ -20,6 +23,7 @@ export default {
     }
     newRequests.id = responseData.name;
     newRequests.coachId = payload.coachId;
+    console.log(newRequests);
     context.commit("addRequest", newRequests);
   },
 

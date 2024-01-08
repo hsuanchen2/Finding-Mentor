@@ -1,5 +1,5 @@
 <template>
-    <base-toast :show="emailSent" :copy="toastCopy.copy" :header="toastCopy.header" :imgUrl="toastCopy.imgUrl"
+    <base-toast :show="messageSent" :copy="toastCopy.copy" :header="toastCopy.header" :imgUrl="toastCopy.imgUrl"
         class="toast"></base-toast>
     <div class="wrapper">
         <section class="container">
@@ -7,7 +7,7 @@
                 <h2>Contact Me</h2>
                 <p>Leave a message for inquiries</p>
             </div>
-            <form @submit.prevent="">
+            <form @submit.prevent="submitForm">
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <div class="col-sm-12">
@@ -50,57 +50,59 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref, onMounted, reactive, computed } from "vue";
-import emailjs from '@emailjs/browser';
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import BaseToast from "@/components/ui/BaseToast.vue";
-
+const store = useStore();
+const router = useRouter();
+const messageSent: Ref<boolean> = ref(false);
 interface contactFormData {
     firstName: string,
     lastName: string,
     email: string,
     message: string,
+    coachId: string,
+    date: number,
 }
 
 const formData: contactFormData = reactive({
     firstName: "",
     lastName: "",
     email: "",
-    question_type: "default",
     message: "",
+    coachId: router.currentRoute.value.params.id,
+    date: Date.now(),
 });
 
 const toastCopy = computed((): object => {
     return {
-        header: "We've got your message",
+        header: "Message sent successfully!",
         imgUrl: "@/../public/svgs/email.svg",
-        copy: `Hi ${formData.firstName}! Email sent successfully!`,
+        copy: `Hi ${formData.firstName}! Message sent successfully!`,
     }
 })
 
 const form: Ref<HTMLElement | null> = ref(null);
-const emailSent: Ref<boolean> = ref(false);
 onMounted((): void => {
     form.value = document.querySelector("form");
 });
 
-// const sendMessage = async () => {
-//     try {
-//         await emailjs.sendForm('service_w4z3oxy', 'template_h1gup0h', form.value, 'VJLl9wAnKWUY9SO6G');
-//         emailSent.value = true;
-//         await new Promise(resolve => setTimeout(resolve, 2000));
-//         emailSent.value = false;
+const submitForm: any = async () => {
+    try {
+        await store.dispatch("requests/contactCoach", formData);
+        messageSent.value = true;
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        messageSent.value = false;
+        // reset formdata
+        formData.firstName = "";
+        formData.lastName = "";
+        formData.email = "";
+        formData.message = "";
+    } catch (err) {
+        console.log(err);
+    }
+}
 
-//         // reset form input fields
-//         formData.firstName = "";
-//         formData.lastName = "";
-//         formData.email = "";
-//         formData.message = "";
-
-//         emailSent.value = false;
-//     } catch (error) {
-//         console.log(error);
-//         emailSent.value = false;
-//     }
-// }
 </script>
 <style scoped lang="scss">
 .container {

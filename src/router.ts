@@ -12,18 +12,18 @@ import store from "./store/index.js";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {
-      path: "/mentor-detail",
-      name: "test-case",
-      component: () => import("./pages/coaches/MentorDetail.vue"),
-      props: true,
-      children: [
-        {
-          path: "contact",
-          component: () => import("./pages/coaches/ContactMentor.vue"),
-        },
-      ],
-    },
+    // {
+    //   path: "/mentor-detail",
+    //   name: "test-case",
+    //   component: () => import("./pages/coaches/MentorDetail.vue"),
+    //   props: true,
+    //   children: [
+    //     {
+    //       path: "contact",
+    //       component: () => import("./pages/coaches/ContactMentor.vue"),
+    //     },
+    //   ],
+    // },
     {
       path: "/",
       redirect: "/coaches",
@@ -73,6 +73,9 @@ const router = createRouter({
       component: NotFound,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  }
 });
 // 根據是否登入來跳轉不同頁面
 router.beforeEach((to, from, next) => {

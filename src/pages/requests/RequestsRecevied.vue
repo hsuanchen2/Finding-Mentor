@@ -19,7 +19,7 @@
         </div>
         <div class="text-wrapper col col-12 col-md-9">
           <h4>No message yet</h4>
-          <p>No messages received yet. Feel free to explore our mentor page for more information.</p>
+          <p>No messages received yet. Feel free to explore other pages for more information.</p>
         </div>
       </section>
     </div>
