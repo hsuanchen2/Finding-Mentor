@@ -78,7 +78,7 @@ header {
 
 ul {
   list-style: none;
-  margin: 2rem auto;
+  // margin: 0 auto;
   padding: 0;
   max-width: 30rem;
 }

@@ -1,10 +1,10 @@
 <template>
-  <li>
-    <div>
-      <a :href="emailLink">{{ email }}</a>
-    </div>
-    <p>{{ message }}</p>
-  </li>
+    <li>
+      <div>
+        <a :href="emailLink">{{ email }}</a>
+      </div>
+      <p>{{ message }}</p>
+    </li>
 </template>
 <script setup lang="ts">
 import { Ref, ref, reactive, defineProps, computed } from "vue";
@@ -14,8 +14,17 @@ const emailLink = computed(() => {
 });
 </script>
 <style scoped lang="scss">
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border: 1px solid red;
+}
+
 li {
-  margin: 1rem 0;
+  // margin: 1rem 0;
   border: 1px solid #ccc;
   padding: 1rem;
 }
