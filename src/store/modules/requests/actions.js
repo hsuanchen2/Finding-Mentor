@@ -36,6 +36,7 @@ export default {
       `https://find-mentor-b251a-default-rtdb.firebaseio.com/request/${coachId}.json?auth=${token}`
     );
     const responseData = await response.json();
+    console.log(responseData);
     if (!response.ok) {
       const error = new Error(responseData.message || "Something went wrong");
       throw error;
@@ -47,8 +48,12 @@ export default {
         coachId: coachId,
         userEmail: responseData[key].userEmail,
         message: responseData[key].message,
+        firstName: responseData[key].firstName,
+        lastName: responseData[key].lastName,
+        time: responseData[key].date,
       };
       requests.push(request);
+      console.log(request);
     }
     context.commit("setRequest", requests);
   },

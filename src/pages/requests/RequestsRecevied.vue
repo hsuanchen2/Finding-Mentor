@@ -8,11 +8,26 @@
       <h2 class="col col-12">Message Recevied</h2>
     </header>
     <base-spinner v-if="isLoading"></base-spinner>
-    <ul v-if="hasRequests">
+    <!-- <ul v-if="hasRequests">
       <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
-        :message="request.message"></request-item>
-    </ul>
-    <div class="container" v-else>
+        :message="request.message" :firstName="request.firstName" :lastName="request.lastName"></request-item>
+    </ul> -->
+    <table v-if="hasRequests && !isLoading" class="table">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Sender's email</th>
+          <th scope="col">Message</th>
+          <th scope="col" @click="sortByTime">Recevied time <i class="fa-solid fa-sort"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <request-item v-for="request in receivedRequests" :firstName="request.firstName" :lastName="request.lastName"
+          :email="request.userEmail" :receviedTime="request.time" :message="request.message"></request-item>
+      </tbody>
+    </table>
+
+    <div class="container" v-if="!hasRequests && !isLoading">
       <section class="no-request row">
         <div class="img-wrapper col col-12 col-md-3">
           <img src="@/../public/request/no_message_yet.png" alt="no request yet">
@@ -28,15 +43,20 @@
 
 <script setup lang="ts">
 import RequestItem from "../../components/requests/RequestsItem.vue";
-import RequestItem2 from "../../components/requests/RequestItem2.vue";
 import { Ref, computed, ref, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 const isLoading: Ref<boolean> = ref(false);
 const error: Ref<any> = ref(null);
+const sortDescending: Ref<boolean> = ref(true);
 const receivedRequests = computed((): any => {
-  return store.getters["requests/receivedRequest"];
-});
+  const requests = store.getters["requests/receivedRequest"];
+  if (sortDescending.value) {
+    return requests.sort((a, b) => b.time - a.time);
+  } else {
+    return requests.sort((a, b) => a.time - b.time);
+  }
+})
 
 const hasRequests = computed((): any => {
   return store.getters["requests/hasRequests"];
@@ -45,7 +65,7 @@ const hasRequests = computed((): any => {
 const loadRequests = async () => {
   isLoading.value = true;
   try {
-    await store.dispatch("requests/fetchRequests");
+    const response = await store.dispatch("requests/fetchRequests");
   } catch (err: any) {
     console.log(err);
     error.value = err.message;
@@ -53,13 +73,19 @@ const loadRequests = async () => {
   isLoading.value = false;
 }
 
-function handleError() {
+const handleError = () => {
   error.value = null;
 }
 
 onBeforeMount(() => {
   loadRequests();
+  console.log(store.getters["requests/receivedRequest"])
 });
+
+const sortByTime = () => {
+  sortDescending.value = !sortDescending.value;
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -67,6 +93,7 @@ onBeforeMount(() => {
   max-width: 1200px;
   margin: 100px auto;
 }
+
 
 header {
   h2 {
@@ -78,7 +105,6 @@ header {
 
 ul {
   list-style: none;
-  // margin: 0 auto;
   padding: 0;
   max-width: 30rem;
 }
@@ -108,6 +134,7 @@ ul {
       text-align: center;
     }
   }
+
   .no-request {
     justify-content: center;
     display: flex;
@@ -123,5 +150,15 @@ ul {
       text-align: center;
     }
   }
+}
+
+.fa-sort {
+  margin-left: 5px;
+  color: $main-button-color;
+  cursor: pointer;
+}
+
+th {
+  color: $main-text-color;
 }
 </style>
