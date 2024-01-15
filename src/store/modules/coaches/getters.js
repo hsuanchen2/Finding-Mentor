@@ -30,5 +30,8 @@ export default {
 
   currentMentor(state) {
     return state.currentMentor;
+  },
+  getSearchResult(state) {
+    return state.searchedMentors;
   }
 };

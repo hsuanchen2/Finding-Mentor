@@ -65,7 +65,8 @@ const router = createRouter({
       meta: { requireUnAuth: true },
     },
     {
-      path: "/talents",
+      path: "/talents/:page?",
+      name: "talents",
       component: Talents,
     },
     {

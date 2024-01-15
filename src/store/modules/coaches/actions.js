@@ -39,9 +39,9 @@ export default {
     const token = context.rootGetters.token;
 
     // 將用戶註冊成為mentor的文字資料傳到資料庫
-    const dbApi = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
+    const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
     const response = await fetch(
-      `${dbApi}/coaches/${userId}.json?auth=` +
+      `${dbUrl}/coaches/${userId}.json?auth=` +
       token,
       {
         // data will be created if exisits, if not, create a new one.
@@ -103,7 +103,7 @@ export default {
 
 
   async loadLandingPageMentors(context, payload) {
-
+    let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
     const response = await fetch(
       `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=8`,
       {
@@ -112,7 +112,6 @@ export default {
     );
 
     const responseData = await response.json();
-
     if (!response.ok) {
       const error = new Error(responseData.message || "Failed to fetch.");
       throw error;
@@ -149,4 +148,29 @@ export default {
     };
     context.commit("setCurrentMentor", coach);
   },
+  async loadDefaultMentors(context, payload) {
+    let pageSize = 10;
+    let dbUrl = `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=${pageSize}`;
+    const mentors = [];
+    try {
+      const response = await fetch(dbUrl);
+      const responseData = await response.json();
+      for (let key in responseData) {
+        const mentor = {
+          id: key,
+          ...responseData[key]
+        };
+        mentors.push(mentor);
+      }
+      const pagination = Object.keys(responseData).length / pageSize;
+      if (pagination / pageSize !== 1) {
+        context.commit('setTotalCount', (pagination / pageSize) + 1);
+      }
+      console.log(state.totalCount);
+    } catch (error) {
+      console.log(error);
+    }
+    context.commit("searchedMentors", mentors);
+  }
+
 };

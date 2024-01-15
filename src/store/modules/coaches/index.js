@@ -10,6 +10,8 @@ export default {
       coaches: [],
       landingPageCoaches: [],
       currentMentor: null,
+      searchedMentors: [],
+      totalCount: 0,
     };
   },
   mutations: mutations,

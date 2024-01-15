@@ -3,14 +3,14 @@
         <!-- header -->
         <header>
             <div class="user-image-wrapper">
-                <img src="@/../public/user-img/test.png" class="user-image" alt="">
+                <img :src="props.userImage" class="user-image" alt="">
                 <span class="status"></span>
             </div>
             <div class="user-info-text">
-                <h3>Patrick Shyu</h3>
-                <h4>ex Google ex Facebook techlead</h4>
-                    <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>United State</p>
-                    <p>&#x2B50 4.2 (25)</p>
+                <h3>{{ props.firstName }} {{ props.lastName }}</h3>
+                <h4>{{ props.jobTitle }}</h4>
+                <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ props.location }}</p>
+                <p>&#x2B50 {{ props.jobRating }}</p>
             </div>
             <button class="add-to-favorite" @click="addToFavorite">
                 <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
@@ -19,48 +19,49 @@
 
         <!-- hourly rate -->
         <div class="hourly-rate">
-            <p><span>$30</span>/hour</p>
+            <p><span>${{ props.hourlyRate }}</span>/hour</p>
         </div>
         <div class="user-desc">
-            <p>🚀 Top Rated | Certified Developer with 3+ Years of Experience | 100% Job Success | 100% Customer
-                Satisfaction 🌟</p>
+            <p>{{ props.aboutMe }}</p>
         </div>
         <div :class="{ 'skill-tags': true, 'left-side-fade': scrollPosition.end, 'right-side-fade': scrollPosition.start, 'both-side-fade': scrollPosition.mid }"
             ref="scroll" @scroll="detactPosition">
-            <skill-tag>JavaScript</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
-            <skill-tag>Java</skill-tag>
+            <skill-tag v-for="skill in props.skills">{{ skill }}</skill-tag>
         </div>
     </div>
 </template>
-<script setup>
-import { ref, reactive, onMounted } from "vue";
+<script setup lang="ts">
+import { Ref, ref, reactive, onMounted, defineProps } from "vue";
 import SkillTag from "@/components/ui/SkillTag.vue";
-const scroll = ref(null);
-const scrollPosition = reactive({
+const scroll: Ref<any> = ref(null);
+
+const props = defineProps({
+    id: String,
+    aboutMe: String,
+    experience: String,
+    firstName: String,
+    lastName: String,
+    description: String,
+    hourlyRate: Number,
+    skills: Array,
+    fields: Array,
+    jobRating: String,
+    jobTitle: String,
+    userImage: String,
+    location: String,
+});
+
+interface ScrollPosition {
+    start: boolean;
+    mid: boolean | null;
+    end: boolean | null;
+}
+const scrollPosition = reactive<ScrollPosition>({
     start: true,
     mid: null,
     end: null,
 });
-const detactPosition = () => {
+const detactPosition = (): void => {
     const scrollLeft = Math.ceil(scroll.value.scrollLeft);
     const offsetWidth = scroll.value.offsetWidth;
     const width = scroll.value.scrollWidth;
@@ -70,14 +71,19 @@ const detactPosition = () => {
 }
 
 
-const addToFavorite = (e) => {
+const addToFavorite = (e: MouseEvent) => {
     console.log(e.target);
     console.log("clicked")
 }
+
+onMounted(() => {
+    // console.log(props);
+})
 </script>
 <style lang="scss" scoped>
 .user-card {
     transition: .2s ease;
+    max-height: 230px;
     cursor: pointer;
     padding: 15px 25px;
     box-shadow: $light-card-shadow;
@@ -138,6 +144,7 @@ const addToFavorite = (e) => {
         width: 60px;
         height: 60px;
         border-radius: 50%;
+        object-fit: cover;
     }
 }
 
@@ -173,6 +180,12 @@ const addToFavorite = (e) => {
 
 .user-desc {
     font-size: 0.9rem;
+
+    p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 ::-webkit-scrollbar {

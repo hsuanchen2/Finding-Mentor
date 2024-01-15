@@ -14,28 +14,42 @@
             </div>
         </div>
         <div class="user-card-container">
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
-            <user-card></user-card>
+            <user-card v-for="result in searchResult" :id="result.id" :firstName="result.firstName"
+                :lastName="result.lastName" :description="result.description" :hourlyRate="result.hourlyRate"
+                :fields="result.fields" :skills="result.skills" :jobRating="result.jobRating" :userImage="result.userImage"
+                :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
+                :jobTitle="result.jobTitle"></user-card>
         </div>
         <the-pagination></the-pagination>
     </section>
 </template>
-<script setup>
-import { ref, reactive, defineProps, defineEmits } from "vue";
+<script setup lang="ts">
+import { Ref, ref, reactive, defineProps, defineEmits, onMounted } from "vue";
+import { useStore } from "vuex";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
 import ThePagination from "@/components/ui/ThePagination.vue";
+const searchResultLegth: Ref<number> = ref(0);
+interface Mentor {
+    id: string;
+    aboutMe: string;
+    experience: string;
+    firstName: string;
+    lastName: string;
+    description: string;
+    hourlyRate: number;
+    skills: string[];
+    fields: string[];
+    jobRating: string;
+    userImage: string;
+    location: string;
+    jobTitle: string;
+}
+const searchResult: Ref<Mentor[]> = ref([]);
+const store = useStore();
 const props = defineProps({
     showSidebarToggle: Boolean,
-})
-
+});
 
 const emits = defineEmits(["toggleSidebar"]);
 const toggleSidebar = () => {
@@ -48,6 +62,16 @@ const searchedTags = reactive({
     tag3: "Full-Stack",
 });
 
+onMounted(async () => {
+    try {
+        await store.dispatch("coaches/loadDefaultMentors");
+    } catch (error) {
+        console.log(error);
+    }
+    const data = store.getters["coaches/getSearchResult"];
+    searchResult.value = data;
+    console.log(searchResult.value);
+});
 
 
 </script>
@@ -59,6 +83,7 @@ const searchedTags = reactive({
     padding-left: 0;
     padding-right: 0;
     gap: 10px;
+
     h3 {
         color: $main-text-color;
         font-weight: 700;

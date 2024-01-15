@@ -15,5 +15,11 @@ export default {
   },
   setCurrentMentor(state, payload) {
     state.currentMentor = payload;
+  },
+  searchedMentors(state, payload) {
+    state.searchedMentors = payload;
+  },
+  setTotalCount(state, payload) {
+    state.totalCount = payload;
   }
 };
