@@ -21,5 +21,18 @@ export default {
   },
   setTotalCount(state, payload) {
     state.totalCount = payload;
+  },
+  setSearchResultLength(state, payload) {
+    state.searchResultLength = payload;
+  },
+  setLastMentorKey(state, payload) {
+    console.log(payload);
+    state.lastMentorKey = payload;
+  },
+  addSearchedMentors(state, payload) {
+    state.searchedMentors.push(...payload);
+  }, 
+  moreMentorsOrNot(state, payload) {
+    state.moreMentorsOrNot = payload;
   }
 };

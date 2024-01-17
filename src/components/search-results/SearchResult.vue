@@ -2,7 +2,7 @@
     <section class="search-result">
         <div class="text-wrapper">
             <h3>Search results</h3>
-            <p>25 matched results were found</p>
+            <p>{{ searchResult.length }} matched results were found</p>
             <span @click="toggleSidebar">
                 <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
                         style="color: #635bff;"></i></button></span>
@@ -20,16 +20,21 @@
                 :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
                 :jobTitle="result.jobTitle"></user-card>
         </div>
-        <the-pagination></the-pagination>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
     </section>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, defineProps, defineEmits, onMounted } from "vue";
+import { Ref, ref, reactive, defineProps, defineEmits, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
-import ThePagination from "@/components/ui/ThePagination.vue";
-const searchResultLegth: Ref<number> = ref(0);
+import BaseSpinner from "@/components/ui/BaseSpinner.vue";
+
+const isLoading: Ref<boolean> = ref(false);
+const moreMentorsOrNot = computed(() => {
+    return store.getters["coaches/moreMentorsOrNot"];
+})
 interface Mentor {
     id: string;
     aboutMe: string;
@@ -50,7 +55,10 @@ const store = useStore();
 const props = defineProps({
     showSidebarToggle: Boolean,
 });
-
+const resultLength: Ref<number> = ref(0);
+// const resultLength = computed(() => {
+//     return store.getters["coaches/getSearchResultLength"];
+// })
 const emits = defineEmits(["toggleSidebar"]);
 const toggleSidebar = () => {
     emits("toggleSidebar");
@@ -62,16 +70,30 @@ const searchedTags = reactive({
     tag3: "Full-Stack",
 });
 
+const loadMore = async () => {
+    try {
+        isLoading.value = true;
+        await store.dispatch("coaches/loadMoreMentors");
+    } catch (error) {
+        console.log(error);
+    }
+    searchResult.value = await store.getters["coaches/getSearchResult"];
+    resultLength.value = await store.getters["coaches/getTotalCount"];
+    isLoading.value = false;
+};
+
 onMounted(async () => {
     try {
+        isLoading.value = true;
         await store.dispatch("coaches/loadDefaultMentors");
     } catch (error) {
         console.log(error);
     }
-    const data = store.getters["coaches/getSearchResult"];
-    searchResult.value = data;
-    console.log(searchResult.value);
+    searchResult.value = await store.getters["coaches/getSearchResult"];
+    resultLength.value = await store.getters["coaches/getTotalCount"];
+    isLoading.value = false;
 });
+
 
 
 </script>

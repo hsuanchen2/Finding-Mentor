@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 
 // 透過logintimer來控制計時器
-let loginTimer;
+let loginTimer: any;
 export default {
   // firebase google authentication
   async signInWithGoogle(context) {

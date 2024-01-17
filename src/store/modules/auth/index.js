@@ -1,5 +1,5 @@
 import mutations from "./mutations.js";
-import actions from "./actions.js";
+import actions from "./actions.ts";
 import getters from "./getters.js";
 
 export default {

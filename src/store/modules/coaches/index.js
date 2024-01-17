@@ -12,6 +12,9 @@ export default {
       currentMentor: null,
       searchedMentors: [],
       totalCount: 0,
+      searchResultLength: 0,
+      lastMentorKey: null,
+      moreMentorsOrNot: true,
     };
   },
   mutations: mutations,

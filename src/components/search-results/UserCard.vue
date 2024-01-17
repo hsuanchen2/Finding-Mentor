@@ -31,7 +31,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, onMounted, defineProps } from "vue";
+import { Ref, ref, reactive, onMounted, defineProps, defineEmits } from "vue";
 import SkillTag from "@/components/ui/SkillTag.vue";
 const scroll: Ref<any> = ref(null);
 
@@ -76,9 +76,9 @@ const addToFavorite = (e: MouseEvent) => {
     console.log("clicked")
 }
 
-onMounted(() => {
-    // console.log(props);
-})
+// onMounted(() => {
+//     console.log(props);
+// })
 </script>
 <style lang="scss" scoped>
 .user-card {

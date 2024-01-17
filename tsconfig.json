@@ -23,7 +23,7 @@
         "src/**/*.d.ts",
         "src/**/*.tsx",
         "src/**/*.vue"
-    ],
+, "src/utils/checkIfTheresMoreData.js"    ],
     "exclude": [
         "node_modules"
     ], 

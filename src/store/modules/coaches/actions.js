@@ -1,7 +1,17 @@
 import { imageDb } from "@/../config/firebaseAuth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
 // const storageDbUrl = import.meta.env.VITE_FIREBASE_STORAGE_URL;
 const storage = getStorage();
+
+const checkForMoreMentors = async (context, lastMentorKey) => {
+  const nextDbUrl = `${import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY}/coaches.json?orderBy="$key"&startAfter="${lastMentorKey}"&limitToFirst=1`;
+  const nextResponse = await fetch(nextDbUrl);
+  const nextResponseData = await nextResponse.json();
+  if (!nextResponseData) {
+    context.commit('moreMentorsOrNot', false);
+  }
+}
 export default {
   // 用actions 觸發mutations
   async registerCoach(context, payload) {
@@ -149,7 +159,8 @@ export default {
     context.commit("setCurrentMentor", coach);
   },
   async loadDefaultMentors(context, payload) {
-    let pageSize = 10;
+    let pageSize = 7;
+    let lastMentorKey;
     let dbUrl = `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=${pageSize}`;
     const mentors = [];
     try {
@@ -160,17 +171,47 @@ export default {
           id: key,
           ...responseData[key]
         };
+        lastMentorKey = key;
         mentors.push(mentor);
       }
-      const pagination = Object.keys(responseData).length / pageSize;
-      if (pagination / pageSize !== 1) {
-        context.commit('setTotalCount', (pagination / pageSize) + 1);
-      }
-      console.log(state.totalCount);
     } catch (error) {
       console.log(error);
     }
     context.commit("searchedMentors", mentors);
-  }
+    context.commit("setLastMentorKey", lastMentorKey);
+    // Try to load one more mentor
+    checkForMoreMentors(context, lastMentorKey);
+  },
+  async loadMoreMentors(context, payload) {
+    let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+    let startAfterKey = context.state.lastMentorKey;
+    const mentors = [];
+    if (startAfterKey) {
+      dbUrl += `/coaches.json?orderBy="$key"&startAfter="${startAfterKey}"&limitToFirst=7`;
+    } else {
+      return;
+    };
+    try {
+      const response = await fetch(dbUrl);
+      const responseData = await response.json();
+      const mentors = [];
+      let lastMentorKey;
 
-};
+      for (let key in responseData) {
+        const mentor = {
+          id: key,
+          ...responseData[key]
+        };
+        lastMentorKey = key;
+        mentors.push(mentor);
+      }
+      context.commit("addSearchedMentors", mentors);
+      context.commit("setLastMentorKey", lastMentorKey);
+
+      // Try to load one more mentor
+      checkForMoreMentors(context, lastMentorKey);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
