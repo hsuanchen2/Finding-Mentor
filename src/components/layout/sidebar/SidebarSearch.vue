@@ -5,15 +5,21 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive, onMounted, defineProps } from "vue";
+import { ref, reactive, onMounted, defineProps, defineEmits } from "vue";
 import autoComplete from '@tarekraafat/autoComplete.js';
+const emits = defineEmits(["updateLocationValue"]);
 const autoComplete_wrapper = ref(null);
 const props = defineProps({
     country: {
         type: Array
     }
-})
+});
 const autoCompleteJS = ref(null);
+const updateLocationValue = (location) => {
+    emits("updateLocationValue", location);
+}
+
+
 
 onMounted(() => {
     const autoCompleteData = {
@@ -31,6 +37,7 @@ onMounted(() => {
                 selection: (event) => {
                     const selection = event.detail.selection.value.name;
                     autoCompleteJS.value.input.value = selection;
+                    updateLocationValue(selection);
                 }
             }
         },

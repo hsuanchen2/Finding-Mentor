@@ -250,6 +250,16 @@ const skillsOptions = ref([
   { name: 'React', code: 'react' },
   { name: 'Vue', code: 'vue' },
   { name: 'NodeJS', code: 'node' },
+  { name: 'Angular', code: 'angular' },
+  { name: 'TypeScript', code: 'ts' },
+  { name: 'Ruby', code: 'ruby' },
+  { name: 'Swift', code: 'swift' },
+  { name: 'Go', code: 'go' },
+  { name: 'Kotlin', code: 'kotlin' },
+  { name: 'Rust', code: 'rust' },
+  { name: 'Dart', code: 'dart' },
+  { name: 'C++', code: 'cpp' },
+  { name: 'Scala', code: 'scala' },
 ])
 
 

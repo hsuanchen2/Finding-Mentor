@@ -34,5 +34,8 @@ export default {
   }, 
   moreMentorsOrNot(state, payload) {
     state.moreMentorsOrNot = payload;
-  }
+  }, 
+  searchMentors(state, payload) {      
+    state.searchedMentors = payload;
+  }, 
 };

@@ -1,7 +1,7 @@
 <template>
     <aside>
         <div v-if="props.showBackdrop" class="backdrop" @click="toggleSidebar"></div>
-        <div class="accordion pe-md-5 ps-md-0 py-md-0 px-3 pt-5 pb-5">
+        <form @submit.prevent="searchMentors" class="accordion pe-md-5 ps-md-0 py-md-0 px-3 pt-5 pb-5">
             <h3>Filter by</h3>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -11,12 +11,13 @@
                         <i :class="props.fieldData.icon"></i> {{ props.fieldData.title }}
                     </button>
                 </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse show"
                     aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
                         <ul>
                             <li v-for="(field, index) in props.fieldData.fieldData" :key="index">
-                                <input :type="field.type" :id="field.id" :name="field.name">
+                                <input :type="field.type" :id="field.id" :name="field.name" :value="field.name"
+                                    v-model="searchFormData.fields" @input="checkAnyField">
                                 <label :for="field.id">{{ field.title }}</label>
                             </li>
                         </ul>
@@ -37,7 +38,8 @@
                     <div class="accordion-body">
                         <ul>
                             <li v-for="(language, index) in props.skills.languages" :key="index">
-                                <input :type="language.type" :id="language.id" :name="language.name">
+                                <input :type="language.type" :id="language.id" :name="language.name" :value="language.name"
+                                    v-model="searchFormData.skills" @input="checkAnyLanguage">
                                 <label :for="language.id">{{ language.title }}</label>
                             </li>
                         </ul>
@@ -58,7 +60,8 @@
                     <div class="accordion-body">
                         <ul>
                             <li v-for="(rate, index) in props.rating.rateRange" :key="index">
-                                <input :type="rate.type" :id="rate.id" :name="props.rating.name">
+                                <input :type="rate.type" :id="rate.id" :name="props.rating.name" :value="rate.name"
+                                    v-model="searchFormData.rating">
                                 <label :for="rate.id">{{ rate.title }}</label>
                             </li>
                         </ul>
@@ -79,7 +82,8 @@
                     <div class="accordion-body">
                         <ul>
                             <li v-for="(hourlyRate, index) in props.hourlyRateData.hourlyRateRange" :key="index">
-                                <input :type="hourlyRate.type" :id="hourlyRate.id" :name="props.hourlyRateData.name">
+                                <input :type="hourlyRate.type" :id="hourlyRate.id" :name="props.hourlyRateData.name"
+                                    :value="hourlyRate.id" v-model="searchFormData.hourlyRate">
                                 <label :for="hourlyRate.id">{{ hourlyRate.title }}</label>
                             </li>
                         </ul>
@@ -98,20 +102,31 @@
                 <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"
                     aria-labelledby="panelsStayOpen-headingFive">
                     <div class="accordion-body">
-                        <sidebar-search class="sidebar-search" :country="countryData"></sidebar-search>
+                        <sidebar-search class="sidebar-search" :country="countryData" :v-model="searchFormData.location"
+                            @updateLocationValue="updateLocation"></sidebar-search>
                     </div>
                 </div>
             </div>
             <div>
-                <button class="search-btn ">Search</button>
+                <button class="search-btn" type="submit">Search</button>
             </div>
-        </div>
+        </form>
     </aside>
 </template>
-<script setup>
-import { defineProps, defineEmits } from "vue";
+<script setup lang="ts">
+import { defineProps, defineEmits, reactive } from "vue";
+import { useStore } from "vuex";
 import sidebarSearch from "./SidebarSearch.vue";
 import countryData from "@/data/countries.json";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+const store = useStore();
+interface SearchFormData {
+    fields: Array<string>;
+    skills: Array<string>;
+    rating: number;
+    hourlyRate: number;
+    location: string;
+}
 const props = defineProps({
     fieldData: {
         type: Object
@@ -129,10 +144,45 @@ const props = defineProps({
         type: Boolean,
     }
 });
+const updateLocation = (location: string) => {
+    searchFormData.location = location;
+}
+const checkAnyField = (e: Event) => {
+    if (e.target.value === "any-field") {
+        searchFormData.fields = ["any-field"];
+    } else {
+        const anyFieldIndex = searchFormData.fields.indexOf("any-field");
+        anyFieldIndex !== -1 && searchFormData.fields.splice(anyFieldIndex, 1);
+    }
+}
+
+const checkAnyLanguage = (e: Event) => {
+    if (e.target.value === "any-language") {
+        searchFormData.skills = ["any-language"];
+    } else {
+        const anyLanguageIndex = searchFormData.skills.indexOf("any-language");
+        anyLanguageIndex !== -1 && searchFormData.skills.splice(anyLanguageIndex, 1);
+    }
+}
+
+const searchFormData: SearchFormData = reactive({
+    fields: [],
+    skills: [],
+    rating: 0,
+    hourlyRate: 0,
+    location: ""
+})
+
+
 const emits = defineEmits(["toggleSidebar"]);
 const toggleSidebar = () => {
     emits("toggleSidebar");
 }
+
+const searchMentors = () => {
+    store.dispatch("coaches/searchMentors", searchFormData);
+}
+
 </script>
 <style lang="scss" scoped>
 h3 {
@@ -164,6 +214,7 @@ h3 {
         border-bottom: 2px solid lightgray;
         margin-bottom: 10px;
     }
+
     .accordion-item.last-child {
         border-bottom: none;
     }

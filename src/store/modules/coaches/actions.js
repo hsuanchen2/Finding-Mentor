@@ -213,5 +213,21 @@ export default {
     } catch (error) {
       console.log(error);
     }
+  },
+  async searchMentors(context, payload) {
+    const { fields, hourlyRate, location, skills, rating } = payload;
+    let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+    dbUrl += `/coaches.json?orderBy="$key"&limitToFirst=7`;
+    const response = await fetch(dbUrl);
+    const data = await response.json();
+    // filter out mentors that match the search criteria from payload
+    const mentors = []; // store mentors that match the search criteria
+    for (let key in data) {
+      const mentor = {
+        id: key,
+        ...data[key]
+      };
+      mentors.push(mentor);
+    };
   }
 }

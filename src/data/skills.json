@@ -55,6 +55,66 @@
             "name": "Nodejs",
             "id": "Nodejs",
             "type": "checkbox"
+        }, 
+        {
+            "title": "Angular",
+            "name": "Angular",
+            "id": "Angular",
+            "type": "checkbox"
+        },
+        {
+            "title": "TypeScript",
+            "name": "TypeScript",
+            "id": "TypeScript",
+            "type": "checkbox"
+        },
+        {
+            "title": "Ruby",
+            "name": "Ruby",
+            "id": "Ruby",
+            "type": "checkbox"
+        },
+        {
+            "title": "Swift",
+            "name": "Swift",
+            "id": "Swift",
+            "type": "checkbox"
+        },
+        {
+            "title": "Go",
+            "name": "Go",
+            "id": "Go",
+            "type": "checkbox"
+        },
+        {
+            "title": "Kotlin",
+            "name": "Kotlin",
+            "id": "Kotlin",
+            "type": "checkbox"
+        },
+        {
+            "title": "Rust",
+            "name": "Rust",
+            "id": "Rust",
+            "type": "checkbox"
+        },
+        {
+            "title": "Dart",
+            "name": "Dart",
+            "id": "Dart",
+            "type": "checkbox"
+        },
+        {
+            "title": "C++",
+            "name": "C++",
+            "id": "CPlusPlus",
+            "type": "checkbox"
+        },
+        {
+            "title": "Scala",
+            "name": "Scala",
+            "id": "Scala",
+            "type": "checkbox"
         }
     ]
 }
