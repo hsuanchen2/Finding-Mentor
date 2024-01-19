@@ -31,11 +31,14 @@ export default {
   },
   addSearchedMentors(state, payload) {
     state.searchedMentors.push(...payload);
-  }, 
+  },
   moreMentorsOrNot(state, payload) {
     state.moreMentorsOrNot = payload;
-  }, 
-  searchMentors(state, payload) {      
+  },
+  searchMentors(state, payload) {
     state.searchedMentors = payload;
-  }, 
+  },
+  setSearchCriteria(state, payload) {
+    state.searchCriteria = payload;
+  }
 };

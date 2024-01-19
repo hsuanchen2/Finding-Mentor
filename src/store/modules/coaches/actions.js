@@ -30,9 +30,13 @@ export default {
     };
     const generateJobRating = () => {
       const rate = (Math.random() * 4 + 1).toFixed(1); // Generate a random number between 1 and 5
-      const count = Math.floor(Math.random() * 100); // Generate a random number less than 100
-      return `${rate} (${count})`;
+      return rate;
     };
+    const generateJobsDone = () => {
+      const count = Math.floor(Math.random() * 100); // Generate a random number less than 100
+      return count;
+    }
+    generateJobRating();
     const coachData = {
       firstName: payload.firstName,
       lastName: payload.lastName,
@@ -40,11 +44,12 @@ export default {
       location: payload.location,
       jobTitle: payload.jobTitle,
       fields: payload.fields,
+      jobRating: generateJobRating(),
+      jobsDone: generateJobsDone(),
       skills: payload.skills,
       aboutMe: payload.aboutMe,
       experience: payload.experience,
       userImage: imageUrl,
-      jobRating: generateJobRating(),
     };
     const token = context.rootGetters.token;
 
@@ -178,6 +183,7 @@ export default {
       console.log(error);
     }
     context.commit("searchedMentors", mentors);
+    console.log(mentors);
     context.commit("setLastMentorKey", lastMentorKey);
     // Try to load one more mentor
     checkForMoreMentors(context, lastMentorKey);
@@ -221,6 +227,7 @@ export default {
     const response = await fetch(dbUrl);
     const data = await response.json();
     // filter out mentors that match the search criteria from payload
+    // 
     const mentors = []; // store mentors that match the search criteria
     for (let key in data) {
       const mentor = {

@@ -15,6 +15,7 @@ export default {
       searchResultLength: 0,
       lastMentorKey: null,
       moreMentorsOrNot: true,
+      searchCriteria: null,
     };
   },
   mutations: mutations,

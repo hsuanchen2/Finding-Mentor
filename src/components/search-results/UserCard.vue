@@ -10,7 +10,7 @@
                 <h3>{{ props.firstName }} {{ props.lastName }}</h3>
                 <h4>{{ props.jobTitle }}</h4>
                 <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ props.location }}</p>
-                <p>&#x2B50 {{ props.jobRating }}</p>
+                <p>&#x2B50 {{ props.jobRating }} ({{ props.jobsDone }})</p>
             </div>
             <button class="add-to-favorite" @click="addToFavorite">
                 <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
@@ -45,7 +45,8 @@ const props = defineProps({
     hourlyRate: Number,
     skills: Array,
     fields: Array,
-    jobRating: String,
+    jobRating: Number,
+    jobsDone: Number,
     jobTitle: String,
     userImage: String,
     location: String,

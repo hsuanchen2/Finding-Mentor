@@ -34,16 +34,16 @@ export default {
   getSearchResult(state) {
     return state.searchedMentors;
   },
-  // getTotalCount(state) {
-  //   return state.getTotalCount;
-  // },
   getSearchResultLength(state) {
     return state.searchResultLength;
   },
   getTotalCount(state) {
     return state.totalCount;
-  }, 
-  moreMentorsOrNot(state) {      
+  },
+  moreMentorsOrNot(state) {
     return state.moreMentorsOrNot;
+  },
+  getSearchCriteria(state) {
+    return state.searchCriteria;
   }
 };

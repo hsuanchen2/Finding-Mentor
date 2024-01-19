@@ -179,8 +179,11 @@ const toggleSidebar = () => {
     emits("toggleSidebar");
 }
 
+
 const searchMentors = () => {
     store.dispatch("coaches/searchMentors", searchFormData);
+    emits("toggleSidebar");
+    console.log(searchFormData);
 }
 
 </script>

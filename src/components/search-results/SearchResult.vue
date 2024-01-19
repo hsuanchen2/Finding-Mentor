@@ -18,7 +18,7 @@
                 :lastName="result.lastName" :description="result.description" :hourlyRate="result.hourlyRate"
                 :fields="result.fields" :skills="result.skills" :jobRating="result.jobRating" :userImage="result.userImage"
                 :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
-                :jobTitle="result.jobTitle"></user-card>
+                :jobTitle="result.jobTitle" :jobsDone="result.jobsDone"></user-card>
         </div>
         <base-spinner v-if="isLoading"></base-spinner>
         <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
@@ -45,7 +45,8 @@ interface Mentor {
     hourlyRate: number;
     skills: string[];
     fields: string[];
-    jobRating: string;
+    jobRating: number;
+    jobsDone: number; 
     userImage: string;
     location: string;
     jobTitle: string;
