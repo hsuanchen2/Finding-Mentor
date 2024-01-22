@@ -1,5 +1,6 @@
 import { imageDb } from "@/../config/firebaseAuth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import getHourlyRate from "@/utils/getHourlyRateRange.ts";
 // const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
 // const storageDbUrl = import.meta.env.VITE_FIREBASE_STORAGE_URL;
 const storage = getStorage();
@@ -229,12 +230,30 @@ export default {
     // filter out mentors that match the search criteria from payload
     // 
     const mentors = []; // store mentors that match the search criteria
-    for (let key in data) {
-      const mentor = {
-        id: key,
-        ...data[key]
+    const isThereFieldsEmpty = fields.length === 0 || fields.indexOf("any-field") !== -1;
+    const isHourlyRateEmpty = hourlyRate === 0 || hourlyRate === "any-hourly-rate";
+    const isLocationEmpty = location === "";
+    const isSkillsEmpty = skills.length === 0 || skills.indexOf("any-language") !== -1;
+    const isRatingEmpty = rating === 0 || rating === "any-rating";
+    const isThereAnyEmpty = isThereFieldsEmpty && isHourlyRateEmpty && isLocationEmpty && isSkillsEmpty && isRatingEmpty;
+    // 沒有任何條件的話，就回傳所有的資料
+    if (isThereAnyEmpty) {
+      for (let key in data) {
+        const mentor = {
+          id: key,
+          ...data[key]
+        };
+        mentors.push(mentor);
       };
-      mentors.push(mentor);
-    };
+      context.commit("searchMentors", mentors);
+      context.commit("setSearchCriteria", payload);
+    } else {
+      let filteredFields;
+      for (let key in data) {
+        if (data[key].fields.length > 0 && data[key].fileds.indexOf("any-field") === -1) {
+          filteredFields = data[key].fields.some(item => payload.fields.includes(item));
+        }
+      }
+    }
   }
 }

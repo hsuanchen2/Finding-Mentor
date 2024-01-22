@@ -3,9 +3,11 @@
         <div class="row px-xl-0 px-md-3 px-1">
             <keep-alive>
                 <side-bar v-if="showSidebar" class="col col-md-3" :fieldData="fields" :skills="skills" :rating="rating"
-                    :hourlyRateData="hourlyRate" :showBackdrop="showBackdrop" @toggleSidebar="sidebarToggle"></side-bar>
+                    :hourlyRateData="hourlyRate" :showBackdrop="showBackdrop" @toggleSidebar="sidebarToggle"
+                    @updateLoading="toggleLoading"></side-bar>
             </keep-alive>
-            <search-result class="col col-12 col-md-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle"></search-result>
+            <search-result class="col col-12 col-md-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle" :isLoadingg="isLoadingg"
+                :showSidebarToggle="showSidebar"></search-result>
         </div>
     </div>
 </template>
@@ -18,7 +20,7 @@ import fieldsData from "@/data/fields.json";
 import ratingData from "@/data/rating.json";
 import hourlyRateData from "@/data/hourlyRate.json";
 
-
+const isLoadingg = ref(false);
 const fields = reactive(fieldsData);
 const skills = reactive(skillData);
 const rating = reactive(ratingData);
@@ -42,6 +44,11 @@ const handleResize = () => {
     showMobileSidebar.value = isMobile && showMobileSidebar.value;
     document.body.style.overflow = isMobile && showMobileSidebar.value ? "hidden" : "auto";
 };
+
+const toggleLoading = () => {
+    console.log("123");
+    isLoadingg.value = !isLoadingg.value;
+}
 
 onMounted(() => {
     adaptWidth();

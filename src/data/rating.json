@@ -7,25 +7,34 @@
             "title": "Any rating",
             "type": "radio",
             "id": "anyRating",
-            "name": "any-rating"
+            "name": "any"
         },
         {
             "title": "4.5 stars above",
             "type": "radio",
             "id": "4.5-above",
-            "name": "above-4.5"
+            "name": [
+                4.5,
+                5
+            ]
         },
         {
             "title": "4 - 4.5",
             "type": "radio",
             "id": "4to5",
-            "name": "four-to-five"
+            "name": [
+                4,
+                5
+            ]
         },
         {
             "title": "Below 4",
             "type": "radio",
             "id": "belowFour",
-            "name": "below-four"
+            "name": [
+                0,
+                4
+            ]
         }
     ]
 }

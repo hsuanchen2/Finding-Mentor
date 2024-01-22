@@ -14,27 +14,28 @@
             </div>
         </div>
         <div class="user-card-container">
+            <base-spinner v-if="isLoading || props.isLoadingg"></base-spinner>
             <user-card v-for="result in searchResult" :id="result.id" :firstName="result.firstName"
                 :lastName="result.lastName" :description="result.description" :hourlyRate="result.hourlyRate"
                 :fields="result.fields" :skills="result.skills" :jobRating="result.jobRating" :userImage="result.userImage"
                 :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
                 :jobTitle="result.jobTitle" :jobsDone="result.jobsDone"></user-card>
         </div>
-        <base-spinner v-if="isLoading"></base-spinner>
+        
         <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
     </section>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, defineProps, defineEmits, onMounted, computed } from "vue";
+import { Ref, ref, reactive, defineProps, defineEmits, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import SearchTag from "@/components/ui/SearchTag.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
 import BaseSpinner from "@/components/ui/BaseSpinner.vue";
-
 const isLoading: Ref<boolean> = ref(false);
 const moreMentorsOrNot = computed(() => {
     return store.getters["coaches/moreMentorsOrNot"];
 })
+
 interface Mentor {
     id: string;
     aboutMe: string;
@@ -46,7 +47,7 @@ interface Mentor {
     skills: string[];
     fields: string[];
     jobRating: number;
-    jobsDone: number; 
+    jobsDone: number;
     userImage: string;
     location: string;
     jobTitle: string;
@@ -54,13 +55,20 @@ interface Mentor {
 const searchResult: Ref<Mentor[]> = ref([]);
 const store = useStore();
 const props = defineProps({
-    showSidebarToggle: Boolean,
+    showSidebarToggle: {
+        type: Boolean,
+        required: true,
+    },
+    isLoadingg: {
+        type: Boolean,
+        required: true,
+    },
 });
 const resultLength: Ref<number> = ref(0);
 // const resultLength = computed(() => {
 //     return store.getters["coaches/getSearchResultLength"];
 // })
-const emits = defineEmits(["toggleSidebar"]);
+const emits = defineEmits(["toggleSidebar", "toggleIsLoading"]);
 const toggleSidebar = () => {
     emits("toggleSidebar");
 }
@@ -70,6 +78,7 @@ const searchedTags = reactive({
     tag2: "Back-End",
     tag3: "Full-Stack",
 });
+
 
 const loadMore = async () => {
     try {
@@ -82,8 +91,19 @@ const loadMore = async () => {
     resultLength.value = await store.getters["coaches/getTotalCount"];
     isLoading.value = false;
 };
+// onMounted(async () => {
+//     try {
+//         isLoading.value = true;
+//         await store.dispatch("coaches/loadDefaultMentors");
+//     } catch (error) {
+//         console.log(error);
+//     }
+//     searchResult.value = await store.getters["coaches/getSearchResult"];
+//     resultLength.value = await store.getters["coaches/getTotalCount"];
+//     isLoading.value = false;
+// });
 
-onMounted(async () => {
+const loadDefaultMentors = async () => {
     try {
         isLoading.value = true;
         await store.dispatch("coaches/loadDefaultMentors");
@@ -93,8 +113,8 @@ onMounted(async () => {
     searchResult.value = await store.getters["coaches/getSearchResult"];
     resultLength.value = await store.getters["coaches/getTotalCount"];
     isLoading.value = false;
-});
-
+}
+loadDefaultMentors();
 
 
 </script>

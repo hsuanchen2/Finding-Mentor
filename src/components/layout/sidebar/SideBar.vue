@@ -83,7 +83,7 @@
                         <ul>
                             <li v-for="(hourlyRate, index) in props.hourlyRateData.hourlyRateRange" :key="index">
                                 <input :type="hourlyRate.type" :id="hourlyRate.id" :name="props.hourlyRateData.name"
-                                    :value="hourlyRate.id" v-model="searchFormData.hourlyRate">
+                                    :value="hourlyRate.name" v-model="searchFormData.hourlyRate">
                                 <label :for="hourlyRate.id">{{ hourlyRate.title }}</label>
                             </li>
                         </ul>
@@ -114,11 +114,14 @@
     </aside>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmits, reactive } from "vue";
+import { defineProps, defineEmits, reactive, Ref, ref } from "vue";
 import { useStore } from "vuex";
 import sidebarSearch from "./SidebarSearch.vue";
 import countryData from "@/data/countries.json";
+// import BaseSpinner from "@/ui/BaseSpinner.vue";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { updateLanguageServiceSourceFile } from "typescript";
+const isLoading: Ref<boolean> = ref(false);
 const store = useStore();
 interface SearchFormData {
     fields: Array<string>;
@@ -142,7 +145,7 @@ const props = defineProps({
     },
     showBackdrop: {
         type: Boolean,
-    }
+    },
 });
 const updateLocation = (location: string) => {
     searchFormData.location = location;
@@ -164,6 +167,8 @@ const checkAnyLanguage = (e: Event) => {
         anyLanguageIndex !== -1 && searchFormData.skills.splice(anyLanguageIndex, 1);
     }
 }
+// 幫我從vuex中抓到 userToken 資料
+
 
 const searchFormData: SearchFormData = reactive({
     fields: [],
@@ -174,15 +179,20 @@ const searchFormData: SearchFormData = reactive({
 })
 
 
-const emits = defineEmits(["toggleSidebar"]);
-const toggleSidebar = () => {
+const emits = defineEmits(["toggleSidebar", "updateLoading"]);
+const toggleSidebar = (): void => {
     emits("toggleSidebar");
+}
+const updateLoading = (): void => {
+    emits("updateLoading");
 }
 
 
-const searchMentors = () => {
-    store.dispatch("coaches/searchMentors", searchFormData);
-    emits("toggleSidebar");
+const searchMentors = async () => {
+    updateLoading();
+    await store.dispatch("coaches/searchMentors", searchFormData);
+    props.showBackdrop && toggleSidebar();
+    updateLoading();
     console.log(searchFormData);
 }
 

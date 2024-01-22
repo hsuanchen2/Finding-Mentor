@@ -1,32 +1,46 @@
 {
     "title": "Hourly rate",
     "name": "hourlyRate",
-    "icon": "fa-solid fa-dollar-sign", 
+    "icon": "fa-solid fa-dollar-sign",
     "hourlyRateRange": [
         {
             "title": "Any hourly rate",
             "type": "radio",
-            "id": "any-hourly-rate"
+            "id": "any-hourly-rate",
+            "name": "any"
         },
         {
             "title": "$10 and below",
             "type": "radio",
-            "id": "belowTen"
+            "id": "belowTen",
+            "name": [
+                0,
+                10
+            ]
         },
         {
             "title": "$10 - $30",
             "type": "radio",
-            "id": "tenToThirty"
+            "id": "tenToThirty",
+            "name": [
+                10,
+                30
+            ]
         },
         {
             "title": "$30 - $60",
             "type": "radio",
-            "id": "thirtyToSixty"
+            "id": "thirtyToSixty",
+            "name": [
+                30,
+                60
+            ]
         },
         {
             "title": "Above $60",
             "type": "radio",
-            "id": "aboveSixty"
+            "id": "aboveSixty",
+            "name": 60
         }
     ]
 }

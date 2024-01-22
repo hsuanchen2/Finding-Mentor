@@ -27,7 +27,6 @@ export default {
   landingPageMentors(state) {
     return state.landingPageMentors;
   },
-
   currentMentor(state) {
     return state.currentMentor;
   },
@@ -45,5 +44,8 @@ export default {
   },
   getSearchCriteria(state) {
     return state.searchCriteria;
+  },
+  getFilteredMentors(state) {
+    return state.searchedMentors;
   }
 };
