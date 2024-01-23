@@ -21,7 +21,7 @@
                 :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
                 :jobTitle="result.jobTitle" :jobsDone="result.jobsDone"></user-card>
         </div>
-        
+
         <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
     </section>
 </template>
@@ -35,6 +35,8 @@ const isLoading: Ref<boolean> = ref(false);
 const moreMentorsOrNot = computed(() => {
     return store.getters["coaches/moreMentorsOrNot"];
 })
+
+
 
 interface Mentor {
     id: string;
@@ -79,6 +81,17 @@ const searchedTags = reactive({
     tag3: "Full-Stack",
 });
 
+const searchMentor = async () => {
+    try {
+        isLoading.value = true;
+        await store.dispatch("coaches/searchMentor");
+    } catch (error) {
+        console.log(error);
+    }
+    searchResult.value = await store.getters["coaches/getSearchResult"];
+    resultLength.value = await store.getters["coaches/getTotalCount"];
+    isLoading.value = false;
+}
 
 const loadMore = async () => {
     try {
@@ -91,17 +104,6 @@ const loadMore = async () => {
     resultLength.value = await store.getters["coaches/getTotalCount"];
     isLoading.value = false;
 };
-// onMounted(async () => {
-//     try {
-//         isLoading.value = true;
-//         await store.dispatch("coaches/loadDefaultMentors");
-//     } catch (error) {
-//         console.log(error);
-//     }
-//     searchResult.value = await store.getters["coaches/getSearchResult"];
-//     resultLength.value = await store.getters["coaches/getTotalCount"];
-//     isLoading.value = false;
-// });
 
 const loadDefaultMentors = async () => {
     try {

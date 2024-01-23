@@ -4,7 +4,7 @@
             <keep-alive>
                 <side-bar v-if="showSidebar" class="col col-md-3" :fieldData="fields" :skills="skills" :rating="rating"
                     :hourlyRateData="hourlyRate" :showBackdrop="showBackdrop" @toggleSidebar="sidebarToggle"
-                    @updateLoading="toggleLoading"></side-bar>
+                    @isLoading="toggleLoading" @updateLoading="isLoadingg"></side-bar>
             </keep-alive>
             <search-result class="col col-12 col-md-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle" :isLoadingg="isLoadingg"
                 :showSidebarToggle="showSidebar"></search-result>
@@ -13,6 +13,7 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
 import SideBar from "@/components/layout/sidebar/SideBar.vue";
 import SearchResult from "@/components/search-results/SearchResult.vue";
 import skillData from "@/data/skills.json";
@@ -29,6 +30,29 @@ const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
 const mobileBreakpoint = ref(767);
 const showBackdrop = ref(null);
+
+
+const searchResult = reactive({});
+const resultLength = ref(0);
+
+const loadDefaultMentors = async () => {
+    try {
+        // isLoadingg.value = true;
+        await store.dispatch("coaches/loadDefaultMentors");
+    } catch (error) {
+        console.log(error);
+    }
+    searchResult.value = await store.getters["coaches/getSearchResult"];
+    resultLength.value = await store.getters["coaches/getTotalCount"];
+    // isLoadingg.value = false;
+}
+loadDefaultMentors();
+
+
+
+
+
+
 
 const adaptWidth = () => {
     const isMobile = window.innerWidth <= mobileBreakpoint.value; // check width when mounting

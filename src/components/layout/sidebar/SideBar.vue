@@ -96,7 +96,7 @@
                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true"
                         aria-controls="panelsStayOpen-collapseFive">
-                        <i class="fa-solid fa-location-dot"></i> Location
+                        <i class="fa-solid fa-location-dot"></i> Location ( Required )
                     </button>
                 </h2>
                 <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse show"

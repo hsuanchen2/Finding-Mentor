@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper" ref="autoComplete_wrapper">
         <input id="autoComplete" type="search" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-            autocapitalize="off">
+            autocapitalize="off" required @blur="checkInput">
+        <p v-if="!isLocationSelected" class="error-message">Please select a location</p>
     </div>
 </template>
 <script setup>
@@ -9,17 +10,26 @@ import { ref, reactive, onMounted, defineProps, defineEmits } from "vue";
 import autoComplete from '@tarekraafat/autoComplete.js';
 const emits = defineEmits(["updateLocationValue"]);
 const autoComplete_wrapper = ref(null);
+const isLocationSelected = ref(true);
 const props = defineProps({
     country: {
         type: Array
     }
 });
+const checkInput = (event) => {
+    const inputValue = event.target.value;
+    const isValueInList = props.country.some(country => country.name === inputValue);
+    if (!isValueInList) {
+        event.target.value = '';
+        isLocationSelected.value = false;
+    } else {
+        isLocationSelected.value = true;
+    }
+}
 const autoCompleteJS = ref(null);
 const updateLocationValue = (location) => {
     emits("updateLocationValue", location);
 }
-
-
 
 onMounted(() => {
     const autoCompleteData = {
@@ -94,5 +104,13 @@ onMounted(() => {
      box-shadow: $light-card-shadow;
      margin-top: 5px;
      padding: 5px 5px;
+ }
+
+ .error-message {
+     color: red;
+     font-style: italic;
+     font-size: 14px;
+     margin-top: 5px;
+     margin-bottom: 0;
  }
 </style>

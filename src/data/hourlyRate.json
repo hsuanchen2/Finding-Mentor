@@ -40,7 +40,10 @@
             "title": "Above $60",
             "type": "radio",
             "id": "aboveSixty",
-            "name": 60
+            "name": [
+                60,
+                9999999
+            ]
         }
     ]
 }

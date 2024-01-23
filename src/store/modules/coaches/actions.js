@@ -1,6 +1,9 @@
 import { imageDb } from "@/../config/firebaseAuth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import getHourlyRate from "@/utils/getHourlyRateRange.ts";
+import checkIfHourlyRateIsInRange from "@/utils/checkIfHourlyRateIsInRange.ts";
+import checkIfJobRatingInRange from "@/utils/checkIfJobRatingInRange.ts";
+import checkIfFieldsMatched from "@/utils/checkIfFieldsMatched.ts";
+import checkIfSkillsMatched from "@/utils/checkIfSkillsMatched.ts";
 // const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
 // const storageDbUrl = import.meta.env.VITE_FIREBASE_STORAGE_URL;
 const storage = getStorage();
@@ -223,37 +226,45 @@ export default {
   },
   async searchMentors(context, payload) {
     const { fields, hourlyRate, location, skills, rating } = payload;
+    let data;
     let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
-    dbUrl += `/coaches.json?orderBy="$key"&limitToFirst=7`;
-    const response = await fetch(dbUrl);
-    const data = await response.json();
-    // filter out mentors that match the search criteria from payload
-    // 
-    const mentors = []; // store mentors that match the search criteria
-    const isThereFieldsEmpty = fields.length === 0 || fields.indexOf("any-field") !== -1;
-    const isHourlyRateEmpty = hourlyRate === 0 || hourlyRate === "any-hourly-rate";
-    const isLocationEmpty = location === "";
-    const isSkillsEmpty = skills.length === 0 || skills.indexOf("any-language") !== -1;
-    const isRatingEmpty = rating === 0 || rating === "any-rating";
-    const isThereAnyEmpty = isThereFieldsEmpty && isHourlyRateEmpty && isLocationEmpty && isSkillsEmpty && isRatingEmpty;
-    // 沒有任何條件的話，就回傳所有的資料
-    if (isThereAnyEmpty) {
-      for (let key in data) {
-        const mentor = {
-          id: key,
-          ...data[key]
-        };
-        mentors.push(mentor);
-      };
-      context.commit("searchMentors", mentors);
-      context.commit("setSearchCriteria", payload);
+    dbUrl += `/coaches.json?&limitToFirst=7`;
+    payload.location !== "" && (dbUrl += `&orderBy="location"&equalTo="${payload.location}"`);
+    try {
+      const response = await fetch(dbUrl);
+      data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    if (!data) {
+      console.log(data);
+      return;
     } else {
-      let filteredFields;
+      const mentors = [];
+      console.log(payload);
+      // let lastMentorKey;
       for (let key in data) {
-        if (data[key].fields.length > 0 && data[key].fileds.indexOf("any-field") === -1) {
-          filteredFields = data[key].fields.some(item => payload.fields.includes(item));
+        const isValidFields = checkIfFieldsMatched(data[key].fields, fields);
+        const isValidSkills = checkIfSkillsMatched(data[key].skills, skills);
+        const isValidJobRating = checkIfJobRatingInRange(data[key].jobRating, rating);
+        const isHourlyRateInRange = checkIfHourlyRateIsInRange(data[key].hourlyRate, hourlyRate);
+        console.log(isValidFields, isValidSkills, isValidJobRating, isHourlyRateInRange);
+        if (isValidFields && isValidSkills && isValidJobRating && isHourlyRateInRange) {
+          const mentor = {
+            id: key,
+            ...data[key]
+          };
+          // lastMentorKey = key;
+          mentors.push(mentor);
         }
       }
+      console.log(mentors);
+      context.commit("searchMentors", mentors);
+      console.log(context.state.searchedMentors);
+      // context.commit("setLastMentorKey", lastMentorKey);
+      // checkForMoreMentors(context, lastMentorKey);
     }
+
   }
 }
