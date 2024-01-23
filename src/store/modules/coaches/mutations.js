@@ -39,6 +39,7 @@ export default {
     state.searchedMentors = payload;
   },
   setSearchCriteria(state, payload) {
+    console.log(payload);
     state.searchCriteria = payload;
   }
 };

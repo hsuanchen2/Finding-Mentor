@@ -7,36 +7,41 @@
                 <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
                         style="color: #635bff;"></i></button></span>
             <div class="search-tags">
-                <search-tag :tagName="searchedTags.tag1"></search-tag>
-                <search-tag :tagName="searchedTags.tag2"></search-tag>
-                <search-tag :tagName="searchedTags.tag3"></search-tag>
+                <search-tag :searchCriteria="props.searchCriteria"></search-tag>
                 <span class="clear-filter">Clear filters</span>
             </div>
         </div>
         <div class="user-card-container">
             <base-spinner v-if="isLoading || props.isLoadingg"></base-spinner>
-            <user-card v-for="result in searchResult" :id="result.id" :firstName="result.firstName"
-                :lastName="result.lastName" :description="result.description" :hourlyRate="result.hourlyRate"
-                :fields="result.fields" :skills="result.skills" :jobRating="result.jobRating" :userImage="result.userImage"
-                :location="result.location" :experience="result.experience" :aboutMe="result.aboutMe"
-                :jobTitle="result.jobTitle" :jobsDone="result.jobsDone"></user-card>
+            <user-card v-if="!isMentorsListEmpty" v-for="result in props.searchResult" :id="result.id"
+                :firstName="result.firstName" :lastName="result.lastName" :description="result.description"
+                :hourlyRate="result.hourlyRate" :fields="result.fields" :skills="result.skills"
+                :jobRating="result.jobRating" :userImage="result.userImage" :location="result.location"
+                :experience="result.experience" :aboutMe="result.aboutMe" :jobTitle="result.jobTitle"
+                :jobsDone="result.jobsDone"></user-card>
+            <no-mentors-found v-else></no-mentors-found>
         </div>
-
+        <base-spinner v-if="props.isLoadMoreLoading"></base-spinner>
         <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
+
     </section>
 </template>
 <script setup lang="ts">
 import { Ref, ref, reactive, defineProps, defineEmits, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import SearchTag from "@/components/ui/SearchTag.vue";
+import NoMentorsFound from "@/pages/talents/NoMentorsFound.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
 import BaseSpinner from "@/components/ui/BaseSpinner.vue";
-const isLoading: Ref<boolean> = ref(false);
+
+
 const moreMentorsOrNot = computed(() => {
     return store.getters["coaches/moreMentorsOrNot"];
 })
 
-
+const isMentorsListEmpty = computed((): boolean => {
+    return props.searchResult.length === 0;
+})
 
 interface Mentor {
     id: string;
@@ -54,69 +59,68 @@ interface Mentor {
     location: string;
     jobTitle: string;
 }
-const searchResult: Ref<Mentor[]> = ref([]);
+// const searchResult: Ref<Mentor[]> = ref([]);
 const store = useStore();
 const props = defineProps({
     showSidebarToggle: {
         type: Boolean,
         required: true,
     },
-    isLoadingg: {
+    isLoading: {
         type: Boolean,
         required: true,
     },
+    searchResult: {
+        type: Array,
+        required: true,
+    },
+    isLoadMoreLoading: {
+        type: Boolean,
+        required: true,
+    },
+    searchCriteria: {
+        type: Object,
+        required: false,
+    },
 });
-const resultLength: Ref<number> = ref(0);
+
 // const resultLength = computed(() => {
 //     return store.getters["coaches/getSearchResultLength"];
 // })
-const emits = defineEmits(["toggleSidebar", "toggleIsLoading"]);
+const emits = defineEmits(["toggleSidebar", "toggleIsLoading", "loadMore"]);
 const toggleSidebar = () => {
     emits("toggleSidebar");
 }
 
-const searchedTags = reactive({
-    tag1: "Front-End",
-    tag2: "Back-End",
-    tag3: "Full-Stack",
-});
 
-const searchMentor = async () => {
-    try {
-        isLoading.value = true;
-        await store.dispatch("coaches/searchMentor");
-    } catch (error) {
-        console.log(error);
-    }
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    resultLength.value = await store.getters["coaches/getTotalCount"];
-    isLoading.value = false;
-}
+// const searchMentor = async () => {
+//     try {
+//         isLoading.value = true;
+//         await store.dispatch("coaches/searchMentor");
+//     } catch (error) {
+//         console.log(error);
+//     }
+//     searchResult.value = await store.getters["coaches/getSearchResult"];
+//     resultLength.value = await store.getters["coaches/getTotalCount"];
+//     isLoading.value = false;
+// }
 
 const loadMore = async () => {
-    try {
-        isLoading.value = true;
-        await store.dispatch("coaches/loadMoreMentors");
-    } catch (error) {
-        console.log(error);
-    }
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    resultLength.value = await store.getters["coaches/getTotalCount"];
-    isLoading.value = false;
+    emits("loadMore");
 };
 
-const loadDefaultMentors = async () => {
-    try {
-        isLoading.value = true;
-        await store.dispatch("coaches/loadDefaultMentors");
-    } catch (error) {
-        console.log(error);
-    }
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    resultLength.value = await store.getters["coaches/getTotalCount"];
-    isLoading.value = false;
-}
-loadDefaultMentors();
+// const loadDefaultMentors = async () => {
+//     try {
+//         isLoading.value = true;
+//         await store.dispatch("coaches/loadDefaultMentors");
+//     } catch (error) {
+//         console.log(error);
+//     }
+//     searchResult.value = await store.getters["coaches/getSearchResult"];
+//     resultLength.value = await store.getters["coaches/getTotalCount"];
+//     isLoading.value = false;
+// }
+// loadDefaultMentors();
 
 
 </script>

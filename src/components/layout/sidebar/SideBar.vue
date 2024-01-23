@@ -120,7 +120,6 @@ import sidebarSearch from "./SidebarSearch.vue";
 import countryData from "@/data/countries.json";
 // import BaseSpinner from "@/ui/BaseSpinner.vue";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { updateLanguageServiceSourceFile } from "typescript";
 const isLoading: Ref<boolean> = ref(false);
 const store = useStore();
 interface SearchFormData {
@@ -167,8 +166,6 @@ const checkAnyLanguage = (e: Event) => {
         anyLanguageIndex !== -1 && searchFormData.skills.splice(anyLanguageIndex, 1);
     }
 }
-// 幫我從vuex中抓到 userToken 資料
-
 
 const searchFormData: SearchFormData = reactive({
     fields: [],
@@ -179,22 +176,24 @@ const searchFormData: SearchFormData = reactive({
 })
 
 
-const emits = defineEmits(["toggleSidebar", "updateLoading"]);
+const emits = defineEmits(["toggleSidebar", "updateLoading", "searchMentors"]);
 const toggleSidebar = (): void => {
     emits("toggleSidebar");
 }
-const updateLoading = (): void => {
-    emits("updateLoading");
+
+const searchMentors = () => {
+    emits("searchMentors", searchFormData);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
-const searchMentors = async () => {
-    updateLoading();
-    await store.dispatch("coaches/searchMentors", searchFormData);
-    props.showBackdrop && toggleSidebar();
-    updateLoading();
-    console.log(searchFormData);
-}
+// const searchMentors = async () => {
+//     updateLoading();
+//     await store.dispatch("coaches/searchMentors", searchFormData);
+//     props.showBackdrop && toggleSidebar();
+//     updateLoading();
+//     console.log(searchFormData);
+// }
 
 </script>
 <style lang="scss" scoped>

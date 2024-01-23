@@ -228,7 +228,7 @@ export default {
     const { fields, hourlyRate, location, skills, rating } = payload;
     let data;
     let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
-    dbUrl += `/coaches.json?&limitToFirst=7`;
+    dbUrl += `/coaches.json?`;
     payload.location !== "" && (dbUrl += `&orderBy="location"&equalTo="${payload.location}"`);
     try {
       const response = await fetch(dbUrl);
@@ -243,7 +243,6 @@ export default {
     } else {
       const mentors = [];
       console.log(payload);
-      // let lastMentorKey;
       for (let key in data) {
         const isValidFields = checkIfFieldsMatched(data[key].fields, fields);
         const isValidSkills = checkIfSkillsMatched(data[key].skills, skills);
@@ -259,12 +258,9 @@ export default {
           mentors.push(mentor);
         }
       }
-      console.log(mentors);
       context.commit("searchMentors", mentors);
-      console.log(context.state.searchedMentors);
-      // context.commit("setLastMentorKey", lastMentorKey);
-      // checkForMoreMentors(context, lastMentorKey);
+      context.commit("setSearchCriteria", payload);
+      context.commit("moreMentorsOrNot", false);
     }
-
   }
 }

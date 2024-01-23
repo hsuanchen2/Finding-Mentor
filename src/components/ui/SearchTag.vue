@@ -1,12 +1,24 @@
 <template>
-    <button>
-        {{ props.tagName }}<i class="fa-solid fa-xmark"></i>
+    <button v-if="searchCriteriaCopy" v-for="(field, index) in searchCriteriaCopy.fields">
+        {{ field }}
+    </button>
+    <button v-if="searchCriteriaCopy" v-for="(skill, index) in searchCriteriaCopy.skills">
+        {{ skill }}
+    </button>
+    <button v-if="searchCriteriaCopy">
+        {{ searchCriteriaCopy.location }}
     </button>
 </template>
-<script setup>
-import { ref, reactive, defineProps } from "vue";
+<script setup lang="ts">
+import { ref, reactive, defineProps, computed } from "vue";
 const props = defineProps({
-    tagName: String,
+    searchCriteria: {
+        type: Object,
+        required: false,
+    },
+})
+const searchCriteriaCopy = computed(() => {
+    return { ...props.searchCriteria }
 })
 </script>
 <style lang="scss" scoped>
