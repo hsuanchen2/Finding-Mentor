@@ -62,7 +62,7 @@ const fortMattedTime = computed(() => {
 
 .message {
   overflow-y: auto;
-  width: 50%;
+  // width: 50%;
   padding-left: 10px;
   padding-right: 10px;
 }

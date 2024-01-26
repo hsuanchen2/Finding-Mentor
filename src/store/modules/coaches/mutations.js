@@ -26,7 +26,7 @@ export default {
     state.searchResultLength = payload;
   },
   setLastMentorKey(state, payload) {
-    console.log(payload);
+    // console.log(payload);
     state.lastMentorKey = payload;
   },
   addSearchedMentors(state, payload) {
@@ -34,12 +34,16 @@ export default {
   },
   moreMentorsOrNot(state, payload) {
     state.moreMentorsOrNot = payload;
+    // console.log(state.moreMentorsOrNot);
   },
   searchMentors(state, payload) {
     state.searchedMentors = payload;
   },
   setSearchCriteria(state, payload) {
-    console.log(payload);
+    // console.log(payload);
+    state.searchCriteria = payload;
+  },
+  clearSearchCriteria(state, payload) {
     state.searchCriteria = payload;
   }
 };

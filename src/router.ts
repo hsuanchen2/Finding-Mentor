@@ -1,29 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
-import CoachDetails from "./pages/coaches/MentorDetail.vue";
-import CoachesRegistration from "./pages/coaches/CoachRegistration.vue";
-import ContactCoach from "./pages/coaches/ContactMentor.vue";
-import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
-import NotFound from "./pages/NotFound.vue";
-import SignUp from "./pages/auth/SignUp.vue";
-import SignIn from "./pages/auth/SignIn.vue";
-import Talents from "./pages/talents/MentorPage.vue";
+// import CoachDetails from "./pages/coaches/MentorDetail.vue";
+// import CoachesRegistration from "./pages/coaches/CoachRegistration.vue";
+// import ContactCoach from "./pages/coaches/ContactMentor.vue";
+// import RequestsRecevied from "./pages/requests/RequestsRecevied.vue";
+// import NotFound from "./pages/NotFound.vue";
+// import SignUp from "./pages/auth/SignUp.vue";
+// import SignIn from "./pages/auth/SignIn.vue";
+// import Talents from "./pages/talents/MentorPage.vue";
 import store from "./store/index.js";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    // {
-    //   path: "/mentor-detail",
-    //   name: "test-case",
-    //   component: () => import("./pages/coaches/MentorDetail.vue"),
-    //   props: true,
-    //   children: [
-    //     {
-    //       path: "contact",
-    //       component: () => import("./pages/coaches/ContactMentor.vue"),
-    //     },
-    //   ],
-    // },
     {
       path: "/",
       redirect: "/coaches",
@@ -35,43 +23,44 @@ const router = createRouter({
     },
     {
       path: "/coaches/:id",
-      component: CoachDetails,
+      // component: CoachDetails,
+      component: () => import("./pages/coaches/MentorDetail.vue"),
       props: true,
       children: [
         {
           path: "contact",
-          component: ContactCoach,
+          component: () => import("./pages/coaches/ContactMentor.vue"),
         },
       ],
     },
     {
       path: "/register",
-      component: CoachesRegistration,
+      component: () => import("./pages/coaches/CoachRegistration.vue"),
       meta: { requireAuth: true },
     },
     {
       path: "/requests",
-      component: RequestsRecevied,
+      component: () => import("./pages/requests/RequestsRecevied.vue"),
       meta: { requireAuth: true },
     },
     {
       path: "/signIn",
-      component: SignIn,
+      component: () => import("./pages/auth/SignIn.vue"),
       meta: { requireUnAuth: true },
     },
     {
       path: "/signUp",
-      component: SignUp,
+      component: () => import("./pages/auth/SignUp.vue"),
       meta: { requireUnAuth: true },
     },
     {
       path: "/talents/:page?",
       name: "talents",
-      component: Talents,
+      component: () => import("./pages/talents/MentorPage.vue"),
     },
     {
       path: "/:notFound(.*)",
-      component: NotFound,
+      component: () => import("./pages/NotFound.vue"),
     },
   ],
   scrollBehavior(to, from, savedPosition) {

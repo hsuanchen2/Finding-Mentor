@@ -93,7 +93,7 @@ article {
 
     .user-desc {
         max-height: 100px;
-        overflow-y: scroll !important;
+        overflow-y: auto !important;
         // overflow-x: hidden;
     }
 

@@ -4,11 +4,11 @@
             <h3>Search results</h3>
             <p>{{ searchResult.length }} matched results were found</p>
             <span @click="toggleSidebar">
-                <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders"
-                        style="color: #635bff;"></i></button></span>
+                <button class="search-bar-toggle hidden"><i class="fa-solid fa-sliders" style="color: #635bff;"></i>
+                </button></span>
             <div class="search-tags">
                 <search-tag :searchCriteria="props.searchCriteria"></search-tag>
-                <span class="clear-filter">Clear filters</span>
+                <span v-if="searchCriteriaExists" class="clear-filter" @click="reSearchMentor">Clear filters</span>
             </div>
         </div>
         <div class="user-card-container">
@@ -22,7 +22,7 @@
             <no-mentors-found v-else></no-mentors-found>
         </div>
         <base-spinner v-if="props.isLoadMoreLoading"></base-spinner>
-        <button v-if="moreMentorsOrNot" class="btn btn-primary" @click="loadMore">Load More Mentors</button>
+        <button v-if="moreMentorsOrNot" class="btn" @click="loadMore">Load More Mentors</button>
 
     </section>
 </template>
@@ -34,7 +34,9 @@ import NoMentorsFound from "@/pages/talents/NoMentorsFound.vue";
 import UserCard from "@/components/search-results/UserCard.vue";
 import BaseSpinner from "@/components/ui/BaseSpinner.vue";
 
-
+const searchCriteriaExists = computed(() => {
+    return store.getters["coaches/getSearchCriteria"];
+})
 const moreMentorsOrNot = computed(() => {
     return store.getters["coaches/moreMentorsOrNot"];
 })
@@ -42,6 +44,10 @@ const moreMentorsOrNot = computed(() => {
 const isMentorsListEmpty = computed((): boolean => {
     return props.searchResult.length === 0;
 })
+
+const reSearchMentor = () => {
+    emits("reSearchMentors");
+}
 
 interface Mentor {
     id: string;
@@ -87,7 +93,7 @@ const props = defineProps({
 // const resultLength = computed(() => {
 //     return store.getters["coaches/getSearchResultLength"];
 // })
-const emits = defineEmits(["toggleSidebar", "toggleIsLoading", "loadMore"]);
+const emits = defineEmits(["toggleSidebar", "toggleIsLoading", "loadMore", "reSearchMentors"]);
 const toggleSidebar = () => {
     emits("toggleSidebar");
 }
@@ -193,6 +199,15 @@ const loadMore = async () => {
                 display: block;
             }
         }
+    }
+}
+.btn {
+    background-color: $main-button-color;
+    color: white;
+    margin-top: 15px;
+    transition: .3s;
+    &:hover {
+        background-color: lighten($main-button-color, 10%);
     }
 }
 </style>

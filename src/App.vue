@@ -1,6 +1,6 @@
 <template>
   <the-header></the-header>
-  <router-view #default="slotProps">
+  <router-view #default="slotProps" :key="$route.fullPath">
     <component :is="slotProps.Component"></component>
   </router-view>
   <the-footer></the-footer>
@@ -43,6 +43,7 @@ body {
   background-color: #f6f9fc;
   font-family: "Roboto", sans-serif !important;
 }
+
 
 .route-enter-from {
   opacity: 0;

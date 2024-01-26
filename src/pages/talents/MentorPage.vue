@@ -7,9 +7,9 @@
                     @isLoading="toggleLoading" @updateLoading="isLoading" @searchMentors="searchMentor"></side-bar>
             </keep-alive>
             <search-result class="col col-12 col-md-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle"
-                @loadMore="loadMoreMentors" :isLoading="isLoading" :showSidebarToggle="showSidebar"
-                :searchResult="searchResult" :resultLength="resultLength" :isLoadMoreLoading="isLoadMoreLoading"
-                :searchCriteria="searchCriteria"></search-result>
+                @loadMore="loadMoreMentors" @reSearchMentors="clearFilter" :isLoading="isLoading"
+                :showSidebarToggle="showSidebar" :searchResult="searchResult" :resultLength="resultLength"
+                :isLoadMoreLoading="isLoadMoreLoading" :searchCriteria="searchCriteria"></search-result>
         </div>
     </div>
 </template>
@@ -35,7 +35,6 @@ const showMobileSidebar = ref(false);
 const mobileBreakpoint = ref(767);
 const showBackdrop = ref(null);
 const searchCriteria = ref(null);
-// const cloneSearchCriteria = computed(() => ({ ...searchCriteria.value }));
 
 interface Mentor {
     id: string;
@@ -59,6 +58,7 @@ const resultLength = ref(0);
 //     return store.getters["coaches/getSearchCriteria"];
 // })
 const loadDefaultMentors = async () => {
+    // console.log("loading defualt!1")
     try {
         isLoading.value = true;
         await store.dispatch("coaches/loadDefaultMentors");
@@ -68,7 +68,15 @@ const loadDefaultMentors = async () => {
     searchResult.value = await store.getters["coaches/getSearchResult"];
     resultLength.value = await store.getters["coaches/getTotalCount"];
     isLoading.value = false;
-    console.log(searchResult.value);
+    // console.log(searchResult.value);
+}
+
+const clearFilter = async () => {
+    isLoading.value = true;
+    await store.dispatch("coaches/clearFilter");
+    searchResult.value = await store.getters["coaches/getSearchResult"];
+    searchCriteria.value = await store.getters["coaches/getSearchCriteria"];
+    isLoading.value = false;
 }
 
 const loadMoreMentors = async () => {
@@ -81,16 +89,32 @@ const loadMoreMentors = async () => {
     searchResult.value = await store.getters["coaches/getSearchResult"];
     resultLength.value = await store.getters["coaches/getTotalCount"];
     isLoadMoreLoading.value = false;
-
 };
 
 loadDefaultMentors();
 
+// const searchMentor = async (searchFormData: object) => {
+//     console.log("test");
+//     isLoading.value = true;
+//     try {
+//         await store.dispatch("coaches/searchMentors", searchFormData);
+//     } catch (error) {
+//         console.log(error);
+//     }
+//     showBackdrop.value && sidebarToggle();
+//     searchResult.value = store.getters["coaches/getSearchResult"];
+//     isLoading.value = false;
+//     searchCriteria.value = store.getters["coaches/getSearchCriteria"];
+//     console.log(searchCriteria.value);
+// }
+
+
 const searchMentor = async (searchFormData: object) => {
-    console.log("test");
     isLoading.value = true;
     try {
-        await store.dispatch("coaches/searchMentors", searchFormData);
+        // 傳深拷貝，否則當sidebar 中的 searchFormData 改變時會改到 searchCriteria
+        const searchCriteriaCopy = JSON.parse(JSON.stringify(searchFormData));
+        await store.dispatch("coaches/searchMentors", searchCriteriaCopy);
     } catch (error) {
         console.log(error);
     }
@@ -98,9 +122,8 @@ const searchMentor = async (searchFormData: object) => {
     searchResult.value = await store.getters["coaches/getSearchResult"];
     isLoading.value = false;
     searchCriteria.value = store.getters["coaches/getSearchCriteria"];
-    console.log(searchCriteria.value);
+    // console.log(searchCriteria.value);
 }
-
 
 const adaptWidth = () => {
     const isMobile = window.innerWidth <= mobileBreakpoint.value; // check width when mounting
@@ -118,7 +141,7 @@ const handleResize = () => {
 };
 
 const toggleLoading = () => {
-    console.log("123");
+    // console.log("123");
     isLoading.value = !isLoading.value;
 }
 

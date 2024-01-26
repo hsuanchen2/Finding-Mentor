@@ -23,7 +23,7 @@ export default {
     }
     newRequests.id = responseData.name;
     newRequests.coachId = payload.coachId;
-    console.log(newRequests);
+    // console.log(newRequests);
     context.commit("addRequest", newRequests);
   },
 
@@ -36,7 +36,7 @@ export default {
       `https://find-mentor-b251a-default-rtdb.firebaseio.com/request/${coachId}.json?auth=${token}`
     );
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
     if (!response.ok) {
       const error = new Error(responseData.message || "Something went wrong");
       throw error;
@@ -53,7 +53,7 @@ export default {
         time: responseData[key].date,
       };
       requests.push(request);
-      console.log(request);
+      // console.log(request);
     }
     context.commit("setRequest", requests);
   },

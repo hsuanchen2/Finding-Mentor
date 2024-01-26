@@ -2,7 +2,7 @@
     <transition name="dialog">
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" v-if="props.show">
             <div class="toast-header">
-                <img :src="props.imgUrl">
+                <img src="@/../public/svgs/email.svg">
                 <strong class="mr-auto">{{ props.header }}</strong>
             </div>
             <div class="toast-body">

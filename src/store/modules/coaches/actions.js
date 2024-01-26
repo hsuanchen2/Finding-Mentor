@@ -14,6 +14,9 @@ const checkForMoreMentors = async (context, lastMentorKey) => {
   const nextResponseData = await nextResponse.json();
   if (!nextResponseData) {
     context.commit('moreMentorsOrNot', false);
+    return false;
+  } else {
+    return true;
   }
 }
 export default {
@@ -71,7 +74,7 @@ export default {
     );
 
     const responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
 
     context.commit("registerCoach", {
       ...coachData,
@@ -115,7 +118,7 @@ export default {
       };
       coaches.push(coach);
     }
-    console.log(coaches);
+    // console.log(coaches);
     context.commit("setCoaches", coaches);
     context.commit("setFetchTimestamp");
   },
@@ -124,7 +127,7 @@ export default {
   async loadLandingPageMentors(context, payload) {
     let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
     const response = await fetch(
-      `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=8`,
+      `https://find-mentor-b251a-default-rtdb.firebaseio.com/coaches.json?orderBy="$key"&limitToFirst=7`,
       {
         method: "GET",
       }
@@ -187,10 +190,11 @@ export default {
       console.log(error);
     }
     context.commit("searchedMentors", mentors);
-    console.log(mentors);
+    // console.log(mentors);
     context.commit("setLastMentorKey", lastMentorKey);
     // Try to load one more mentor
-    checkForMoreMentors(context, lastMentorKey);
+    const data = checkForMoreMentors(context, lastMentorKey);
+    context.commit("moreMentorsOrNot", data);
   },
   async loadMoreMentors(context, payload) {
     let dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
@@ -233,22 +237,21 @@ export default {
     try {
       const response = await fetch(dbUrl);
       data = await response.json();
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
     if (!data) {
-      console.log(data);
+      // console.log(data);
       return;
     } else {
       const mentors = [];
-      console.log(payload);
+      // console.log(payload);
       for (let key in data) {
         const isValidFields = checkIfFieldsMatched(data[key].fields, fields);
         const isValidSkills = checkIfSkillsMatched(data[key].skills, skills);
         const isValidJobRating = checkIfJobRatingInRange(data[key].jobRating, rating);
         const isHourlyRateInRange = checkIfHourlyRateIsInRange(data[key].hourlyRate, hourlyRate);
-        console.log(isValidFields, isValidSkills, isValidJobRating, isHourlyRateInRange);
         if (isValidFields && isValidSkills && isValidJobRating && isHourlyRateInRange) {
           const mentor = {
             id: key,
@@ -262,5 +265,11 @@ export default {
       context.commit("setSearchCriteria", payload);
       context.commit("moreMentorsOrNot", false);
     }
+  },
+  // force refresh the mentors list to default
+  async clearFilter(context, payload) {
+    await context.dispatch('loadDefaultMentors');
+    context.commit("clearSearchCriteria", null);
+    context.commit("moreMentorsOrNot", true);
   }
 }

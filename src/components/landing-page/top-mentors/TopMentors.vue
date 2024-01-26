@@ -10,7 +10,7 @@
           Discover More <i class="fas fa-arrow-right"></i></router-link>
       </p>
     </div>
-    <Splide ref="splide" :options="splideSettings" aria-label="Senpai Card">
+    <Splide ref="splide" :options="splideSettings" aria-label="Senpai-Card">
       <SplideSlide v-for="mentor in mentorsArray" :key="mentor.id" class="splide__slide">
         <mentor-card :userId="mentor.id" :jobTitle="mentor.jobTitle" :firstName="mentor.firstName"
           :lastName="mentor.lastName" :desc="mentor.experience" :rate="mentor.hourlyRate" :userImage="mentor.userImage"
@@ -34,8 +34,7 @@
   </section>
 </template>
 <script setup>
-// https://splidejs.com/guides/options/
-import { ref, reactive, onMounted, onBeforeMount, computed } from "vue";
+import { ref, reactive, onMounted, onBeforeMount, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 import { Splide, SplideSlide } from "@splidejs/vue-splide";
 import "@splidejs/vue-splide/css/core";
@@ -45,116 +44,27 @@ import "@splidejs/splide/css";
 // or only core styles
 import "@splidejs/splide/css/core";
 import MentorCard from "@/components/ui/main-page/MentorCard.vue";
-import { LOOP } from "@splidejs/splide";
 const store = useStore();
-const splideSettings = ref(null);
-const mentorsArray = ref([]);
-const userArray = ref([
-  {
-    userId: 123,
-    jobTitle: "Ex Gooogle Techlead",
-    userName: "Partick Shyu",
-    desc: "Tech Lead of App Architecture & Core Features for the YouTube iOS appTech.",
-    rate: 15,
-    jobRating: "4.6 (36)",
-  },
-  {
-    userId: 123,
-    jobTitle: "Ex Meta Techlead",
-    userName: "Jonathan Ma",
-    desc: "Tech Lead of App Architecture & Core Features for the YouTube iOS app.",
-    rate: 25,
-    jobRating: "4.2 (29)",
-  },
-  {
-    userId: 124,
-    jobTitle: "Senior Software Engineer",
-    userName: "Jane Doe",
-    desc: "Experienced software engineer with a passion for building scalable web applications.",
-    rate: 35,
-    jobRating: "4.0 (29)",
-  },
-  {
-    userId: 125,
-    jobTitle: "Product Designer",
-    userName: "John Smith",
-    desc: "Creative and detail-oriented product designer with a focus on user experience and interface design.",
-    rate: 55,
-    jobRating: "3.6 (66)",
-  },
-  {
-    userId: 125,
-    jobTitle: "Product Designer",
-    userName: "John Smith",
-    desc: "Creative and detail-oriented product designer with a focus on user experience and interface design.",
-    rate: 55,
-    jobRating: "3.6 (66)",
-  },
-  {
-    userId: 125,
-    jobTitle: "Product Designer",
-    userName: "John Smith",
-    desc: "Creative and detail-oriented product designer with a focus on user experience and interface design.",
-    rate: 55,
-    jobRating: "3.6 (66)",
-  },
-  {
-    userId: 125,
-    jobTitle: "Product Designer",
-    userName: "John Smith",
-    desc: "Creative and detail-oriented product designer with a focus on user experience and interface design.",
-    rate: 55,
-    jobRating: "3.6 (66)",
-  },
-  {
-    userId: 125,
-    jobTitle: "Product Designer",
-    userName: "John Smith",
-    desc: "Creative and detail-oriented product designer with a focus on user experience and interface design.",
-    rate: 55,
-    jobRating: "3.6 (66)",
-  },
-]);
-
-const splide = ref();
-const btnPrev = () => {
-  splide.value.go("-1");
-  console.log(splide.value);
-};
-
-const btnNext = () => {
-  splide.value.go("+1");
-  console.log(splide.value);
-};
-
-onBeforeMount(async () => {
-  await store.dispatch("coaches/loadLandingPageMentors");
-  const coaches = store.getters["coaches/landingPageMentors"];
-  mentorsArray.value = coaches;
-  console.log(mentorsArray.value);
-});
-onMounted(async () => {
-  splideSettings.value = {
+const splideSettings = reactive({
   pagination: false,
-  rewind: true,
-  perPage: 4, // default to 4 slides per page
+  rewind: false, // not this
+  type: "loop",
+  start: 4,
   speed: 500,
-  perMove: 1,
+  arrows: false,
   lazyLoad: "nearby",
   drag: true,
-  arrows: false,
   autoWidth: true,
   gap: "1.875rem",
-  type: "loop",
-  focus: 'center',
+  focus: "center", // not this
   breakpoints: {
     mediaQuery: "max",
     1200: {
-      perPage: 4, // 4 slides per page when window width is 1200px or less
+      perPage: 7, // 4 slides per page when window width is 1200px or less
       gap: "1rem",
       focus: "center",
       type: "loop",
-      rewind: true,
+      rewind: false,
     },
     768: {
       perPage: 3, // 3 slides per page when window width is 768px or less
@@ -162,28 +72,50 @@ onMounted(async () => {
       focus: "center",
       type: "loop",
       gap: "1rem",
-      rewind: true,
+      rewind: false,
     },
     440: {
       perPage: 1, // 1 slide per page when window width is 440px or less
       gap: "10px",
       focus: "center",
       type: "loop",
-      rewind: true,
+      rewind: false,
       padding: {
         right: "15px",
       },
     },
   },
-};
 });
+const mentorsArray = ref([]);
 
+const splide = ref(null);
+const btnPrev = () => {
+  // console.log(splide.value);
+  splide.value.go("-1");
+};
+
+const btnNext = () => {
+  // console.log(splide.value);
+  splide.value.go("+1");
+};
+
+const loadDisplayedMentors = async () => {
+  await store.dispatch("coaches/loadLandingPageMentors");
+  const coaches = store.getters["coaches/landingPageMentors"];
+  mentorsArray.value = coaches;
+  // console.log(mentorsArray.value);
+}
+
+loadDisplayedMentors();
+onMounted(() => {
+  splide.value.splide.refresh();
+})
 </script>
 <style scoped lang="scss">
-
 .splide {
   -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 2%, rgba(255, 255, 255, 1) 98%, rgba(255, 255, 255, 0) 100%);
 }
+
 .splide__list {
   li {
     width: auto;

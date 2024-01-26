@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <div class="password-wrapper">
                         <label for="exampleInputPassword1">Password</label>
-                        <span><router-link to="/" class="forgot-password">Forgot Your Password ?</router-link> </span>
+                        <!-- <span><router-link to="/" class="forgot-password">Forgot Your Password ?</router-link> </span> -->
                     </div>
                     <div class="password-field">
                         <input :type="showPassword ? 'text' : 'password'" class="form-control" id="exampleInputPassword1"

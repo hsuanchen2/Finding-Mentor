@@ -16,7 +16,7 @@
             <div class="col col-lg-5">
                 <form @submit.prevent="submitForm" class="auth-form">
                     <div class="form-content-wrapper">
-                        <h2>Create your Stripe account</h2>
+                        <h2>Create your Mentor account</h2>
                         <div class="form-group">
                             <label for="exampleInputEmail1" class="email-label">Email</label>
                             <input v-model.trim="signupData.email" class="form-control" id="exampleInputEmail1"

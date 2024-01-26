@@ -52,7 +52,7 @@
         </div>
       </main>
     </div>
-    <router-view></router-view>
+    <router-view :key="$route.meta.key"></router-view>
   </section>
 </template>
 <script setup lang="ts">
@@ -98,7 +98,7 @@ const contactLink2 = computed((): string => {
 const setMentor = async () => {
   await store.dispatch("coaches/loadSpecificMentorInfo", route.params.id);
   const data = (store.getters["coaches/currentMentor"]);
-  console.log(data);
+  // console.log(data);
   mentorDetail.userimage = data.userImage;
   mentorDetail.firstName = data.firstName;
   mentorDetail.lastName = data.lastName;

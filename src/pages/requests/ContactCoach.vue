@@ -55,7 +55,7 @@ function submitForm() {
     message: formData.message,
     coachId: formData.coachId,
   };
-  console.log(newRequestForm);
+  // console.log(newRequestForm);
   store.dispatch("requests/contactCoach", newRequestForm);
   router.replace("/coaches");
 }

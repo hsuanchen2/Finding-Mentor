@@ -3,8 +3,18 @@
     <transition name="fade">
       <mobileNav v-if="isMobile" @close-nav="toggleNav"></mobileNav>
     </transition>
+
     <nav class="navbar navbar-expand-md">
-      <router-link to="/" class="navbar-brand">Finding Mentor</router-link>
+      <router-link to="/" class="navbar-brand"><img class="brand-logo" src="@/../public/svg-icons/brand-icon.png" alt="">
+        Mentors</router-link>
+      <button v-if="mobile" @click="toggleCart" class="cart-button position-relative"><i
+          class="fa-solid fa-cart-shopping"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+          {{ cartItemsLength }}
+          <span class="visually-hidden">favorite list</span>
+        </span>
+      </button>
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" @click="toggleNav">
         <span class="navbar-toggler-icon"></span>
@@ -16,14 +26,18 @@
             <router-link to="/coaches" class="nav-link" @click="closeMenu">Home</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/coaches" class="nav-link" @click="closeMenu">About Us</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/" class="nav-link" @click="closeMenu">Pricing</router-link>
+            <router-link to="/talents" class="nav-link" @click="closeMenu">Find Mentors</router-link>
           </li>
         </ul>
-
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <button @click="toggleCart" class="cart-button position-relative"><i class="fa-solid fa-cart-shopping"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info">
+                {{ cartItemsLength }}
+                <span class="visually-hidden">favorite list</span>
+              </span>
+            </button>
+          </li>
           <li class="nav-item" v-if="isLoggedIn">
             <router-link to="/requests" class="nav-link" @click="closeMenu">Your Requests</router-link>
           </li>
@@ -41,6 +55,7 @@
       </div>
     </nav>
   </header>
+  <the-cart :showCart="showCart" @toggleCart="toggleCart"></the-cart>
 </template>
 <script setup lang="ts">
 // import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -48,7 +63,7 @@ import { Ref, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import mobileNav from "./MobileNav.vue";
-
+const showCart = ref(false);
 const store = useStore();
 const router = useRouter();
 const windowWidth = ref(window.innerWidth);
@@ -56,9 +71,20 @@ const isMobile = ref(false);
 const isLoggedIn = computed(() => {
   return store.getters.isAuthenticated;
 });
+const mobile = computed(() => {
+  return windowWidth.value < 768;
+})
+
+const cartItemsLength = computed(() => {
+  return store.getters["cart/getCartItems"].length;
+})
 
 const showNav: Ref<boolean> = ref(false);
 const mobileDropdown: Ref<null | HTMLElement> = ref(null);
+
+const toggleCart = () => {
+  showCart.value = !showCart.value;
+};
 
 const logOut = () => {
   store.dispatch("logout");
@@ -119,6 +145,9 @@ header .navbar {
 
   .navbar-brand {
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    color: $main-text-color;
   }
 
   .navbar-collapse {
@@ -164,6 +193,7 @@ h1 {
   a {
     color: white;
     margin: 0;
+
     &:hover,
     &:active,
     &.router-link-active {
@@ -194,4 +224,26 @@ h1 {
   opacity: 0
 }
 
+.cart-button {
+  border: none;
+  background: none;
+
+  i {
+    color: $main-button-color;
+    font-size: 24px;
+    padding-top: 10px;
+  }
+
+
+}
+.brand-logo {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+  }
+@media (max-width:768px) {
+  .cart-button {
+    margin-left: auto;
+  }
+}
 </style>

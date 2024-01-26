@@ -1,12 +1,12 @@
 <template>
-    <button v-if="searchCriteriaCopy" v-for="(field, index) in searchCriteriaCopy.fields">
+    <button v-if="searchCriteria" v-for="(field, index) in searchCriteria.fields">
         {{ field }}
     </button>
-    <button v-if="searchCriteriaCopy" v-for="(skill, index) in searchCriteriaCopy.skills">
+    <button v-if="searchCriteria" v-for="(skill, index) in searchCriteria.skills">
         {{ skill }}
     </button>
-    <button v-if="searchCriteriaCopy">
-        {{ searchCriteriaCopy.location }}
+    <button v-if="searchCriteria">
+        Location : {{ searchCriteria.location }}
     </button>
 </template>
 <script setup lang="ts">
@@ -17,9 +17,7 @@ const props = defineProps({
         required: false,
     },
 })
-const searchCriteriaCopy = computed(() => {
-    return { ...props.searchCriteria }
-})
+
 </script>
 <style lang="scss" scoped>
 button {

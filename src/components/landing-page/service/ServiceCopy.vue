@@ -1,7 +1,7 @@
 <template>
   <!-- <div v-if="props.index === props.show" :key="props.copy" class="copy-container"> -->
-  <transition name="fade" mode="out-in">
-    <div v-if="props.show" :key="props.copy" class="copy-container">
+  <!-- <transition name="fade" mode="out-in"> -->
+    <div v-show="props.show" :key="props.copy" class="copy-container">
       <p class="text-start">{{ props.textStart }}</p>
       <h2>{{ props.h2 }}</h2>
       <p class="copy">{{ props.copy }}</p>
@@ -13,7 +13,7 @@
       </ul>
       <base-button class="cta-button">Start now</base-button>
     </div>
-  </transition>
+  <!-- </transition> -->
 </template>
 <script setup>
 import { ref, reactive, defineProps, onMounted } from "vue";

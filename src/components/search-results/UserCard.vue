@@ -32,9 +32,10 @@
 </template>
 <script setup lang="ts">
 import { Ref, ref, reactive, onMounted, defineProps, defineEmits } from "vue";
+import { useStore } from "vuex";
 import SkillTag from "@/components/ui/SkillTag.vue";
 const scroll: Ref<any> = ref(null);
-
+const store = useStore();
 const props = defineProps({
     id: String,
     aboutMe: String,
@@ -73,8 +74,16 @@ const detactPosition = (): void => {
 
 
 const addToFavorite = (e: MouseEvent) => {
-    console.log(e.target);
-    console.log("clicked")
+    store.dispatch("cart/setCartItemsToLocalStorage", {
+        userId: props.id,
+        userImage: props.userImage,
+        firstName: props.firstName,
+        lastName: props.lastName,
+        jobTitle: props.jobTitle,
+        hourlyRate: props.hourlyRate,
+        jobsDone: props.jobsDone,
+        jobRating: props.jobRating,
+    })
 }
 
 // onMounted(() => {
@@ -156,7 +165,9 @@ const addToFavorite = (e: MouseEvent) => {
     margin-left: auto;
     margin-right: 20px;
     transition: .2s;
-
+    &:active {
+        transform: translateY(-5px);
+    }
     &:hover {
         background-color: lightgray;
     }
@@ -177,6 +188,7 @@ const addToFavorite = (e: MouseEvent) => {
 .location {
     display: flex;
     align-items: center;
+    min-width: 130px;
 }
 
 .user-desc {
@@ -217,5 +229,19 @@ const addToFavorite = (e: MouseEvent) => {
 
 .both-side-fade {
     -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 2%, rgba(255, 255, 255, 1) 98%, rgba(255, 255, 255, 0) 100%);
+}
+
+// hide scrollbar
+@media (max-width: 414px) {
+    .skill-tags::-webkit-scrollbar {
+        display: none;
+    }
+
+    .skill-tags {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+    }
 }
 </style>

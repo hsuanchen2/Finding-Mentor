@@ -1,6 +1,5 @@
 <template>
-    <base-toast :show="messageSent" :copy="toastCopy.copy" :header="toastCopy.header" :imgUrl="toastCopy.imgUrl"
-        class="toast"></base-toast>
+    <base-toast :show="messageSent" :copy="toastCopy.copy" :header="toastCopy.header" class="toast"></base-toast>
     <div class="wrapper">
         <section class="container">
             <div class="text">

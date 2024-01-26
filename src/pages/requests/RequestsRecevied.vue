@@ -1,17 +1,10 @@
 <template>
-  <!-- 雙驚嘆號會把string改成boolean -->
-  <base-dialog :show="!!error" title="Something went wrong" @close="handleError">
-    <p>{{ error }}</p>
-  </base-dialog>
   <div class="wrapper">
     <header class="container">
       <h2 class="col col-12">Message Recevied</h2>
     </header>
     <base-spinner v-if="isLoading"></base-spinner>
-    <!-- <ul v-if="hasRequests">
-      <request-item v-for="request in receivedRequests" :key="request.id" :email="request.userEmail"
-        :message="request.message" :firstName="request.firstName" :lastName="request.lastName"></request-item>
-    </ul> -->
+
     <table v-if="hasRequests && !isLoading" class="table">
       <thead>
         <tr>
@@ -65,7 +58,7 @@ const hasRequests = computed((): any => {
 const loadRequests = async () => {
   isLoading.value = true;
   try {
-    const response = await store.dispatch("requests/fetchRequests");
+    await store.dispatch("requests/fetchRequests");
   } catch (err: any) {
     console.log(err);
     error.value = err.message;
@@ -73,13 +66,9 @@ const loadRequests = async () => {
   isLoading.value = false;
 }
 
-const handleError = () => {
-  error.value = null;
-}
-
 onBeforeMount(() => {
   loadRequests();
-  console.log(store.getters["requests/receivedRequest"])
+  // console.log(store.getters["requests/receivedRequest"])
 });
 
 const sortByTime = () => {
@@ -89,6 +78,11 @@ const sortByTime = () => {
 </script>
 
 <style scoped lang="scss">
+.table {
+  margin: 0 auto 200px auto;  
+  word-break: break-word;
+}
+
 .wrapper {
   max-width: 1200px;
   margin: 100px auto;
