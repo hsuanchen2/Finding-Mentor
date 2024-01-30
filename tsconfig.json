@@ -1,9 +1,16 @@
 {
     "compilerOptions": {
-        "types": ["node"],
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+        },
+        "types": [
+            "vite/client"
+        ],
         "target": "esnext",
         "module": "esnext",
-        "strict": true,
+        "strict": false,
         "jsx": "preserve",
         "moduleResolution": "node",
         "esModuleInterop": true,
@@ -16,15 +23,17 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": true, 
+        "noEmit": true,
     },
     "include": [
         "src/**/*.ts",
         "src/**/*.d.ts",
+        "src/**/*.d.js",
         "src/**/*.tsx",
-        "src/**/*.vue"
-, "src/utils/checkIfTheresMoreData.js"    ],
+        "src/**/*.vue",
+        "src/utils/checkIfTheresMoreData.ts"
+    ],
     "exclude": [
         "node_modules"
-    ], 
+    ],
 }

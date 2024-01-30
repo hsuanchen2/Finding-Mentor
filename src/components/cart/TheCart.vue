@@ -6,7 +6,7 @@
             <ul>
                 <cart-item v-for="(mentor, index) in cartItems" :userId="mentor.userId" :userImage="mentor.userImage"
                     :key="index" :firstName="mentor.firstName" :lastName="mentor.lastName" :jobTitle="mentor.jobTitle"
-                    :jobRating="mentor.jobRating" :jobsDone="mentor.jobsDone" @removeCartItem="removeCartItem"></cart-item>
+                    :jobRating="mentor.jobRating" :jobsDone="mentor.jobsDone" @removeCartItem="removeCartItem" />
             </ul>
             <div v-if="isCartEmpty" class="empty-cart">
                 <p>Your favorite list is empty.</p>
@@ -43,7 +43,7 @@ const toggleCart = () => {
     emits("toggleCart");
 }
 
-const removeCartItem = (userId) => {
+const removeCartItem = (userId: string) => {
     // console.log(userId);
     store.dispatch("cart/deleteCartItemFromLocalStorage", userId);
 }

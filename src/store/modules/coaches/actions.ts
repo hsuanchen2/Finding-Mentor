@@ -1,14 +1,15 @@
-import { imageDb } from "@/../config/firebaseAuth";
+// import { imageDb } from "@/../config/firebaseAuth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import checkIfHourlyRateIsInRange from "@/utils/checkIfHourlyRateIsInRange.ts";
-import checkIfJobRatingInRange from "@/utils/checkIfJobRatingInRange.ts";
-import checkIfFieldsMatched from "@/utils/checkIfFieldsMatched.ts";
-import checkIfSkillsMatched from "@/utils/checkIfSkillsMatched.ts";
+import { firebaseApp } from "@/../config/firebaseAuth";
+import checkIfHourlyRateIsInRange from "@/utils/checkIfHourlyRateIsInRange";
+import checkIfJobRatingInRange from "@/utils/checkIfJobRatingInRange";
+import checkIfFieldsMatched from "@/utils/checkIfFieldsMatched";
+import checkIfSkillsMatched from "@/utils/checkIfSkillsMatched";
 // const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
 // const storageDbUrl = import.meta.env.VITE_FIREBASE_STORAGE_URL;
-const storage = getStorage();
+const storage = getStorage(firebaseApp);
 
-const checkForMoreMentors = async (context, lastMentorKey) => {
+const checkForMoreMentors = async (context: unknown, lastMentorKey: string) => {
   const nextDbUrl = `${import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY}/coaches.json?orderBy="$key"&startAfter="${lastMentorKey}"&limitToFirst=1`;
   const nextResponse = await fetch(nextDbUrl);
   const nextResponseData = await nextResponse.json();

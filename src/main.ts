@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 // import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import router from "./router";
 import store from "./store/index.js";
-import { firebaseApp } from "../config/firebaseAuth.ts";
+import { firebaseApp } from "../config/firebaseAuth";
 import App from "./App.vue";
 
 const app = createApp(App);

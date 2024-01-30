@@ -1,39 +1,44 @@
 <template>
-    <div class="user-card">
-        <!-- header -->
-        <header>
-            <div class="user-image-wrapper">
-                <img :src="props.userImage" class="user-image" alt="">
-                <span class="status"></span>
-            </div>
-            <div class="user-info-text">
-                <h3>{{ props.firstName }} {{ props.lastName }}</h3>
-                <h4>{{ props.jobTitle }}</h4>
-                <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ props.location }}</p>
-                <p>&#x2B50 {{ props.jobRating }} ({{ props.jobsDone }})</p>
-            </div>
-            <button class="add-to-favorite" @click="addToFavorite">
-                <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
-            </button>
-        </header>
+    <router-link :to="contactLink">
+        <div class="user-card">
+            <!-- header -->
+            <header>
+                <div class="user-image-wrapper">
+                    <img :src="props.userImage" class="user-image" alt="">
+                    <span class="status"></span>
+                </div>
+                <div class="user-info-text">
+                    <h3>{{ props.firstName }} {{ props.lastName }}</h3>
+                    <h4>{{ props.jobTitle }}</h4>
+                    <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ props.location }}
+                    </p>
+                    <p>&#x2B50 {{ props.jobRating }} ({{ props.jobsDone }})</p>
+                </div>
+                <button class="add-to-favorite" @click.prevent="addToFavorite">
+                    <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
+                </button>
+            </header>
 
-        <!-- hourly rate -->
-        <div class="hourly-rate">
-            <p><span>${{ props.hourlyRate }}</span>/hour</p>
+            <!-- hourly rate -->
+            <div class="hourly-rate">
+                <p><span>${{ props.hourlyRate }}</span>/hour</p>
+            </div>
+            <div class="user-desc">
+                <p>{{ props.aboutMe }}</p>
+            </div>
+            <div :class="{ 'skill-tags': true, 'left-side-fade': scrollPosition.end, 'right-side-fade': scrollPosition.start, 'both-side-fade': scrollPosition.mid }"
+                ref="scroll" @scroll="detactPosition">
+                <skill-tag v-for="skill in props.skills">{{ skill }}</skill-tag>
+            </div>
         </div>
-        <div class="user-desc">
-            <p>{{ props.aboutMe }}</p>
-        </div>
-        <div :class="{ 'skill-tags': true, 'left-side-fade': scrollPosition.end, 'right-side-fade': scrollPosition.start, 'both-side-fade': scrollPosition.mid }"
-            ref="scroll" @scroll="detactPosition">
-            <skill-tag v-for="skill in props.skills">{{ skill }}</skill-tag>
-        </div>
-    </div>
+    </router-link>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, onMounted, defineProps, defineEmits } from "vue";
+import { Ref, ref, reactive, onMounted, defineProps, computed } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router"
 import SkillTag from "@/components/ui/SkillTag.vue";
+const router = useRouter();
 const scroll: Ref<any> = ref(null);
 const store = useStore();
 const props = defineProps({
@@ -85,12 +90,16 @@ const addToFavorite = (e: MouseEvent) => {
         jobRating: props.jobRating,
     })
 }
-
-// onMounted(() => {
-//     console.log(props);
-// })
+const contactLink = computed((): string => {
+    return `coaches/${props.id}/contact`
+})
 </script>
 <style lang="scss" scoped>
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .user-card {
     transition: .2s ease;
     max-height: 230px;
@@ -165,9 +174,11 @@ const addToFavorite = (e: MouseEvent) => {
     margin-left: auto;
     margin-right: 20px;
     transition: .2s;
+
     &:active {
         transform: translateY(-5px);
     }
+
     &:hover {
         background-color: lightgray;
     }

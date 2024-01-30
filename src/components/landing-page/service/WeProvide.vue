@@ -36,31 +36,31 @@
       show: true,
       lis: [
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Experienced career experts for guidance",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "1000+ successful career transitions",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Personalized support for dream jobs",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Tailored consultations to meet your needs",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "End-to-end personalized assistance",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Proven methods for software roles",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Practical insights for entering software",
         },
       ],
@@ -72,31 +72,31 @@
       show: false,
       lis: [
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Resume reviews by experienced engineers from diverse fields",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Customized resume advice for software domains",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Gain industry-specific insights",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Tailored resume support for your dream job ",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Access effective methods to highlight skills",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "1000+ successful software engineering career transitions",
         },
         {
-          iconUrl: "@/../public/svg-icons/arrow.svg",
+          iconUrl: "/svg-icons/arrow.svg",
           text: "Find success stories showcasing career transformations",
         },
       ],
@@ -178,35 +178,35 @@
   const imageData = ref([
     {
       alt: "software",
-      imgUrl: "@/../public/index/code.png",
+      imgUrl: "/index/code.png",
       copy: "Thinking about getting into software engineering?",
       show: true,
     },
     {
       alt: "resume-review",
-      imgUrl: "@/../public/index/resume-review.png",
+      imgUrl: "/index/resume-review.png",
       copy: "Not sure if your resume is ready?",
       show: false,
     },
     {
       alt: "consult",
-      imgUrl: "@/../public/index/consulting.png",
+      imgUrl: "/index/consulting.png",
       copy: "Looking for experienced pro to consult?",
       show: false,
     },
     {
       alt: "talk",
-      imgUrl: "@/../public/index/talk.png",
+      imgUrl: "/index/talk.png",
       copy: "Or... you just want to have someone to talk to?",
       show: false,
     },
   ]);
 
   const buttons = ref([
-    { buttonUrl: "@/../public/index/test.png", alt: "button", active: true },
-    { buttonUrl: "@/../public/index/test2.png", alt: "button", active: false },
-    { buttonUrl: "@/../public/index/test3.png", alt: "button", active: false },
-    { buttonUrl: "@/../public/index/test4.png", alt: "button", active: false },
+    { buttonUrl: "/index/test.png", alt: "button", active: true },
+    { buttonUrl: "/index/test2.png", alt: "button", active: false },
+    { buttonUrl: "/index/test3.png", alt: "button", active: false },
+    { buttonUrl: "/index/test4.png", alt: "button", active: false },
   ]);
 
   const toggle = (index) => {

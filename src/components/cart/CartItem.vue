@@ -15,7 +15,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
-const store = useStore();
 const props = defineProps({
     userId: String,
     userImage: String,
@@ -26,11 +25,12 @@ const props = defineProps({
     jobsDone: Number,
     jobRating: Number,
 })
-const contactLink = computed(() => {
+const contactLink = computed((): string => {
     return `/coaches/${props.userId}/contact`;
 })
 const emits = defineEmits(["removeCartItem"]);
-const removeCartItem = () => {
+
+const removeCartItem = (): void => {
     emits("removeCartItem", props.userId);
 }
 </script>
