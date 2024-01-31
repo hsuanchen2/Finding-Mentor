@@ -43,7 +43,7 @@
           data-aos-easing="ease-in-out"
         />
         <img
-          src="../../../../public/index/test.svg"
+          src="../../../../public/index/test7.png"
           alt="profession"
           class="hero-image-miner-second"
           data-aos="fade-up"
