@@ -1,20 +1,46 @@
 <template>
-    <div class="container mt-lg-5 mt-5">
-        <div class="row px-xl-0 px-md-3 px-1">
-            <keep-alive>
-                <side-bar v-if="showSidebar" class="col col-md-3" :fieldData="fields" :skills="skills" :rating="rating"
-                    :hourlyRateData="hourlyRate" :showBackdrop="showBackdrop" @toggleSidebar="sidebarToggle"
-                    @isLoading="toggleLoading" @updateLoading="isLoading" @searchMentors="searchMentor"></side-bar>
-            </keep-alive>
-            <search-result class="col col-12 col-md-9 px-2 px-lg-0" @toggleSidebar="sidebarToggle"
-                @loadMore="loadMoreMentors" @reSearchMentors="clearFilter" :isLoading="isLoading"
-                :showSidebarToggle="showSidebar" :searchResult="searchResult" :resultLength="resultLength"
-                :isLoadMoreLoading="isLoadMoreLoading" :searchCriteria="searchCriteria"></search-result>
-        </div>
+  <div class="container mt-lg-5 mt-5">
+    <div class="row px-xl-0 px-md-3 px-1">
+      <keep-alive>
+        <side-bar
+          v-if="showSidebar"
+          class="col col-md-3"
+          :fieldData="fields"
+          :skills="skills"
+          :rating="rating"
+          :hourlyRateData="hourlyRate"
+          :showBackdrop="showBackdrop"
+          @toggleSidebar="sidebarToggle"
+          @isLoading="toggleLoading"
+          @updateLoading="isLoading"
+          @searchMentors="searchMentor"
+        ></side-bar>
+      </keep-alive>
+      <search-result
+        class="col col-12 col-md-9 px-2 px-lg-0"
+        @toggleSidebar="sidebarToggle"
+        @loadMore="loadMoreMentors"
+        @reSearchMentors="clearFilter"
+        :isLoading="isLoading"
+        :showSidebarToggle="showSidebar"
+        :searchResult="searchResult"
+        :resultLength="resultLength"
+        :isLoadMoreLoading="isLoadMoreLoading"
+        :searchCriteria="searchCriteria"
+      ></search-result>
     </div>
+  </div>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, onMounted, onBeforeUnmount, computed, watch } from "vue";
+import {
+  Ref,
+  ref,
+  reactive,
+  onMounted,
+  onBeforeUnmount,
+  computed,
+  watch,
+} from "vue";
 import { useStore } from "vuex";
 
 import SideBar from "@/components/layout/sidebar/SideBar.vue";
@@ -37,58 +63,53 @@ const showBackdrop = ref(null);
 const searchCriteria = ref(null);
 
 interface Mentor {
-    id: string;
-    aboutMe: string;
-    experience: string;
-    firstName: string;
-    lastName: string;
-    description: string;
-    hourlyRate: number;
-    skills: string[];
-    fields: string[];
-    jobRating: number;
-    jobsDone: number;
-    userImage: string;
-    location: string;
-    jobTitle: string;
+  id: string;
+  aboutMe: string;
+  experience: string;
+  firstName: string;
+  lastName: string;
+  description: string;
+  hourlyRate: number;
+  skills: string[];
+  fields: string[];
+  jobRating: number;
+  jobsDone: number;
+  userImage: string;
+  location: string;
+  jobTitle: string;
 }
 const searchResult: Ref<Mentor[]> = ref([]);
 const resultLength = ref(0);
-// const searchCriteria = computed(() => {
-//     return store.getters["coaches/getSearchCriteria"];
-// })
 const loadDefaultMentors = async () => {
-    // console.log("loading defualt!1")
-    try {
-        isLoading.value = true;
-        await store.dispatch("coaches/loadDefaultMentors");
-    } catch (error) {
-        console.log(error);
-    }
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    resultLength.value = await store.getters["coaches/getTotalCount"];
-    isLoading.value = false;
-    // console.log(searchResult.value);
-}
+  try {
+    isLoading.value = true;
+    await store.dispatch("coaches/loadDefaultMentors");
+  } catch (error) {
+    console.log(error);
+  }
+  searchResult.value = store.getters["coaches/getSearchResult"];
+  resultLength.value = store.getters["coaches/getTotalCount"];
+  isLoading.value = false;
+};
 
 const clearFilter = async () => {
-    isLoading.value = true;
-    await store.dispatch("coaches/clearFilter");
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    searchCriteria.value = await store.getters["coaches/getSearchCriteria"];
-    isLoading.value = false;
-}
+  isLoading.value = true;
+  await store.dispatch("coaches/clearFilter");
+  searchResult.value = await store.getters["coaches/getSearchResult"];
+  searchCriteria.value = await store.getters["coaches/getSearchCriteria"];
+  isLoading.value = false;
+};
 
 const loadMoreMentors = async () => {
-    try {
-        isLoadMoreLoading.value = true;
-        await store.dispatch("coaches/loadMoreMentors");
-    } catch (error) {
-        console.log(error);
-    }
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    resultLength.value = await store.getters["coaches/getTotalCount"];
-    isLoadMoreLoading.value = false;
+  try {
+    isLoadMoreLoading.value = true;
+    await store.dispatch("coaches/loadMoreMentors");
+  } catch (error) {
+    console.log(error);
+  }
+  searchResult.value = await store.getters["coaches/getSearchResult"];
+  resultLength.value = await store.getters["coaches/getTotalCount"];
+  isLoadMoreLoading.value = false;
 };
 
 loadDefaultMentors();
@@ -108,63 +129,63 @@ loadDefaultMentors();
 //     console.log(searchCriteria.value);
 // }
 
-
 const searchMentor = async (searchFormData: object) => {
-    isLoading.value = true;
-    try {
-        // 傳深拷貝，否則當sidebar 中的 searchFormData 改變時會改到 searchCriteria
-        const searchCriteriaCopy = JSON.parse(JSON.stringify(searchFormData));
-        await store.dispatch("coaches/searchMentors", searchCriteriaCopy);
-    } catch (error) {
-        console.log(error);
-    }
-    showBackdrop.value && sidebarToggle();
-    searchResult.value = await store.getters["coaches/getSearchResult"];
-    isLoading.value = false;
-    searchCriteria.value = store.getters["coaches/getSearchCriteria"];
-    // console.log(searchCriteria.value);
-}
+  isLoading.value = true;
+  try {
+    // 傳深拷貝，否則當sidebar 中的 searchFormData 改變時會改到 searchCriteria
+    const searchCriteriaCopy = JSON.parse(JSON.stringify(searchFormData));
+    await store.dispatch("coaches/searchMentors", searchCriteriaCopy);
+  } catch (error) {
+    console.log(error);
+  }
+  showBackdrop.value && sidebarToggle();
+  searchResult.value = await store.getters["coaches/getSearchResult"];
+  isLoading.value = false;
+  searchCriteria.value = store.getters["coaches/getSearchCriteria"];
+  // console.log(searchCriteria.value);
+};
 
 const adaptWidth = () => {
-    const isMobile = window.innerWidth <= mobileBreakpoint.value; // check width when mounting
-    showBackdrop.value = isMobile;
-    showSidebar.value = !isMobile;
-    showMobileSidebar.value = !isMobile;
+  const isMobile = window.innerWidth <= mobileBreakpoint.value; // check width when mounting
+  showBackdrop.value = isMobile;
+  showSidebar.value = !isMobile;
+  showMobileSidebar.value = !isMobile;
 };
 
 const handleResize = () => {
-    const isMobile = window.innerWidth <= mobileBreakpoint.value
-    showBackdrop.value = isMobile;
-    showSidebar.value = !isMobile || (showMobileSidebar.value && isMobile);
-    showMobileSidebar.value = isMobile && showMobileSidebar.value;
-    document.body.style.overflow = isMobile && showMobileSidebar.value ? "hidden" : "auto";
+  const isMobile = window.innerWidth <= mobileBreakpoint.value;
+  showBackdrop.value = isMobile;
+  showSidebar.value = !isMobile || (showMobileSidebar.value && isMobile);
+  showMobileSidebar.value = isMobile && showMobileSidebar.value;
+  document.body.style.overflow =
+    isMobile && showMobileSidebar.value ? "hidden" : "auto";
 };
 
 const toggleLoading = () => {
-    // console.log("123");
-    isLoading.value = !isLoading.value;
-}
+  // console.log("123");
+  isLoading.value = !isLoading.value;
+};
 
 onMounted(() => {
-    adaptWidth();
-    window.addEventListener("resize", handleResize);
+  adaptWidth();
+  window.addEventListener("resize", handleResize);
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener("resize", handleResize);
-})
+  window.removeEventListener("resize", handleResize);
+});
 
 const sidebarToggle = () => {
-    showMobileSidebar.value = !showMobileSidebar.value;
-    showSidebar.value = !showSidebar.value;
-    document.body.style.overflow = showMobileSidebar.value ? "hidden" : "auto";
+  showMobileSidebar.value = !showMobileSidebar.value;
+  showSidebar.value = !showSidebar.value;
+  document.body.style.overflow = showMobileSidebar.value ? "hidden" : "auto";
 };
 </script>
 <style lang="scss" scoped>
 .container {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // .slide-enter-active {

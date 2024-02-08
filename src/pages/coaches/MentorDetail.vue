@@ -8,7 +8,7 @@
       <div class="user-info-text">
         <h3>{{ mentorDetail.firstName }} {{ mentorDetail.lastName }}</h3>
         <h4 class="user-title">{{ mentorDetail.jobTitle }}</h4>
-        <h4>&#x2B50 {{ mentorDetail.jobRating }}</h4>
+        <h4>&#x2B50 {{ mentorDetail.jobRating }} ({{ mentorDetail.jobsDone }}) </h4>
         <p class="location"><i class="fa-solid fa-location-dot" style="color: #ad76db;"></i>{{ mentorDetail.location }}
         </p>
       </div>
@@ -63,20 +63,33 @@ import SkillTag from "@/components/ui/SkillTag.vue";
 const route = useRoute();
 const store = useStore();
 
-class MentorDetail {
-  userimage = "";
-  firstName = "";
-  lastName = "";
-  jobTitle = "";
-  jobRating = "";
-  hourlyRate = "";
-  location = "";
-  skillsTag: string[] = [];
-  aboutMe = "";
-  workExp = "";
+interface MentorDetail {
+  userimage : String,
+  firstName : String,
+  lastName : String,
+  jobTitle : String,
+  jobRating : Number,
+  hourlyRate : Number,
+  location : String,
+  skillsTag: string[],
+  aboutMe : String, 
+  workExp : String, 
+  jobsDone : Number
 }
 
-const mentorDetail = reactive(new MentorDetail());
+const mentorDetail = ref<MentorDetail>({
+  userimage: '',
+  firstName: '',
+  lastName: '',
+  jobTitle: '',
+  jobRating: 0,
+  hourlyRate: 0,
+  location: '',
+  skillsTag: [],
+  aboutMe: '',
+  workExp: '',
+  jobsDone: 0
+});
 
 const currentMentor = computed(() => {
   return store.getters["mentors/currentMentor"];
@@ -99,16 +112,17 @@ const setMentor = async () => {
   await store.dispatch("coaches/loadSpecificMentorInfo", route.params.id);
   const data = (store.getters["coaches/currentMentor"]);
   // console.log(data);
-  mentorDetail.userimage = data.userImage;
-  mentorDetail.firstName = data.firstName;
-  mentorDetail.lastName = data.lastName;
-  mentorDetail.jobTitle = data.jobTitle;
-  mentorDetail.jobRating = data.jobRating;
-  mentorDetail.hourlyRate = data.hourlyRate;
-  mentorDetail.location = data.location;
-  mentorDetail.skillsTag = data.skills;
-  mentorDetail.aboutMe = data.aboutMe;
-  mentorDetail.workExp = data.experience;
+  mentorDetail.value.userimage = data.userImage;
+  mentorDetail.value.firstName = data.firstName;
+  mentorDetail.value.lastName = data.lastName;
+  mentorDetail.value.jobTitle = data.jobTitle;
+  mentorDetail.value.jobRating = data.jobRating;
+  mentorDetail.value.hourlyRate = data.hourlyRate;
+  mentorDetail.value.location = data.location;
+  mentorDetail.value.skillsTag = data.skills;
+  mentorDetail.value.aboutMe = data.aboutMe;
+  mentorDetail.value.workExp = data.experience;
+  mentorDetail.value.jobsDone = data.jobsDone; 
 }
 
 onMounted(async () => {
@@ -124,7 +138,7 @@ onMounted(async () => {
   border: 1px solid lightgray;
   border-radius: 10px;
   box-shadow: $light-card-shadow;
-
+  background-color: white;
   header {
     display: flex;
     align-items: center;

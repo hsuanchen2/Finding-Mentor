@@ -14,8 +14,8 @@
                     </p>
                     <p>&#x2B50 {{ props.jobRating }} ({{ props.jobsDone }})</p>
                 </div>
-                <button class="add-to-favorite" @click.prevent="addToFavorite">
-                    <i class="fa-regular fa-heart" style="color: #cd70ff;"></i>
+                <button class="add-to-favorite" @click.prevent="addToFavorite" :class="{'fill-button-bg' : isIdExists}">
+                    <i class="fa-regular fa-heart"></i>
                 </button>
             </header>
 
@@ -68,6 +68,11 @@ const scrollPosition = reactive<ScrollPosition>({
     mid: null,
     end: null,
 });
+
+const isIdExists = computed(():boolean => {
+    return store.getters["cart/getCartItems"].map(el => el.userId).some(el => el === props.id); 
+})
+
 const detactPosition = (): void => {
     const scrollLeft = Math.ceil(scroll.value.scrollLeft);
     const offsetWidth = scroll.value.offsetWidth;
@@ -79,7 +84,10 @@ const detactPosition = (): void => {
 
 
 const addToFavorite = (e: MouseEvent) => {
-    store.dispatch("cart/setCartItemsToLocalStorage", {
+    if (isIdExists.value) {
+        store.dispatch("cart/deleteCartItemFromLocalStorage", props.id)
+    } else {
+        store.dispatch("cart/setCartItemsToLocalStorage", {
         userId: props.id,
         userImage: props.userImage,
         firstName: props.firstName,
@@ -89,11 +97,17 @@ const addToFavorite = (e: MouseEvent) => {
         jobsDone: props.jobsDone,
         jobRating: props.jobRating,
     })
+     }
 }
 const contactLink = computed((): string => {
     return `coaches/${props.id}/contact`
 })
+
+
+
 </script>
+
+
 <style lang="scss" scoped>
 a {
     text-decoration: none;
@@ -182,6 +196,9 @@ a {
     &:hover {
         background-color: lightgray;
     }
+    i {
+        color: #cd70ff;
+    }
 }
 
 .hourly-rate {
@@ -240,6 +257,13 @@ a {
 
 .both-side-fade {
     -webkit-mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 2%, rgba(255, 255, 255, 1) 98%, rgba(255, 255, 255, 0) 100%);
+}
+
+.fill-button-bg {
+    background-color: red;
+    i {
+        color: white;
+    }
 }
 
 // hide scrollbar

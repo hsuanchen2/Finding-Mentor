@@ -44,16 +44,14 @@ const toggleCart = () => {
 }
 
 const removeCartItem = (userId: string) => {
-    // console.log(userId);
     store.dispatch("cart/deleteCartItemFromLocalStorage", userId);
 }
 
 watch(() => store.getters["cart/getCartItems"], (newCartItems) => {
     cartItems.value = newCartItems;
 });
-const contactLink = computed(() => {
-    return `/coaches/${props}/contact`;
-})
+
+
 
 getCartItemsFromLocalStorage();
 </script>

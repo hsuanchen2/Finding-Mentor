@@ -14,6 +14,7 @@
     "@splidejs/splide": "^4.1.4",
     "@splidejs/vue-splide": "^0.6.12",
     "@tarekraafat/autocomplete.js": "^10.2.7",
+    "@vuepic/vue-datepicker": "^8.0.0",
     "algoliasearch": "^4.20.0",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.2",
