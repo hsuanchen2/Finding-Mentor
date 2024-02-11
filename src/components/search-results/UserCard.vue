@@ -260,10 +260,14 @@ a {
 }
 
 .fill-button-bg {
+    transition: 0.3s;
     background-color: red;
     i {
         color: white;
     }
+    &:hover {
+            background-color: rgb(255, 122, 122);
+        }
 }
 
 // hide scrollbar
