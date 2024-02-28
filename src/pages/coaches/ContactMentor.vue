@@ -1,10 +1,5 @@
 <template>
-  <base-toast
-    :show="messageSent"
-    :copy="toastCopy.copy"
-    :header="toastCopy.header"
-    class="toast"
-  ></base-toast>
+  <base-toast :show="messageSent" :copy="toastCopy.copy" :header="toastCopy.header" class="toast"></base-toast>
   <div class="wrapper">
     <section class="container">
       <div class="text">
@@ -15,59 +10,32 @@
         <div class="row">
           <div class="form-group col-sm-6">
             <label for="firstName">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              placeholder="First Name"
-              name="from_firstName"
-              v-model="formData.firstName"
-              required
-            />
+            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="from_firstName"
+              v-model="formData.firstName" required />
           </div>
           <div class="form-group col-sm-6">
             <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              placeholder="Last Name"
-              name="from_lastName"
-              v-model="formData.lastName"
-              required
-            />
+            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="from_lastName"
+              v-model="formData.lastName" required />
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-sm-6 col-12">
             <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              placeholder="Your Email"
-              name="from_email"
-              v-model="formData.email"
-              required
-            />
+            <input type="email" class="form-control" id="email" placeholder="Your Email" name="from_email"
+              v-model="formData.email" required />
           </div>
           <div class="form-group col-sm-6 col-12">
             <label for="">Arrange a meet</label>
-            <VueDatePicker v-model="date"></VueDatePicker>
+            <VueDatePicker v-model="formData.date"></VueDatePicker>
           </div>
         </div>
         <div class="row">
           <div class="form-group col-12">
             <label for="message">Message</label>
-            <textarea
-              id="message"
-              placeholder="Your Message"
-              class="form-control"
-              rows="6"
-              name="message"
-              v-model="formData.message"
-            ></textarea>
+            <textarea id="message" placeholder="Your Message" class="form-control" rows="6" name="message"
+              v-model="formData.message"></textarea>
           </div>
         </div>
         <div class="submit-button">
@@ -88,22 +56,22 @@ const store = useStore();
 const router = useRouter();
 const messageSent: Ref<boolean> = ref(false);
 const date = ref(Date.now());
-interface contactFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  message: string;
-  coachId: string;
-  date: number;
-}
+// interface contactFormData {
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   message: string;
+//   coachId: string;
+//   date: number;
+// }
 
-const formData: contactFormData = reactive({
+const formData = reactive({
   firstName: "",
   lastName: "",
   email: "",
   message: "",
   coachId: router.currentRoute.value.params.id,
-  date: Date.now(),
+  date: new Date(),
 });
 
 const toastCopy = computed((): object => {
@@ -114,25 +82,29 @@ const toastCopy = computed((): object => {
   };
 });
 
-const form: Ref<HTMLElement | null> = ref(null);
-onMounted((): void => {
-  form.value = document.querySelector("form");
-});
+// const form: Ref<HTMLElement | null> = ref(null);
+// onMounted((): void => {
+//   form.value = document.querySelector("form");
+// });
+const submitForm = () => {
+  console.log(formData);
+}
+// const submitForm: any = async () => {
+//   try {
+//     await store.dispatch("requests/contactCoach", formData);
+//     messageSent.value = true;
+//     await new Promise((resolve) => setTimeout(resolve, 2000));
+//     messageSent.value = false;
+//     // reset formdata
+//     formData.firstName = "";
+//     formData.lastName = "";
+//     formData.email = "";
+//     formData.message = "";
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
-const submitForm: any = async () => {
-  try {
-    await store.dispatch("requests/contactCoach", formData);
-    messageSent.value = true;
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    messageSent.value = false;
-    formData.firstName = "";
-    formData.lastName = "";
-    formData.email = "";
-    formData.message = "";
-  } catch (err) {
-    console.log(err);
-  }
-};
 </script>
 <style scoped lang="scss">
 .container {
