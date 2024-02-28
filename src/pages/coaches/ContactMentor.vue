@@ -87,7 +87,7 @@ import BaseToast from "@/components/ui/BaseToast.vue";
 const store = useStore();
 const router = useRouter();
 const messageSent: Ref<boolean> = ref(false);
-const date = ref("");
+const date = ref(Date.now());
 interface contactFormData {
   firstName: string;
   lastName: string;
@@ -125,7 +125,6 @@ const submitForm: any = async () => {
     messageSent.value = true;
     await new Promise((resolve) => setTimeout(resolve, 2000));
     messageSent.value = false;
-    // reset formdata
     formData.firstName = "";
     formData.lastName = "";
     formData.email = "";

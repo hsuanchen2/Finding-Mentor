@@ -54,10 +54,15 @@ const router = createRouter({
       path: "/:notFound(.*)",
       component: () => import("./pages/NotFound.vue"),
     },
+    {
+      path: "/chat",
+      name: "chatBox",
+      component: () => import("./pages/chat/ChatBox.vue"),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     return { top: 0 };
-  }
+  },
 });
 // 根據是否登入來跳轉不同頁面
 router.beforeEach((to, from, next) => {
