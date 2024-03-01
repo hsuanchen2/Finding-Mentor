@@ -99,7 +99,7 @@ article {
 
     h2,
     p {
-        color: $miner-text-color;
+        color: $minor-text-color;
     }
 
     figure {

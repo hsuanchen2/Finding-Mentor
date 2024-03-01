@@ -13,16 +13,22 @@
     <div class="chat-box col col-7">
       <section>
         <header class="chat-header">
-          <img
-            class="user-avatar"
-            src="@/../public/user-img/test2.jpg"
-            alt=""
-          />
+          <img class="user-avatar" src="@/../public/user-img/test2.jpg" alt="" />
           <div class="text-wrapper">
             <h3>Patrick Shyu</h3>
             <h4>ex Google ex Facebook tech lead</h4>
           </div>
         </header>
+        <div class="chat-messages">
+          <div class="chat incoming">
+            <div class="details">
+              <p>hello there</p>
+            </div>
+          </div>
+          <div class="chat outgoing">
+            <p>hello here</p>
+          </div>
+        </div>
       </section>
     </div>
     <div class="col col-2 suggestions">
@@ -55,6 +61,7 @@
   border: none;
   border-radius: 4rem;
   outline: none;
+
   &::placeholder {
     font: 14px;
   }
@@ -63,6 +70,7 @@
 .title {
   padding-left: 10px;
 }
+
 .chat-buttons-container {
   padding-top: 5px;
   padding-right: 5px;
@@ -70,15 +78,18 @@
   overflow-y: auto;
   margin: 10px 0 15px 0;
   padding-left: 10px;
+
   h4: {
     color: $main-text-color;
   }
+
   .chat-button {
     background-color: white;
     margin-bottom: 10px;
     width: 100%;
     border: none;
     transition: 0.3s;
+
     &:hover {
       background-color: rgb(184, 184, 184);
     }
@@ -94,35 +105,76 @@
 
 .chat-box {
   background-color: white;
-  height: 100%;
-  padding-top: 20px;
   border-radius: 10px;
-  // box-shadow: inset 5px 5px 12px 0px rgba(224,224,224,1);
+  padding: 0;
+}
+
+.chat-messages {
+  padding: 15px 20px;
+
+  p {
+    word-wrap: break-word;
+  }
+
+  .chat.incoming {
+    display: flex;
+    .details {
+      margin-right: auto;
+      overflow: auto;
+      max-width: calc(100% - 200px);
+    }
+
+    p {
+      border-radius: 0 10px 10px 10px;
+      padding: 5px 13px;
+      background-color: $main-cyan;
+      color: #fff;
+      margin: 0;
+    }
+  }
 }
 
 .chat-header {
   display: flex;
-  padding-left: 20px;
+  padding-top: 15px;
+  padding-left: 15px;
+  align-items: center;
+  padding-bottom: 10px;
+  // background-color: rgb(237, 237, 237);
+  // border-top-left-radius: 10px; 
+  // border-top-right-radius: 10px; 
+  // box-shadow: $light-card-shadow;
+  border-bottom: 1px solid lightgray;
+
   .user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: $light-card-shadow;
   }
+
   .text-wrapper {
-    padding-left: 10px;
+    margin-left: 20px;
+
     h3 {
       font-size: 18px;
       margin-bottom: 0;
     }
+
     h4 {
       font-size: 14px;
       font-weight: 400;
       font-style: italic;
+      color: $minor-text-color;
     }
   }
 }
+
 .suggestions {
   padding-top: 20px;
-}
-</style>
+
+  h4 {
+    text-align: center;
+  }
+}</style>

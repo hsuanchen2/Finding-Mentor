@@ -68,7 +68,7 @@ const fortMattedTime = computed(() => {
 }
 
 td {
-  color: $miner-text-color;
+  color: $minor-text-color;
 }
 
 li {

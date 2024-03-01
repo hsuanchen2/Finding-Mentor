@@ -171,7 +171,7 @@ onMounted(async () => {
       }
 
       .user-title {
-        color: $miner-text-color;
+        color: $minor-text-color;
         font-style: italic;
       }
 
@@ -211,7 +211,7 @@ onMounted(async () => {
       border-radius: 5px;
       background-color: transparent;
       transition: .3s;
-      color: $miner-text-color;
+      color: $minor-text-color;
 
       &:hover {
         background-color: lightgray;
@@ -219,7 +219,7 @@ onMounted(async () => {
 
       a {
         text-decoration: none;
-        color: $miner-text-color;
+        color: $minor-text-color;
       }
 
       i {
@@ -250,7 +250,7 @@ onMounted(async () => {
       }
 
       p {
-        color: $miner-text-color;
+        color: $minor-text-color;
       }
     }
 
@@ -264,7 +264,7 @@ onMounted(async () => {
       }
 
       p {
-        color: $miner-text-color;
+        color: $minor-text-color;
         line-height: 1.6;
       }
     }

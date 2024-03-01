@@ -197,7 +197,7 @@ onMounted(() => {
   }
 
   p {
-    color: $miner-text-color;
+    color: $minor-text-color;
     font-size: 1.2rem;
 
     .cta-link {

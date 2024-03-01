@@ -269,7 +269,7 @@ const whichImage = computed(() => {
 
   .copy {
     font-size: 1.2rem;
-    color: $miner-text-color;
+    color: $minor-text-color;
   }
 
   ul {
@@ -277,7 +277,7 @@ const whichImage = computed(() => {
 
     li {
       list-style: none;
-      color: $miner-text-color;
+      color: $minor-text-color;
       line-height: 1.6;
 
       img {

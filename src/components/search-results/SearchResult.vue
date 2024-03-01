@@ -169,7 +169,7 @@ const loadMore = async () => {
       transition: 0.3s;
 
       &:hover {
-        border-bottom: 1px solid $miner-text-color;
+        border-bottom: 1px solid $minor-text-color;
       }
     }
   }
@@ -186,7 +186,7 @@ const loadMore = async () => {
     position: relative;
 
     p {
-      color: $miner-text-color;
+      color: $minor-text-color;
     }
 
     .search-bar-toggle {

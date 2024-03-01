@@ -79,7 +79,7 @@ const removeCartItem = (): void => {
         p {
             margin-bottom: 0;
             font-size: 16px;
-            color: $miner-text-color;
+            color: $minor-text-color;
         }
 
         img {
@@ -122,7 +122,7 @@ const removeCartItem = (): void => {
         a {
             text-decoration: none;
             transition: .2s;
-            color: $miner-text-color;
+            color: $minor-text-color;
 
             &:hover {
                 color: white;

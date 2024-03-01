@@ -9,13 +9,13 @@
                     You can also contact us to design a custom package for your mentorship services.</p>
                 <base-button link>Get Started</base-button>
             </div>
-            <div class="col col-sm-3 col-12 miner-text">
+            <div class="col col-sm-3 col-12 minor-text">
                 <img src="@/../public/svgs/rope.svg" alt="">
                 <h3 class="subtitle">Create an account</h3>
                 <p>Register to become a mentor and prepare your profile in just 3 minutes</p>
                 <router-link to="/" class="cta-button">Try out <i class="fas fa-arrow-right"></i></router-link>
             </div>
-            <div class="col col-sm-3 col-12 miner-text">
+            <div class="col col-sm-3 col-12 minor-text">
                 <img src="@/../public/svgs/profile.svg" alt="">
                 <h3 class="subtitle">Share your expertise</h3>
                 <p>Show thousands of potential clients your profile and start working together</p>
@@ -49,11 +49,11 @@
 
         .copy {
             font-size: 1.1rem;
-            color: $miner-text-color;
+            color: $minor-text-color;
             margin-bottom: 30px;
         }
 
-        .miner-text {
+        .minor-text {
             .subtitle {
                 font-size: 1.2rem;
                 color: $main-text-color;
@@ -61,7 +61,7 @@
             }
 
             p {
-                color: $miner-text-color;
+                color: $minor-text-color;
             }
         }
 

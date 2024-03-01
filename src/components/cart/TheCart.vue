@@ -103,7 +103,7 @@ getCartItemsFromLocalStorage();
         p {
             margin-bottom: 0;
             font-size: 1rem;
-            color: $miner-text-color;
+            color: $minor-text-color;
         }
 
         img {
@@ -158,7 +158,7 @@ getCartItemsFromLocalStorage();
 
         i {
             font-size: 14px;
-            color: $miner-text-color;
+            color: $minor-text-color;
         }
     }
 

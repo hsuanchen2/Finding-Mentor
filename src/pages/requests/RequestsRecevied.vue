@@ -118,7 +118,7 @@ ul {
   }
 
   h4 {
-    color: $miner-text-color;
+    color: $minor-text-color;
   }
 }
 

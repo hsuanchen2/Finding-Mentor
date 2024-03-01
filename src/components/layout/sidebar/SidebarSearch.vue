@@ -90,7 +90,7 @@ onMounted(() => {
      width: 100%;
      padding-left: 7px;
      border-radius: 5px;
-     border: 1px solid $miner-text-color;
+     border: 1px solid $minor-text-color;
 
      &:focus {
          outline: none;

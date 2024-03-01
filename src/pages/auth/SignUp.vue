@@ -204,7 +204,7 @@ const continueWithGoogle = async (): Promise<any> => {
             font-weight: 400;
             font-size: 0.9rem;
             padding-left: 25px;
-            color: $miner-text-color;
+            color: $minor-text-color;
         }
     }
 
@@ -244,7 +244,7 @@ const continueWithGoogle = async (): Promise<any> => {
         label {
             font-size: 0.875rem;
             font-weight: 600;
-            color: $miner-text-color;
+            color: $minor-text-color;
         }
 
         .email-label {
@@ -337,7 +337,7 @@ const continueWithGoogle = async (): Promise<any> => {
         width: 100%;
         border: none;
         background-color: white;
-        color: $miner-text-color;
+        color: $minor-text-color;
         box-shadow: $light-card-shadow;
         /* border-radius: 10px; */
         line-height: 24px;
@@ -368,7 +368,7 @@ const continueWithGoogle = async (): Promise<any> => {
 
             a {
                 text-decoration: none;
-                /* color: $miner-text-color; */
+                /* color: $minor-text-color; */
             }
         }
     }

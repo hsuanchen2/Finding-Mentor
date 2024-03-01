@@ -106,7 +106,7 @@ const formData: contactFormData = reactive({
   lastName: "",
   email: "",
   message: "",
-  coachId: router.currentRoute.value.params.id,
+  coachId: router.currentRoute.value.params.id as string,
   date: new Date().getTime(),
 });
 
@@ -140,7 +140,7 @@ const submitForm = () => {
 //     console.log(err);
 //   }
 // };
-</script>
+  </script>
 <style scoped lang="scss">
 .container {
   max-width: 800px;
@@ -158,7 +158,7 @@ const submitForm = () => {
     }
 
     p {
-      color: $miner-text-color;
+      color: $minor-text-color;
       font-size: 1.1rem;
     }
   }

@@ -33,7 +33,7 @@ const closeModal = () => {
         top: 0;
         left: 0;
         width: 100%;
-        background-color: $miner-text-color;
+        background-color: $minor-text-color;
     }
 }
 </style>

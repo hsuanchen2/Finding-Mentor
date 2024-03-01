@@ -36,10 +36,10 @@ nav {
             cursor: pointer;
 
             a {
-                color: $miner-text-color;
+                color: $minor-text-color;
 
                 &:hover {
-                    color: $miner-text-color;
+                    color: $minor-text-color;
                 }
             }
         }

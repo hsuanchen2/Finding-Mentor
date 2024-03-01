@@ -138,7 +138,7 @@ typeText();
 
     p {
       margin-top: 25px;
-      color: $miner-text-color;
+      color: $minor-text-color;
       font-family: "Roboto", sans-serif;
       font-size: 1.2rem;
       width: 90%;

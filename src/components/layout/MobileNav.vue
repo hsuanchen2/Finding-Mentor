@@ -106,7 +106,7 @@ onMounted(() => {
 
             .fa-solid.fa-xmark {
                 font-size: 20px;
-                color: $miner-text-color;
+                color: $minor-text-color;
             }
         }
     }
@@ -127,7 +127,7 @@ onMounted(() => {
         margin-top: 6px;
 
         li {
-            color: $miner-text-color;
+            color: $minor-text-color;
             transition: 0.3s ease;
             position: relative;
 

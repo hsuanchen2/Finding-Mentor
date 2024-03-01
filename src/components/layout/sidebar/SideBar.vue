@@ -256,7 +256,7 @@ ul {
 
     li {
         list-style-type: none;
-        color: $miner-text-color;
+        color: $minor-text-color;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -277,7 +277,7 @@ ul {
 
     input[type="text"] {
         border-radius: 5px;
-        border: 2px solid $miner-text-color;
+        border: 2px solid $minor-text-color;
         padding-left: 10px;
     }
 

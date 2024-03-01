@@ -374,7 +374,7 @@ form {
   }
 
   label {
-    color: $miner-text-color;
+    color: $minor-text-color;
     font-weight: 700;
   }
 
