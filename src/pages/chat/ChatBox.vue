@@ -19,16 +19,53 @@
             <h4>ex Google ex Facebook tech lead</h4>
           </div>
         </header>
-        <div class="chat-messages">
+        <div class="chat-area">
           <div class="chat incoming">
+            <img src="@/../public/user-img/test2.jpg" alt="">
             <div class="details">
-              <p>hello there</p>
+              <p>Lorem ipsum dolor sit amet</p>
+              <div class="time-stamp">
+                <span>10:30 AM</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="chat outgoing">
+            <div class="details">
+              <p>Lorem ipsum dolor sit amet consectetur.</p>
+              <div class="time-stamp">
+                <span>10:30 AM</span>
+              </div>
             </div>
           </div>
           <div class="chat outgoing">
-            <p>hello here</p>
+            <div class="details">
+              <p>Lorem ipsum dolor sit amet consectetur.</p>
+              <div class="time-stamp">
+                <span>10:30 AM</span>
+              </div>
+            </div>
+          </div>
+          <div class="chat outgoing">
+            <div class="details">
+              <p>Lorem ipsum dolor sit amet consectetur.</p>
+              <div class="time-stamp">
+                <span>10:30 AM</span>
+              </div>
+            </div>
+          </div>
+          <div class="chat outgoing">
+            <div class="details">
+              <p>Lorem ipsum dolor sit amet consectetur.</p>
+              <div class="time-stamp">
+                <span>10:30 AM</span>
+              </div>
+            </div>
           </div>
         </div>
+        <form action="#" class="text-input-form">
+          <input type="text" placeholder="Type a message" />
+        </form>
       </section>
     </div>
     <div class="col col-2 suggestions">
@@ -79,7 +116,7 @@
   margin: 10px 0 15px 0;
   padding-left: 10px;
 
-  h4: {
+  h4 {
     color: $main-text-color;
   }
 
@@ -109,15 +146,50 @@
   padding: 0;
 }
 
-.chat-messages {
+.chat-area {
   padding: 15px 20px;
+  height: 430px;
+
+  .incoming {
+    .time-stamp {
+      font-size: 12px;
+      color: $minor-text-color;
+      font-style: italic;
+      padding-top: 3px;
+    }
+  }
+
+  .outgoing {
+    .time-stamp {
+      font-size: 12px;
+      color: $minor-text-color;
+      font-style: italic;
+      display: flex;
+      justify-content: end;
+      padding-top: 3px;
+    }
+  }
 
   p {
     word-wrap: break-word;
   }
 
+  .chat {
+    margin-bottom: 15px;
+
+    img {
+      width: 35px;
+      height: 35px;
+      margin-right: 15px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: $light-card-shadow;
+    }
+  }
+
   .chat.incoming {
     display: flex;
+
     .details {
       margin-right: auto;
       overflow: auto;
@@ -125,7 +197,25 @@
     }
 
     p {
-      border-radius: 0 10px 10px 10px;
+      border-radius: 0 18px 18px 18px;
+      padding: 5px 13px;
+      background-color: $main-purple;
+      color: #fff;
+      margin: 0;
+    }
+  }
+
+  .chat.outgoing {
+    display: flex;
+
+    .details {
+      margin-left: auto;
+      overflow: auto;
+      max-width: calc(100% - 200px);
+    }
+
+    p {
+      border-radius: 18px 0 18px 18px;
       padding: 5px 13px;
       background-color: $main-cyan;
       color: #fff;
@@ -140,10 +230,6 @@
   padding-left: 15px;
   align-items: center;
   padding-bottom: 10px;
-  // background-color: rgb(237, 237, 237);
-  // border-top-left-radius: 10px; 
-  // border-top-right-radius: 10px; 
-  // box-shadow: $light-card-shadow;
   border-bottom: 1px solid lightgray;
 
   .user-avatar {
@@ -177,4 +263,11 @@
   h4 {
     text-align: center;
   }
-}</style>
+}
+
+.text-input-form {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid lightgray;
+}
+</style>
