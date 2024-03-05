@@ -6,25 +6,30 @@ export default {
       lastName: payload.lastName,
       userEmail: payload.email,
       message: payload.message,
-      date: payload.date,
+      coachId: payload.coachId,
+      timestamp: new Date().toISOString(),
+      meetingDate: payload.meetingDate,
     };
-
-    const response = await fetch(
-      `https://find-mentor-b251a-default-rtdb.firebaseio.com/request/${payload.coachId}.json`,
-      {
-        method: "POST",
-        body: JSON.stringify(newRequests),
+    try {
+      const response = await fetch(
+        `https://find-mentor-b251a-default-rtdb.firebaseio.com/request/${payload.coachId}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify(newRequests),
+        }
+      );
+      const responseData = await response.json();
+      if (!response.ok) {
+        const error = new Error(responseData.message || "Something went wrong");
+        throw error;
       }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || "Something went wrong");
-      throw error;
+      console.log(responseData);
+      // name is basically the key of the new request named by firebase
+      newRequests.id = responseData.name;
+      context.commit("addRequest", newRequests);
+    } catch (error) {
+      console.log(error);
     }
-    newRequests.id = responseData.name;
-    newRequests.coachId = payload.coachId;
-    // console.log(newRequests);
-    context.commit("addRequest", newRequests);
   },
 
   // only fetch the requests from backend of current active user
@@ -50,7 +55,7 @@ export default {
         message: responseData[key].message,
         firstName: responseData[key].firstName,
         lastName: responseData[key].lastName,
-        time: responseData[key].date,
+        timestamp: responseData[key].timestamp,
       };
       requests.push(request);
       // console.log(request);

@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <request-item v-for="request in receivedRequests" :firstName="request.firstName" :lastName="request.lastName"
-          :email="request.userEmail" :receviedTime="request.time" :message="request.message"></request-item>
+          :email="request.userEmail" :receviedTime="request.timestamp" :message="request.message"></request-item>
       </tbody>
     </table>
 
@@ -45,9 +45,9 @@ const sortDescending: Ref<boolean> = ref(true);
 const receivedRequests = computed((): any => {
   const requests = store.getters["requests/receivedRequest"];
   if (sortDescending.value) {
-    return requests.sort((a, b) => b.time - a.time);
+    return requests.sort((a, b) => b.timestamp - a.timestamp);
   } else {
-    return requests.sort((a, b) => a.time - b.time);
+    return requests.sort((a, b) => a.timestamp - b.timestamp);
   }
 })
 
@@ -66,10 +66,8 @@ const loadRequests = async () => {
   isLoading.value = false;
 }
 
-onBeforeMount(() => {
-  loadRequests();
-  // console.log(store.getters["requests/receivedRequest"])
-});
+loadRequests();
+
 
 const sortByTime = () => {
   sortDescending.value = !sortDescending.value;

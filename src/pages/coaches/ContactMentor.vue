@@ -55,7 +55,7 @@
           <div class="form-group col-sm-6 col-12">
             <label for="">Arrange a meet</label>
             <VueDatePicker
-              v-model="formData.date"
+              v-model="formData.meetingDate"
               :min-date="new Date()"
               required
             ></VueDatePicker>
@@ -98,7 +98,7 @@ interface contactFormData {
   email: string;
   message: string;
   coachId: string;
-  date: number;
+  meetingDate: number | Date;
 }
 
 const formData: contactFormData = reactive({
@@ -107,7 +107,7 @@ const formData: contactFormData = reactive({
   email: "",
   message: "",
   coachId: router.currentRoute.value.params.id as string,
-  date: new Date().getTime(),
+  meetingDate: new Date().getTime(),
 });
 
 const toastCopy = computed((): object => {
@@ -118,29 +118,23 @@ const toastCopy = computed((): object => {
   };
 });
 
-// const form: Ref<HTMLElement | null> = ref(null);
-// onMounted((): void => {
-//   form.value = document.querySelector("form");
-// });
-const submitForm = () => {
-  console.log(formData);
+const submitForm: any = async () => {
+  try {
+    await store.dispatch("requests/contactCoach", formData);
+    messageSent.value = true;
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    messageSent.value = false;
+    // reset form fields
+    formData.firstName = "";
+    formData.lastName = "";
+    formData.email = "";
+    formData.message = "";
+    formData.meetingDate = new Date().getTime();
+  } catch (err) {
+    console.log(err);
+  }
 };
-// const submitForm: any = async () => {
-//   try {
-//     await store.dispatch("requests/contactCoach", formData);
-//     messageSent.value = true;
-//     await new Promise((resolve) => setTimeout(resolve, 2000));
-//     messageSent.value = false;
-//     // reset formdata
-//     formData.firstName = "";
-//     formData.lastName = "";
-//     formData.email = "";
-//     formData.message = "";
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-  </script>
+</script>
 <style scoped lang="scss">
 .container {
   max-width: 800px;
