@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper row">
-    <aside class="chat-list col col-xl-3 col-6 d-none d-xl-block">
+    <aside class="chat-list col col-xl-3 d-none d-xl-block">
       <h4 class="title">Chats</h4>
       <input type="text" placeholder="Search user" class="search-input" />
       <div class="chat-buttons-container">
@@ -76,7 +76,7 @@
         </button>
       </div>
     </aside>
-    <div class="chat-box col col-xl-6">
+    <div class="chat-box col col-xl-6 col-md-8">
       <section>
         <header class="chat-header">
           <img class="user-avatar" src="@/../public/user-img/test2.jpg" alt="" />
@@ -84,6 +84,9 @@
             <h3>Patrick Shyu</h3>
             <h4>ex Google ex Facebook tech lead</h4>
           </div>
+          <!-- <button class="issue-google-meet">
+            <i class="fa-solid fa-phone"></i>
+          </button> -->
         </header>
         <div class="chat-area">
           <div class="chat incoming">
@@ -143,7 +146,7 @@
         </form>
       </section>
     </div>
-    <div class="col col-xl-3 contact-info">
+    <div class="col col-xl-3 col-md-4 d-none d-md-block contact-info">
       <header class="">
         <h4>Contact Info</h4>
       </header>
@@ -177,7 +180,7 @@
             <h4>Skills</h4>
             <div class="skills-tags">
               <SkillTag>Vue</SkillTag>
-              <SkillTag>Nodejs</SkillTag> 
+              <SkillTag>Nodejs</SkillTag>
             </div>
           </div>
         </div>
@@ -335,6 +338,7 @@ import SkillTag from "@/components/ui/SkillTag.vue";
       margin-right: auto;
       overflow: auto;
       max-width: calc(100% - 200px);
+      min-width: 200px;
     }
 
     p {
@@ -353,6 +357,7 @@ import SkillTag from "@/components/ui/SkillTag.vue";
       margin-left: auto;
       overflow: auto;
       max-width: calc(100% - 200px);
+      min-width: 200px;
     }
 
     p {
@@ -367,7 +372,7 @@ import SkillTag from "@/components/ui/SkillTag.vue";
 
 .chat-header {
   display: flex;
-  padding-top: 10px;
+  padding-top: 15px;
   padding-left: 15px;
   align-items: center;
   padding-bottom: 10px;
@@ -418,6 +423,7 @@ import SkillTag from "@/components/ui/SkillTag.vue";
       display: flex;
       flex-direction: column;
       gap: 10px;
+      padding-top: 20px;
       padding-left: 20px;
 
       h4 {
@@ -448,13 +454,14 @@ import SkillTag from "@/components/ui/SkillTag.vue";
       flex-direction: column;
       align-items: center;
       gap: 10px;
+      border-bottom: 1px solid lightgray;
 
       .contact-title-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 5px;
-        margin-bottom: 25px;
+        padding-bottom: 10px;
 
         h3 {
           font-size: 18px;

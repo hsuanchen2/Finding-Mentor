@@ -40,7 +40,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-sm-6 col-12">
+          <div class="form-group col col-12">
             <label for="email">Email</label>
             <input
               type="email"
@@ -52,14 +52,14 @@
               required
             />
           </div>
-          <div class="form-group col-sm-6 col-12">
+          <!-- <div class="form-group col-sm-6 col-12">
             <label for="">Arrange a meet</label>
             <VueDatePicker
               v-model="formData.meetingDate"
               :min-date="new Date()"
               required
             ></VueDatePicker>
-          </div>
+          </div> -->
         </div>
         <div class="row">
           <div class="form-group col-12">
