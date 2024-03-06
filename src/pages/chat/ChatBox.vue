@@ -190,7 +190,12 @@
   </section>
 </template>
 <script lang="ts" setup>
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import SkillTag from "@/components/ui/SkillTag.vue";
+
+
 </script>
 <style lang="scss" scoped>
 .wrapper {
