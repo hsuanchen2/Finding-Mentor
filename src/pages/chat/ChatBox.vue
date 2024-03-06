@@ -241,7 +241,7 @@ import SkillTag from "@/components/ui/SkillTag.vue";
   box-shadow: $light-card-shadow;
   border-radius: 5px;
   list-style-type: none;
-  height: 45px;
+  height: 55px;
   background-color: white;
   display: flex;
   align-items: center;
