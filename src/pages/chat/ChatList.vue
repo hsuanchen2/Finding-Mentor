@@ -1,5 +1,6 @@
 <template>
     <aside class="chat-list col col-xl-3 d-xl-block" :class="{ 'd-none': !show }">
+        <button class="toggle-mobile-chat-list">Toggle</button>
         <h4 class="title">Chats</h4>
         <input type="text" placeholder="Search user" class="search-input" />
         <div class="chat-buttons-container">
@@ -84,6 +85,10 @@ const props = defineProps({
 </script>
 <style lang="scss" scoped>
 .chat-list {
+    .toggle-mobile-chat-list {
+        display: none;
+    }
+
     padding-left: 20px;
     padding-top: 20px;
     // transform: translateX(0);
@@ -168,13 +173,22 @@ const props = defineProps({
 }
 
 @media (max-width: 1200px) {
-    // .chat-list {
-    //     position: absolute;
-    //     left: 0;
-    //     top: 0;
-    //     background-color: #F6F9FC;
-    //     width: 50%;
-    // }
+
+    .chat-list {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #F6F9FC;
+        width: 50%;
+        .toggle-mobile-chat-list {
+        display: block;
+    }
+    }
+
+    .chat-list.d-none {
+        display: none;
+    }
+
 
 }
 </style>
