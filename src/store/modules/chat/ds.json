@@ -1,0 +1,30 @@
+{
+    "userIdA": {
+        "userId1": {
+            "firstName": "Patrick",
+            "lastName": "Shyu", 
+            "chats": {
+                "userId2": {
+                    "lastMessage": "Hello, User 2",
+                    "timestamp": "2022-01-01T00:00:00Z",
+                    "messages": [
+                        {
+                            "conversationId": "abc",
+                            "messageId1": "55555",
+                            "content": "Hello, User 2",
+                            "timestamp": "2022-01-01T00:00:00Z",
+                            "read": true
+                        },
+                        {
+                            "conversationId": "abc",
+                            "messageId1": "666666",
+                            "content": "Hello, User 2",
+                            "timestamp": "2022-01-01T00:00:00Z",
+                            "read": true
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

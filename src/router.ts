@@ -56,8 +56,9 @@ const router = createRouter({
     },
     {
       path: "/chat",
-      name: "chatBox",
+      name: "chat",
       component: () => import("./pages/chat/ChatBox.vue"),
+      meta: { requireAuth: true },
     },
   ],
   scrollBehavior(to, from, savedPosition) {

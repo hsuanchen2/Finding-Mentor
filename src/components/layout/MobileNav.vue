@@ -40,7 +40,6 @@
 import { Ref, ref, computed, onMounted, defineEmits } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { emit } from "process";
 const emits = defineEmits(["close-nav"]);
 const store = useStore();
 const router = useRouter();
