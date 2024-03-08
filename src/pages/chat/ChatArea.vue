@@ -10,6 +10,9 @@
                     <h3>Patrick Shyu</h3>
                     <h4>ex Google ex Facebook tech lead</h4>
                 </div>
+                <button class="contact-info-toggle" @click="toggleContactInfo">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </header>
             <div class="chat-area">
                 <div class="chat incoming">
@@ -72,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-const emits = defineEmits(["toggle-chat-list"]);
+const emits = defineEmits(["toggle-chat-list", "toggle-contact-info"]);
 const props = defineProps({
     hideChatList: {
         type: Boolean,
@@ -82,6 +85,10 @@ const props = defineProps({
 
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
+}
+
+const toggleContactInfo = (): void => {
+    emits("toggle-contact-info");
 }
 
 </script>
@@ -134,6 +141,18 @@ const toggleChatList = (): void => {
         i {
             font-size: 20px;
             color: $minor-text-color;
+        }
+    }
+
+    .contact-info-toggle {
+        margin-left: auto;
+        margin-right: 18px;
+        border: none;
+        background: none;
+        display: none;
+        i {
+            color: $minor-text-color;
+            font-size: 22px;
         }
     }
 }
@@ -245,6 +264,14 @@ const toggleChatList = (): void => {
             display: block;
         }
     }
+}
 
+
+@media screen and (max-width: 768px) {
+    .chat-header {
+        .contact-info-toggle {
+            display: block;
+        }
+    }
 }
 </style>

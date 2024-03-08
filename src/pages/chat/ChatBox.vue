@@ -1,8 +1,11 @@
 <template>
   <section class="wrapper row">
-    <Chat-List :show="showMobileChatList" />
-    <Chat-Area @toggle-chat-list="toggleChatList" />
-    <Contact-Info class="contact-info none" />
+    <div v-if="showChatList && lessThan1200" class="chat-list backdrop" @click="toggleChatList"></div>
+    <div v-if="showContactInfo && lessThan768" class="contact-info backdrop" @click="toggleContactInfo">
+    </div>
+    <Chat-List :show="showChatList" @toggle-chat-list="toggleChatList" />
+    <Chat-Area @toggle-chat-list="toggleChatList" @toggle-contact-info="toggleContactInfo" />
+    <Contact-Info @toggle-contact-info="toggleContactInfo" :show="showContactInfo" class="contact-info" />
   </section>
 </template>
 <script lang="ts" setup>
@@ -16,10 +19,37 @@ import ContactInfo from "./ContactInfo.vue"
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
-const showMobileChatList = ref(false);
+const showChatList: Ref<boolean> = ref(true);
+const showContactInfo: Ref<boolean> = ref(true);
+const lessThan1200: Ref<boolean> = ref(false);
+const lessThan768: Ref<boolean> = ref(false);
+
+// listen to emits events
 const toggleChatList = (): void => {
-  showMobileChatList.value = !showMobileChatList.value;
+  showChatList.value = !showChatList.value;
+  console.log(showChatList.value);
 }
+
+const toggleContactInfo = (): void => {
+  showContactInfo.value = !showContactInfo.value;
+}
+
+
+const handleResize = (): void => {
+  showChatList.value = window.innerWidth >= 1200;
+  lessThan1200.value = window.innerWidth < 1200;
+  lessThan768.value = window.innerWidth < 768;
+  showContactInfo.value = window.innerWidth >= 768;
+}
+
+showChatList.value = window.innerWidth >= 1200;
+lessThan1200.value = window.innerWidth < 1200;
+showContactInfo.value = window.innerWidth >= 768;
+lessThan768.value = window.innerWidth < 768;
+
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+})
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -37,10 +67,16 @@ const toggleChatList = (): void => {
 //   transition: transform 0.3s ease-in-out;
 // }
 
-
-@media screen and (max-width: 768px) {
-  .contact-info.none {
-    display: none;
-  }
+.chat-list.backdrop,
+.contact-info.backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  overflow: auto;
 }
 </style>
