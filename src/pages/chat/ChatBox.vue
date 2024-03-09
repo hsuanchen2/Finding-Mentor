@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper row">
-    <div v-if="showChatList && lessThan1200" class="chat-list backdrop" @click="toggleChatList"></div>
-    <div v-if="showContactInfo && lessThan768" class="contact-info backdrop" @click="toggleContactInfo">
+    <div v-show="showChatList && lessThan1200" class="chat-list backdrop" @click="toggleChatList"></div>
+    <div v-show="showContactInfo && lessThan768" class="contact-info backdrop" @click="toggleContactInfo">
     </div>
     <Chat-List :show="showChatList" @toggle-chat-list="toggleChatList" />
     <Chat-Area @toggle-chat-list="toggleChatList" @toggle-contact-info="toggleContactInfo" />

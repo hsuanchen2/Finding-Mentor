@@ -1,6 +1,6 @@
 <template>
     <transition name="slide">
-        <aside v-if="props.show" class="chat-list col col-xl-3">
+        <aside v-show="props.show" class="chat-list col col-xl-3">
             <div class="title-button-container">
                 <button class="toggle-mobile-chat-list" @click="toggleChatList">
                     <i class="fa-solid fa-arrow-left"></i>
