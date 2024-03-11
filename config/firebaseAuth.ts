@@ -1,6 +1,7 @@
 // Firebase
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,7 +13,7 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const imageDb = getStorage(firebaseApp);
+export const firebaseApp = initializeApp(firebaseConfig);
+export const db = getDatabase(firebaseApp);
+export const imageDb = getStorage(firebaseApp);
 
-export { firebaseApp, imageDb }; 

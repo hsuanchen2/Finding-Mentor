@@ -23,9 +23,8 @@
                             <span>10:30 AM</span>
                         </div>
                     </div>
-
                 </div>
-                <div class="chat outgoing">
+                <!-- <div class="chat outgoing">
                     <div class="details">
                         <p>Lorem ipsum dolor sit amet consectetur.</p>
                         <div class="time-stamp">
@@ -64,10 +63,10 @@
                             <span>10:30 AM</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <form action="#" class="text-input-form">
-                <input class="input-area" type="text" placeholder="Type a message" />
+            <form class="text-input-form" @submit.prevent="sendMessage">
+                <input v-model="message.content" class="input-area" type="text" placeholder="Type a message" />
                 <button type="submit" class="submit-button"><i class="fa-regular fa-paper-plane"></i></button>
             </form>
         </section>
@@ -75,20 +74,51 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+import { Ref, ref, reactive, onMounted } from "vue";
+
+const messageHistory = computed(() => {
+    return store.getters["chat/messages"];
+});
+
 const emits = defineEmits(["toggle-chat-list", "toggle-contact-info"]);
 const props = defineProps({
     hideChatList: {
         type: Boolean,
         required: false,
+    },
+    receiverId: {
+        type: String,
+        required: false,
     }
 })
-
+const message = reactive({
+    content: "",
+    receiverId: props.receiverId,
+});
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
 }
 
 const toggleContactInfo = (): void => {
     emits("toggle-contact-info");
+}
+
+const getMessages = (): void => {
+    console.log(123);
+    store.dispatch("chat/subscribeToMessages", { receiverId: props.receiverId });
+}
+
+onMounted(() => {
+    getMessages();
+})
+const sendMessage = (): void => {
+    if (message.content.trim() === "") return;
+    store.dispatch("chat/sendMessage", message);
+    message.content = "";
+    console.log(store.getters["chat/messages"]); 
 }
 
 </script>
@@ -150,6 +180,7 @@ const toggleContactInfo = (): void => {
         border: none;
         background: none;
         display: none;
+
         i {
             color: $minor-text-color;
             font-size: 22px;

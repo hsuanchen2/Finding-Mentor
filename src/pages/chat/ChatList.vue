@@ -85,15 +85,20 @@
     </transition>
 </template>
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { Ref, ref, onMounted, watch } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
 const props = defineProps({
     show: Boolean
 });
+
+
 
 const emits = defineEmits(["toggle-chat-list"]);
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
 }
+
 </script>
 <style lang="scss" scoped>
 .chat-list {
@@ -196,7 +201,7 @@ const toggleChatList = (): void => {
         left: 0;
         top: 0;
         background-color: #F6F9FC;
-        width: 60%;
+        width: 25%;
         min-width: 300px;
         height: 100%;
         position: absolute;
