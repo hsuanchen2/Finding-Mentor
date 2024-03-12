@@ -1,10 +1,5 @@
 <template>
-  <base-toast
-    :show="messageSent"
-    :copy="toastCopy.copy"
-    :header="toastCopy.header"
-    class="toast"
-  ></base-toast>
+  <base-toast :show="messageSent" :copy="toastCopy.copy" :header="toastCopy.header" class="toast"></base-toast>
   <div class="wrapper">
     <section class="container">
       <div class="text">
@@ -15,63 +10,28 @@
         <div class="row">
           <div class="form-group col-sm-6">
             <label for="firstName">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              placeholder="First Name"
-              name="from_firstName"
-              v-model="formData.firstName"
-              required
-            />
+            <input type="text" class="form-control" id="firstName" placeholder="First Name" name="from_firstName"
+              v-model="formData.firstName" required />
           </div>
           <div class="form-group col-sm-6">
             <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              placeholder="Last Name"
-              name="from_lastName"
-              v-model="formData.lastName"
-              required
-            />
+            <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="from_lastName"
+              v-model="formData.lastName" required />
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col col-12">
             <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              placeholder="Your Email"
-              name="from_email"
-              v-model="formData.email"
-              required
-            />
+            <input type="email" class="form-control" id="email" placeholder="Your Email" name="from_email"
+              v-model="formData.email" required />
           </div>
-          <!-- <div class="form-group col-sm-6 col-12">
-            <label for="">Arrange a meet</label>
-            <VueDatePicker
-              v-model="formData.meetingDate"
-              :min-date="new Date()"
-              required
-            ></VueDatePicker>
-          </div> -->
         </div>
         <div class="row">
           <div class="form-group col-12">
             <label for="message">Message</label>
-            <textarea
-              id="message"
-              placeholder="Your Message"
-              class="form-control"
-              rows="6"
-              name="message"
-              v-model="formData.message"
-            ></textarea>
+            <textarea id="message" placeholder="Your Message" class="form-control" rows="6" name="message"
+              v-model="formData.message"></textarea>
           </div>
         </div>
         <div class="submit-button">

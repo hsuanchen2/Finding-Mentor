@@ -6,9 +6,8 @@ export default {
     namespaced: true,
     state() {
         return {
-            messages: [
-                // give me a message object
-            ]
+            messages: [],
+            userWhoIsChattingWith: {},
         };
     },
     mutations: mutations,

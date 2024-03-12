@@ -15,8 +15,8 @@
                 </button>
             </header>
             <div class="chat-area">
-                <div class="chat incoming">
-                    <img src="@/../public/user-img/test2.jpg" alt="">
+                <div v-for="message in messageHistory" :key="message.id" class="chat incoming">
+                    <img :src="props.userImg" alt="">
                     <div class="details">
                         <p>Lorem ipsum dolor sit amet</p>
                         <div class="time-stamp">
@@ -92,6 +92,10 @@ const props = defineProps({
     receiverId: {
         type: String,
         required: false,
+    },
+    userImg: {
+        type: String,
+        required: false,
     }
 })
 const message = reactive({
@@ -107,7 +111,6 @@ const toggleContactInfo = (): void => {
 }
 
 const getMessages = (): void => {
-    console.log(123);
     store.dispatch("chat/subscribeToMessages", { receiverId: props.receiverId });
 }
 
@@ -118,7 +121,7 @@ const sendMessage = (): void => {
     if (message.content.trim() === "") return;
     store.dispatch("chat/sendMessage", message);
     message.content = "";
-    console.log(store.getters["chat/messages"]); 
+    console.log(store.getters["chat/messages"]);
 }
 
 </script>

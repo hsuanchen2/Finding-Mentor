@@ -26,7 +26,26 @@ const showContactInfo: Ref<boolean> = ref(true);
 const lessThan1200: Ref<boolean> = ref(false);
 const lessThan768: Ref<boolean> = ref(false);
 const chatList = ref([]);
-const receiverInfo = reactive({
+interface ReceiverInfo {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  location: string;
+  title: string;
+  jobRating: number;
+  jobsDone: number;
+  charge: number;
+  skills: string[];
+  expertise: string;
+  receiverId: string;
+  userImg: string;
+}
+const currentMentor = computed(() => {
+  return store.getters["mentors/currentMentor"];
+});
+
+const receiverInfo: ReceiverInfo = reactive({
   userId: "",
   firstName: "",
   lastName: "",
@@ -39,8 +58,8 @@ const receiverInfo = reactive({
   skills: [],
   expertise: "",
   receiverId: "",
+  userImg: "",
 });
-
 
 
 // listen to emits events
@@ -70,7 +89,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
 handleResize();
-receiverInfo.receiverId = localStorage.getItem("userId"); 
+receiverInfo.receiverId = localStorage.getItem("userId");
 
 </script>
 <style lang="scss" scoped>

@@ -18,7 +18,9 @@
           <router-link :to="contactLink2"><i class="fa-regular fa-envelope"></i> Leave a message</router-link>
         </button>
         <button class="">
-          <i class="fa-regular fa-paper-plane"></i> Send a message
+          <router-link to="/chat" @click="contactUserId">
+            <i class="fa-regular fa-paper-plane"></i> Send a message
+          </router-link>
         </button>
       </div>
     </header>
@@ -64,17 +66,17 @@ const route = useRoute();
 const store = useStore();
 
 interface MentorDetail {
-  userimage : String,
-  firstName : String,
-  lastName : String,
-  jobTitle : String,
-  jobRating : Number,
-  hourlyRate : Number,
-  location : String,
+  userimage: String,
+  firstName: String,
+  lastName: String,
+  jobTitle: String,
+  jobRating: Number,
+  hourlyRate: Number,
+  location: String,
   skillsTag: string[],
-  aboutMe : String, 
-  workExp : String, 
-  jobsDone : Number
+  aboutMe: String,
+  workExp: String,
+  jobsDone: Number
 }
 
 const mentorDetail = ref<MentorDetail>({
@@ -122,12 +124,17 @@ const setMentor = async () => {
   mentorDetail.value.skillsTag = data.skills;
   mentorDetail.value.aboutMe = data.aboutMe;
   mentorDetail.value.workExp = data.experience;
-  mentorDetail.value.jobsDone = data.jobsDone; 
+  mentorDetail.value.jobsDone = data.jobsDone;
 }
 
 onMounted(async () => {
   await setMentor();
 });
+
+const contactUserId = () => {
+  console.log(route.params.id);
+  store.dispatch("chat/setContactId", route.params.id);
+}
 
 </script>
 
@@ -139,6 +146,7 @@ onMounted(async () => {
   border-radius: 10px;
   box-shadow: $light-card-shadow;
   background-color: white;
+
   header {
     display: flex;
     align-items: center;

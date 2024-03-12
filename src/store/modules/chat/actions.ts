@@ -26,17 +26,22 @@ export default {
         push(messagesRef, newMessage);
     },
     subscribeToMessages(context, payload) {
-        console.log(payload);
-        const messagesQuery = query(ref(db, 'messages'), orderByChild('senderId'), equalTo(payload.receiverId));
-        onValue(messagesQuery, (snapshot) => {
+        // 做兩個查詢 一個是 senderId 一個是 receiverId
+        const messagesRef = ref(db, 'messages');
+        const senderQuery = query(messagesRef, orderByChild('senderId'), equalTo(payload.receiverId));
+        const receiverQuery = query(messagesRef, orderByChild('receiverId'), equalTo(payload.receiverId));
+
+        const handleSnapshot = (snapshot) => {
             const data = snapshot.val();
-            console.log(data);
             if (data) {
-                console.log(data);
                 const userMessages = Object.keys(data).map(key => data[key]);
-                console.log(userMessages);
                 context.commit('setMessages', userMessages);
+                console.log(userMessages);
             }
-        });
+        };
+
+        onValue(senderQuery, handleSnapshot);
+        onValue(receiverQuery, handleSnapshot);
     }
+
 }
