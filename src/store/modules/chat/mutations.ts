@@ -1,11 +1,13 @@
 export default {
-    // addMessage(state: any, newMessage: any) {
-    //     state.messages.push(newMessage);
-    // },
+    addMessage(state: any, newMessage: any) {
+        state.messages.push(newMessage);
+        // state.messages = [...newMessage];
+    },
     setMessages(state, userMessages) {
+        console.log(userMessages);
         state.messages = [...userMessages];
     },
-    setContactId(state, contactId) {
-        state.userWhoIsChattingWith = contactId;
+    userWhoIsChattingWith(state, userData) {
+        state.userWhoIsChattingWith = userData;
     }
 }

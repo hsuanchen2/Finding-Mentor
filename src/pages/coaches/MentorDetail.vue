@@ -1,4 +1,5 @@
 <template>
+  <button @click="test">123</button>
   <section class="mentor-profile mx-2 mx-md-auto">
     <header>
       <div class="user-image-wrapper">
@@ -17,8 +18,8 @@
         <button>
           <router-link :to="contactLink2"><i class="fa-regular fa-envelope"></i> Leave a message</router-link>
         </button>
-        <button class="">
-          <router-link to="/chat" @click="contactUserId">
+        <button type="button" v-if="!isItYou">
+          <router-link :to="'/chat/' + $route.params.id">
             <i class="fa-regular fa-paper-plane"></i> Send a message
           </router-link>
         </button>
@@ -76,7 +77,8 @@ interface MentorDetail {
   skillsTag: string[],
   aboutMe: String,
   workExp: String,
-  jobsDone: Number
+  jobsDone: Number,
+  id: String | string[],
 }
 
 const mentorDetail = ref<MentorDetail>({
@@ -90,12 +92,23 @@ const mentorDetail = ref<MentorDetail>({
   skillsTag: [],
   aboutMe: '',
   workExp: '',
-  jobsDone: 0
+  jobsDone: 0,
+  id: '',
 });
 
-const currentMentor = computed(() => {
-  return store.getters["mentors/currentMentor"];
-});
+console.log("is auted", store.getters["auth/isAuthenticated"]);
+// const isItYou = computed((): boolean => {
+//   if (!store.getters["auth/isAuthenticated"]) {
+//     return true;
+//   } else {
+//     return !(store.getters["auth/userId"] === route.params.id);
+//   }
+// })
+
+const isItYou = computed(() => {
+  return route.params.id === localStorage.getItem("userId");
+})
+
 const contactLink = computed((): string => {
   if (!route.path.endsWith("/contact")) {
     return route.path + "/contact";
@@ -109,11 +122,14 @@ const contactLink2 = computed((): string => {
   return isContact ? route.path : route.path + "/contact";
 })
 
+const test = () => {
+  console.log(localStorage.getItem("userId"));
+  console.log(route.params.id);
+}
 
 const setMentor = async () => {
   await store.dispatch("coaches/loadSpecificMentorInfo", route.params.id);
   const data = (store.getters["coaches/currentMentor"]);
-  // console.log(data);
   mentorDetail.value.userimage = data.userImage;
   mentorDetail.value.firstName = data.firstName;
   mentorDetail.value.lastName = data.lastName;
@@ -125,16 +141,14 @@ const setMentor = async () => {
   mentorDetail.value.aboutMe = data.aboutMe;
   mentorDetail.value.workExp = data.experience;
   mentorDetail.value.jobsDone = data.jobsDone;
+  mentorDetail.value.id = route.params.id;
 }
 
 onMounted(async () => {
   await setMentor();
 });
 
-const contactUserId = () => {
-  console.log(route.params.id);
-  store.dispatch("chat/setContactId", route.params.id);
-}
+
 
 </script>
 

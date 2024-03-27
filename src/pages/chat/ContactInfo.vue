@@ -9,35 +9,30 @@
             </header>
             <main class="contact-user-info">
                 <div class="contact-user-card">
-                    <img src="@/../public/user-img/test2.jpg" class="user-avatar" alt="">
+                    <img :src="props.receiverInfo.userImage" class="user-avatar" alt="">
                     <div class="contact-title-wrapper">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                        <p>&#x2B50 4.4 (32)</p>
+                        <h3>{{ props.receiverInfo.firstName }} {{ props.receiverInfo.lastName }}</h3>
+                        <h4>{{ props.receiverInfo.jobTitle }}</h4>
+                        <p>&#x2B50 {{ props.receiverInfo.jobRating }} ({{ props.receiverInfo.jobsDone }})</p>
                     </div>
                 </div>
                 <div class="contact-user-details">
-                    <div class="email">
-                        <h4>Email</h4>
-                        <p>techleadhd@gmail.com</p>
-                    </div>
                     <div class="location">
                         <h4>Location</h4>
-                        <p>United States</p>
+                        <p>{{ props.receiverInfo.location }}</p>
                     </div>
                     <div class="email">
                         <h4>Charge</h4>
-                        <p>$45 / hour</p>
+                        <p>${{ props.receiverInfo.hourlyRate }} / hour</p>
                     </div>
                     <div class="location">
                         <h4>Expertise</h4>
-                        <p>Software engineer</p>
+                        <p>{{ props.receiverInfo.jobTitle }}</p>
                     </div>
                     <div class="skills">
                         <h4>Skills</h4>
                         <div class="skills-tags">
-                            <SkillTag>Vue</SkillTag>
-                            <SkillTag>Nodejs</SkillTag>
+                            <SkillTag v-for="skill in props.receiverInfo.skills" :key="skill">{{ skill }}</SkillTag>
                         </div>
                     </div>
                 </div>
@@ -51,13 +46,19 @@ const props = defineProps({
     show: {
         type: Boolean,
         required: true
+    },
+    receiverInfo: {
+        type: Object,
+        required: true,
     }
 });
 
 const emits = defineEmits(["toggle-contact-info"]);
 const toggleContactInfo = () => {
     emits("toggle-contact-info");
-}
+};
+
+
 </script>
 <style lang="scss" scoped>
 .contact-info {
@@ -79,6 +80,7 @@ const toggleContactInfo = () => {
             overflow-x: auto;
             gap: 5px;
             margin-top: 7px;
+            padding-bottom: 8px
         }
 
         .contact-user-details {
@@ -202,4 +204,5 @@ const toggleContactInfo = () => {
             }
         }
     }
-}</style>
+}
+</style>

@@ -1,69 +1,31 @@
 <template>
+    <!-- <button @click="fetchMessages">test</button> -->
     <div class="chat-box col col-xl-6 col-md-8">
         <section>
             <header class="chat-header">
                 <button class="chat-list-toggle" @click="toggleChatList">
                     <i class="fa-solid fa-sliders"></i>
                 </button>
-                <img class="user-avatar" src="@/../public/user-img/test2.jpg" alt="" />
+                <img class="user-avatar" :src="props.userImg" alt="" />
                 <div class="text-wrapper">
-                    <h3>Patrick Shyu</h3>
-                    <h4>ex Google ex Facebook tech lead</h4>
+                    <h3>{{ props.firstName }} {{ props.lastName }}</h3>
+                    <h4>{{ props.jobTitle }}</h4>
                 </div>
                 <button class="contact-info-toggle" @click="toggleContactInfo">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </header>
             <div class="chat-area">
-                <div v-for="message in messageHistory" :key="message.id" class="chat incoming">
+                <div v-for="message in messageHistory" :key="message.id" class="chat"
+                    :class="{ 'incoming': props.receiverId === userId, 'outgoing': receiverId !== userId }">
                     <img :src="props.userImg" alt="">
                     <div class="details">
-                        <p>Lorem ipsum dolor sit amet</p>
+                        <p> {{ message.content }}</p>
                         <div class="time-stamp">
-                            <span>10:30 AM</span>
+                            <span>{{ message.timeStamp }}</span>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="chat outgoing">
-                    <div class="details">
-                        <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        <div class="time-stamp">
-                            <span>10:30 AM</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat outgoing">
-                    <div class="details">
-                        <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        <div class="time-stamp">
-                            <span>10:30 AM</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat outgoing">
-                    <div class="details">
-                        <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        <div class="time-stamp">
-                            <span>10:30 AM</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat outgoing">
-                    <div class="details">
-                        <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        <div class="time-stamp">
-                            <span>10:30 AM</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat outgoing">
-                    <div class="details">
-                        <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        <div class="time-stamp">
-                            <span>10:30 AM</span>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <form class="text-input-form" @submit.prevent="sendMessage">
                 <input v-model="message.content" class="input-area" type="text" placeholder="Type a message" />
@@ -76,12 +38,21 @@
 <script lang="ts" setup>
 import { computed, watch } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const store = useStore();
 import { Ref, ref, reactive, onMounted } from "vue";
 
 const messageHistory = computed(() => {
     return store.getters["chat/messages"];
 });
+
+const fetchMessages = () => {
+    console.log(store.getters["chat/messages"])
+}
+
+const userId = ref("");
+userId.value = localStorage.getItem("userId");
 
 const emits = defineEmits(["toggle-chat-list", "toggle-contact-info"]);
 const props = defineProps({
@@ -95,12 +66,27 @@ const props = defineProps({
     },
     userImg: {
         type: String,
-        required: false,
+        required: true,
+    },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
+    jobTitle: {
+        type: String,
+        required: true,
     }
 })
+
+// 傳訊息是否需要註冊帳號
 const message = reactive({
     content: "",
-    receiverId: props.receiverId,
+    receiverId: route.params.id,
+    senderId: localStorage.getItem("userId"),
 });
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
@@ -110,18 +96,13 @@ const toggleContactInfo = (): void => {
     emits("toggle-contact-info");
 }
 
-const getMessages = (): void => {
-    store.dispatch("chat/subscribeToMessages", { receiverId: props.receiverId });
-}
-
-onMounted(() => {
-    getMessages();
-})
 const sendMessage = (): void => {
     if (message.content.trim() === "") return;
     store.dispatch("chat/sendMessage", message);
+    console.log(message);
     message.content = "";
-    console.log(store.getters["chat/messages"]);
+    console.log(props.receiverId);
+    console.log(localStorage.getItem("userId"));
 }
 
 </script>
@@ -209,11 +190,11 @@ const sendMessage = (): void => {
             box-shadow: $light-card-shadow;
         }
 
-        .details {
-            overflow: auto;
-            min-width: 200px;
-            max-width: calc(100% - 200px);
-        }
+        // .details {
+        //     overflow: auto;
+        //     min-width: 200px;
+        //     max-width: calc(100% - 200px);
+        // }
 
         p {
             padding: 5px 13px;
@@ -306,6 +287,12 @@ const sendMessage = (): void => {
         .contact-info-toggle {
             display: block;
         }
+    }
+
+    .details {
+        overflow: auto;
+        // min-width: 200px;
+        max-width: calc(100% - 200px);
     }
 }
 </style>

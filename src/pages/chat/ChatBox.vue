@@ -1,4 +1,5 @@
 <template>
+  <!-- <button @click="logMessage">test</button> -->
   <section class="wrapper row">
     <!-- backdrop for mobile -->
     <div v-show="showChatList && lessThan1200" class="chat-list backdrop" @click="toggleChatList"></div>
@@ -6,8 +7,10 @@
     </div>
     <Chat-List :show="showChatList" @toggle-chat-list="toggleChatList" />
     <Chat-Area @toggle-chat-list="toggleChatList" @toggle-contact-info="toggleContactInfo"
-      :receiverId="receiverInfo.receiverId" />
-    <Contact-Info @toggle-contact-info="toggleContactInfo" :show="showContactInfo" class="contact-info" />
+      :receiverId="receiverInfo.receiverId" :userImg="receiverInfo.userImage" :firstName="receiverInfo.firstName"
+      :lastName="receiverInfo.lastName" :jobTitle="receiverInfo.jobTitle" />
+    <Contact-Info @toggle-contact-info="toggleContactInfo" :show="showContactInfo" :receiverInfo="receiverInfo"
+      class="contact-info" />
   </section>
 </template>
 <script lang="ts" setup>
@@ -25,42 +28,40 @@ const showChatList: Ref<boolean> = ref(true);
 const showContactInfo: Ref<boolean> = ref(true);
 const lessThan1200: Ref<boolean> = ref(false);
 const lessThan768: Ref<boolean> = ref(false);
+
 const chatList = ref([]);
 interface ReceiverInfo {
-  userId: string;
   firstName: string;
   lastName: string;
-  email: string;
   location: string;
-  title: string;
+  jobTitle: string;
   jobRating: number;
   jobsDone: number;
-  charge: number;
+  hourlyRate: number;
   skills: string[];
-  expertise: string;
   receiverId: string;
-  userImg: string;
+  userImage: string;
 }
-const currentMentor = computed(() => {
-  return store.getters["mentors/currentMentor"];
-});
+
+const messages = ref([]);
+
 
 const receiverInfo: ReceiverInfo = reactive({
-  userId: "",
+  receiverId: "",
   firstName: "",
   lastName: "",
-  email: "",
   location: "",
-  title: "",
+  jobTitle: "",
   jobRating: 0,
   jobsDone: 0,
-  charge: 0,
+  hourlyRate: 0,
   skills: [],
-  expertise: "",
-  receiverId: "",
-  userImg: "",
+  userImage: "",
 });
 
+const getMessages = async () => {
+  await store.dispatch("chat/subscribeToMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
+}
 
 // listen to emits events
 const toggleChatList = (): void => {
@@ -81,15 +82,29 @@ const handleResize = (): void => {
 }
 
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('resize', handleResize);
+  getMessages();
+  messages.value = (store.getters["chat/messages"]);
+  // const receiverId = localStorage.getItem("userId");
+  const receiverId = route.params.id;
+  await store.dispatch("chat/setContactUser", receiverId);
+  for (const key in store.getters["chat/userWhoIsChattingWith"]) {
+    receiverInfo[key] = store.getters["chat/userWhoIsChattingWith"][key];
+  }
+  receiverInfo.receiverId = receiverId as string;
 });
+
+const logMessage = () => {
+  console.log(messages.value);
+}
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
+
 handleResize();
-receiverInfo.receiverId = localStorage.getItem("userId");
+
 
 </script>
 <style lang="scss" scoped>

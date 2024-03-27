@@ -55,7 +55,7 @@ const router = createRouter({
       component: () => import("./pages/NotFound.vue"),
     },
     {
-      path: "/chat",
+      path: "/chat/:id",
       name: "chat",
       component: () => import("./pages/chat/ChatBox.vue"),
       meta: { requireAuth: true },
