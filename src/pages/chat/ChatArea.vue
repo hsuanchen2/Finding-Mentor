@@ -1,5 +1,4 @@
 <template>
-    <!-- <button @click="fetchMessages">test</button> -->
     <div class="chat-box col col-xl-6 col-md-8">
         <section>
             <header class="chat-header">
@@ -15,11 +14,11 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </header>
-            <div class="chat-area">
-                <div v-for="message in messageHistory" :key="message.id" class="chat"
-                    :class="{ 'incoming': props.receiverId === userId, 'outgoing': receiverId !== userId }">
-                    <img :src="props.userImg" alt="">
-                    <div class="details">
+            <div class="chat-area" ref="chatWindow">
+                <div v-for="message in  messageHistory " :key="message.id" class="chat"
+                    :class="{ 'incoming': $route.params.id !== message.receiverId, 'outgoing': $route.params.id === message.receiverId }">
+                    <img v-if="$route.params.id !== message.receiverId && message.content" :src="props.userImg" alt="">
+                    <div v-if="message.content" class="details">
                         <p> {{ message.content }}</p>
                         <div class="time-stamp">
                             <span>{{ message.timeStamp }}</span>
@@ -36,22 +35,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from "vue";
+import { computed, watchEffect, onUnmounted, nextTick, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const store = useStore();
 import { Ref, ref, reactive, onMounted } from "vue";
 
-const messageHistory = computed(() => {
-    return store.getters["chat/messages"];
-});
-
-const fetchMessages = () => {
-    console.log(store.getters["chat/messages"])
-}
-
 const userId = ref("");
+const chatWindow = ref(null);
 userId.value = localStorage.getItem("userId");
 
 const emits = defineEmits(["toggle-chat-list", "toggle-contact-info"]);
@@ -88,6 +80,7 @@ const message = reactive({
     receiverId: route.params.id,
     senderId: localStorage.getItem("userId"),
 });
+
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
 }
@@ -96,14 +89,51 @@ const toggleContactInfo = (): void => {
     emits("toggle-contact-info");
 }
 
-const sendMessage = (): void => {
+
+const scrollToBottom = (): void => {
+    nextTick(() => {
+        if (chatWindow.value) {
+            const scrollHeight = chatWindow.value.scrollHeight;
+            chatWindow.value.scroll({ top: scrollHeight, behavior: 'smooth' });
+        }
+    });
+};
+
+const sendMessage = async () => {
     if (message.content.trim() === "") return;
-    store.dispatch("chat/sendMessage", message);
-    console.log(message);
+    console.log("sending message");
+    await store.dispatch("chat/sendMessage", message);
     message.content = "";
-    console.log(props.receiverId);
-    console.log(localStorage.getItem("userId"));
-}
+    scrollToBottom();
+};
+
+const fetchAllMessages = async () => {
+    await store.dispatch("chat/fetchAllMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
+};
+
+const subscribeToMessages = async () => {
+    await store.dispatch("chat/subscribeToMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
+};
+
+onMounted(async () => {
+    await fetchAllMessages();
+    await subscribeToMessages();
+    scrollToBottom();
+    watch(store.state.chat.messages, (newValue, oldValue) => {
+        scrollToBottom();
+    }, { deep: true });
+    console.log(message);
+});
+
+const messageHistory = computed(() => {
+    return store.getters["chat/messages"];
+});
+
+onUnmounted(async () => {
+    await store.dispatch("chat/unsubscribeFromMessages");
+    await store.dispatch("chat/clearMessages");
+    console.log("chat unmounted!!!");
+});
 
 </script>
 

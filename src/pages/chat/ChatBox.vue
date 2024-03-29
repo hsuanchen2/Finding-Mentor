@@ -59,9 +59,6 @@ const receiverInfo: ReceiverInfo = reactive({
   userImage: "",
 });
 
-const getMessages = async () => {
-  await store.dispatch("chat/subscribeToMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
-}
 
 // listen to emits events
 const toggleChatList = (): void => {
@@ -84,7 +81,7 @@ const handleResize = (): void => {
 
 onMounted(async () => {
   window.addEventListener('resize', handleResize);
-  getMessages();
+  // getMessages();
   messages.value = (store.getters["chat/messages"]);
   // const receiverId = localStorage.getItem("userId");
   const receiverId = route.params.id;
@@ -94,10 +91,6 @@ onMounted(async () => {
   }
   receiverInfo.receiverId = receiverId as string;
 });
-
-const logMessage = () => {
-  console.log(messages.value);
-}
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);

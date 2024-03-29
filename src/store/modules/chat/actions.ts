@@ -1,6 +1,7 @@
 import moment from "moment";
-import { ref, push, onValue, query, orderByChild, equalTo } from "firebase/database";
+import { ref, push, onValue, query, orderByChild, equalTo, getDatabase, get, off, onChildAdded } from "firebase/database";
 import { db } from "@/../config/firebaseAuth.js";
+import { send } from "vite";
 
 interface message {
     id: string;
@@ -8,10 +9,13 @@ interface message {
     senderId: string;
     receiverId: string;
     timeStamp: string;
+    senderConversationId: string;
+    receiverConversationId: string;
 }
 
 export default {
-    sendMessage(context: any, payload: any) {
+
+    async sendMessage(context: any, payload: any) {
         // const userId = context.rootGetters.userId;
         const newMessage: message = {
             id: new Date().getTime().toString(),
@@ -19,40 +23,92 @@ export default {
             senderId: payload.senderId,
             receiverId: payload.receiverId,
             timeStamp: moment().format('YYYY/MM/DD/HH:mm'),
+            senderConversationId: `${payload.senderId}-${payload.receiverId}`,
+            receiverConversationId: `${payload.receiverId}-${payload.senderId}`
         };
-
-        // messages is the name of the table in the firebase rtdb
-        const messagesRef = ref(db, 'messages');
-        push(messagesRef, newMessage);
+        const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+        console.log(newMessage);
+        await fetch(`${dbUrl}/messages.json`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newMessage)
+        });
     },
     //  當組件初次載入時，我需要抓取所有的對話紀錄，感覺這一步不需要用snapshot;
-    // 之後如果用戶開始傳遞訊息，才開始需要用snapshop
+    // 之後如果用戶開始傳遞訊息，才開始需要用 snapshot
     // 邏輯需要修改
-    subscribeToMessages(context, payload) {
-        // 做兩個查詢 一個是 senderId 一個是 receiverId
+    async subscribeToMessages(context, payload) {
         const messagesRef = ref(db, 'messages');
-        const senderQuery = query(messagesRef, orderByChild('senderId'), equalTo(payload.receiverId));
-        const receiverQuery = query(messagesRef, orderByChild('receiverId'), equalTo(payload.receiverId));
+        let isFirstSubscription = true;
+        const senderQueryRef = query(
+            messagesRef,
+            orderByChild('senderConversationId'),
+            equalTo(`${payload.senderId}-${payload.receiverId}`)
+        );
+        const receiverQueryRef = query(
+            messagesRef,
+            orderByChild('receiverConversationId'),
+            equalTo(`${payload.receiverId}-${payload.senderId}`)
+        );
+        // 設置監聽器，當有新訊息時，更新對話紀錄
         const handleSnapshot = (snapshot) => {
+            if (isFirstSubscription) {
+                isFirstSubscription = false;
+                return;
+            }
             const data = snapshot.val();
             if (data) {
                 const userMessages = Object.keys(data)
                     .map(key => data[key])
-                    .filter(message => message.senderId === payload.senderId && message.receiverId === payload.receiverId);
-                context.commit('addMessage', userMessages);
+                    .filter(message =>
+                        (message.senderId === payload.senderId && message.receiverId === payload.receiverId) ||
+                        (message.senderId === payload.receiverId && message.receiverId === payload.senderId)
+                    );
+                const newMessage = userMessages.slice().pop();
+                context.commit('addMessage', newMessage);
             }
         };
-
-        onValue(senderQuery, handleSnapshot);
-        onValue(receiverQuery, handleSnapshot);
+        onValue(senderQueryRef, handleSnapshot);
+        onValue(receiverQueryRef, handleSnapshot);
+        context.commit('setHandleSnapshot', handleSnapshot);
+        console.log("handling");
     },
+    unsubscribeFromMessages(context, payload) {
+        const messagesRef = ref(db, 'messages');
 
+        // 使用保存的 handleSnapshot 函數來取消監聽
+        off(messagesRef, context.state.handleSnapshot);
+
+        // 清除 handleSnapshot 函數
+        context.commit('setHandleSnapshot', null);
+        context.commit('setMessages', []);
+        console.log(context.state.handleSnapshot, "unsub!!");
+    },
     async setContactUser(context, payload) {
         const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY
         const response = await fetch(`${dbUrl}/coaches/${payload}.json`);
         const data = await response.json();
-
         context.commit("userWhoIsChattingWith", data);
+    },
+    async fetchAllMessages(context, payload) {
+        const messagesRef = ref(db, 'messages');
+        console.log("fetching!!");
+        const snapshot = await get(messagesRef);
+        const data = await snapshot.val();
+        if (data) {
+            const userMessages = Object.keys(data)
+                .map(key => data[key])
+                .filter(message =>
+                    (message.senderId === payload.senderId && message.receiverId === payload.receiverId) ||
+                    (message.senderId === payload.receiverId && message.receiverId === payload.senderId)
+                );
+            context.commit('setMessages', userMessages);
+            console.log(userMessages, "fetch all messages");
+        }
+    },
+    clearMessages(context, payload) {
+        context.commit('setMessages', []);
     }
-
 }

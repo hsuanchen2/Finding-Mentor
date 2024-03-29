@@ -96,14 +96,6 @@ const mentorDetail = ref<MentorDetail>({
   id: '',
 });
 
-console.log("is auted", store.getters["auth/isAuthenticated"]);
-// const isItYou = computed((): boolean => {
-//   if (!store.getters["auth/isAuthenticated"]) {
-//     return true;
-//   } else {
-//     return !(store.getters["auth/userId"] === route.params.id);
-//   }
-// })
 
 const isItYou = computed(() => {
   return route.params.id === localStorage.getItem("userId");
@@ -146,6 +138,7 @@ const setMentor = async () => {
 
 onMounted(async () => {
   await setMentor();
+  console.log("is authed", store.getters["auth/isAuthenticated"]);
 });
 
 
