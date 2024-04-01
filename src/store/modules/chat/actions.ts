@@ -42,36 +42,40 @@ export default {
     async subscribeToMessages(context, payload) {
         const messagesRef = ref(db, 'messages');
         let isFirstSubscription = true;
-        const senderQueryRef = query(
-            messagesRef,
-            orderByChild('senderConversationId'),
-            equalTo(`${payload.senderId}-${payload.receiverId}`)
-        );
-        const receiverQueryRef = query(
-            messagesRef,
-            orderByChild('receiverConversationId'),
-            equalTo(`${payload.receiverId}-${payload.senderId}`)
-        );
+        // const senderQueryRef = query(
+        //     messagesRef,
+        //     orderByChild('senderConversationId'),
+        //     equalTo(`${payload.senderId}-${payload.receiverId}`)
+        // );
+        // const receiverQueryRef = query(
+        //     messagesRef,
+        //     orderByChild('receiverConversationId'),
+        //     equalTo(`${payload.receiverId}-${payload.senderId}`)
+        // );
         // 設置監聽器，當有新訊息時，更新對話紀錄
         const handleSnapshot = (snapshot) => {
             if (isFirstSubscription) {
                 isFirstSubscription = false;
                 return;
             }
+            // data 是整個 messages 的物件
             const data = snapshot.val();
+            console.log(data);
             if (data) {
                 const userMessages = Object.keys(data)
                     .map(key => data[key])
                     .filter(message =>
-                        (message.senderId === payload.senderId && message.receiverId === payload.receiverId) ||
-                        (message.senderId === payload.receiverId && message.receiverId === payload.senderId)
-                    );
-                const newMessage = userMessages.slice().pop();
-                context.commit('addMessage', newMessage);
+                        (message.senderConversationId === `${payload.senderId}-${payload.receiverId}`) || (message.receiverConversationId === `${payload.receiverId}-${payload.senderId}`));
+                console.log("user messages", userMessages);
+                const newMessage = userMessages.slice(-1)[0];
+                // const newMessage = userMessages;
+                console.log(newMessage);
+                if ((newMessage.senderConversationId === `${payload.senderId}-${payload.receiverId}`) || (newMessage.receiverConversationId === `${payload.receiverId}-${payload.senderId}`)) {
+                    context.commit('addMessage', newMessage);
+                }
             }
         };
-        onValue(senderQueryRef, handleSnapshot);
-        onValue(receiverQueryRef, handleSnapshot);
+        onValue(messagesRef, handleSnapshot);
         context.commit('setHandleSnapshot', handleSnapshot);
         console.log("handling");
     },
@@ -97,12 +101,13 @@ export default {
         console.log("fetching!!");
         const snapshot = await get(messagesRef);
         const data = await snapshot.val();
+        console.log("sender:", payload.senderId);
+        console.log("receiver:", payload.receiverId);
         if (data) {
             const userMessages = Object.keys(data)
                 .map(key => data[key])
                 .filter(message =>
-                    (message.senderId === payload.senderId && message.receiverId === payload.receiverId) ||
-                    (message.senderId === payload.receiverId && message.receiverId === payload.senderId)
+                    (message.senderConversationId === `${payload.senderId}-${payload.receiverId}`) || (message.receiverConversationId === `${payload.receiverId}-${payload.senderId}`)
                 );
             context.commit('setMessages', userMessages);
             console.log(userMessages, "fetch all messages");

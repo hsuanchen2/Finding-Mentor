@@ -122,7 +122,7 @@ onMounted(async () => {
     watch(store.state.chat.messages, (newValue, oldValue) => {
         scrollToBottom();
     }, { deep: true });
-    console.log(message);
+    console.log(store.state.chat.messages);
 });
 
 const messageHistory = computed(() => {
