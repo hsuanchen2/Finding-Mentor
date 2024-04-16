@@ -1,16 +1,21 @@
+import { ref, push, onValue, query, orderByChild, equalTo, getDatabase, get, off, set, child } from "firebase/database";
 export default {
     addMessage(state: any, message: any) {
         console.log("mutations!!");
-        const newMessage = JSON.parse(JSON.stringify(message));
-        state.messages.push({ ...newMessage });
+        console.log(message);
+        state.messages.push(message);
     },
     setMessages(state, userMessages) {
+        // state.messages = [];
         state.messages = userMessages;
     },
     userWhoIsChattingWith(state, userData) {
         state.userWhoIsChattingWith = userData;
     },
-    setHandleSnapshot(state, snapshot) {
-        state.handleSnapshot = snapshot;
+    setRecentMessageRef(state, ref) {
+        state.recentMessageRef = ref;
+    },
+    clearRecentMessageRef(state) {
+        state.recentMessageRef = null;
     }
 }; 

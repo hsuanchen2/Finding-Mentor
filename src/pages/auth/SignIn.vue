@@ -23,7 +23,6 @@
                     </div>
                     <span v-if="incorrectData" class="email-error"><i class="fa-solid fa-circle-exclamation"></i>Incorrect
                         email or password</span>
-
                 </div>
                 <button :disabled="isLoading" type="submit" class="btn submit-btn">{{ isLoading ? "Validating..." :
                     "Continue" }}</button>
@@ -71,6 +70,9 @@ const togglePassword = (): void => {
 const submitForm = async (): Promise<any> => {
     invalidEmail.value = false;
     incorrectData.value = false;
+    if (isLoading.value) {
+        return 
+    }; 
     isLoading.value = true;
     const isValid = isValidEmail(loginData.email);
     if (!isValid || loginData.password === "") {
@@ -90,7 +92,7 @@ const submitForm = async (): Promise<any> => {
             isLoading.value = false;
             incorrectData.value = true;
         }
-    }
+    };
 }
 
 const isAuthenticated = computed((): boolean => {

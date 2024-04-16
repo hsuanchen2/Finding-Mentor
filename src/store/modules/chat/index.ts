@@ -8,7 +8,7 @@ export default {
         return {
             messages: [],
             userWhoIsChattingWith: {},
-            handleSnapshot: null,
+            recentMessageRef: null,
         };
     },
     mutations: mutations,

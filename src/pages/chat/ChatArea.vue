@@ -35,17 +35,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watchEffect, onUnmounted, nextTick, watch } from "vue";
+import { computed, watchEffect, onUnmounted, nextTick, watch, onUpdated } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const store = useStore();
 import { Ref, ref, reactive, onMounted } from "vue";
-
+const isSending = ref(false);
 const userId = ref("");
 const chatWindow = ref(null);
 userId.value = localStorage.getItem("userId");
-
+const unsubscribe = ref(null);
 const emits = defineEmits(["toggle-chat-list", "toggle-contact-info"]);
 const props = defineProps({
     hideChatList: {
@@ -72,7 +72,10 @@ const props = defineProps({
         type: String,
         required: true,
     }
-})
+});
+const getRecentMessagesRef = () => {
+    console.log(store.state.chat.recentMessageRef);
+}
 
 // 傳訊息是否需要註冊帳號
 const message = reactive({
@@ -100,11 +103,12 @@ const scrollToBottom = (): void => {
 };
 
 const sendMessage = async () => {
-    if (message.content.trim() === "") return;
-    console.log("sending message");
+    if (isSending.value || message.content === "") return;
+    isSending.value = true;
     await store.dispatch("chat/sendMessage", message);
-    message.content = "";
     scrollToBottom();
+    message.content = "";
+    isSending.value = false;
 };
 
 const fetchAllMessages = async () => {
@@ -112,12 +116,12 @@ const fetchAllMessages = async () => {
 };
 
 const subscribeToMessages = async () => {
-    await store.dispatch("chat/subscribeToMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
+    await store.dispatch("chat/subscribeToRecentMessages", { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
 };
 
 onMounted(async () => {
-    await fetchAllMessages();
     await subscribeToMessages();
+    await fetchAllMessages();
     scrollToBottom();
     watch(store.state.chat.messages, (newValue, oldValue) => {
         scrollToBottom();
@@ -129,11 +133,15 @@ const messageHistory = computed(() => {
     return store.getters["chat/messages"];
 });
 
-onUnmounted(async () => {
-    await store.dispatch("chat/unsubscribeFromMessages");
-    await store.dispatch("chat/clearMessages");
-    console.log("chat unmounted!!!");
+onUnmounted(() => {
+    // stop listening
+    store.state.chat.recentMessageRef();
+    store.commit('chat/clearRecentMessageRef');
 });
+
+// onUpdated(() => {
+//     store.dispatch('chat/subscribeToRecentMessages', { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
+// });
 
 </script>
 
