@@ -9,6 +9,8 @@ export default {
             messages: [],
             userWhoIsChattingWith: {},
             recentMessageRef: null,
+            mostRecentMessage: {},
+            mostRecentMessageRef: null, 
         };
     },
     mutations: mutations,

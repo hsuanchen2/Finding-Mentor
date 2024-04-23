@@ -15,7 +15,7 @@
                 </button>
             </header>
             <div class="chat-area" ref="chatWindow">
-                <div v-for="message in  messageHistory " :key="message.id" class="chat"
+                <div v-for="message in messageHistory " :key="message.id" class="chat"
                     :class="{ 'incoming': $route.params.id !== message.receiverId, 'outgoing': $route.params.id === message.receiverId }">
                     <img v-if="$route.params.id !== message.receiverId && message.content" :src="props.userImg" alt="">
                     <div v-if="message.content" class="details">
@@ -73,9 +73,11 @@ const props = defineProps({
         required: true,
     }
 });
-const getRecentMessagesRef = () => {
-    console.log(store.state.chat.recentMessageRef);
-}
+
+const messageHistory = computed(() => {
+    return store.getters["chat/messages"];
+});
+
 
 // 傳訊息是否需要註冊帳號
 const message = reactive({
@@ -106,8 +108,8 @@ const sendMessage = async () => {
     if (isSending.value || message.content === "") return;
     isSending.value = true;
     await store.dispatch("chat/sendMessage", message);
-    scrollToBottom();
     message.content = "";
+    scrollToBottom();
     isSending.value = false;
 };
 
@@ -122,6 +124,7 @@ const subscribeToMessages = async () => {
 onMounted(async () => {
     await subscribeToMessages();
     await fetchAllMessages();
+    // await fetchAllContacts();
     scrollToBottom();
     watch(store.state.chat.messages, (newValue, oldValue) => {
         scrollToBottom();
@@ -129,19 +132,12 @@ onMounted(async () => {
     console.log(store.state.chat.messages);
 });
 
-const messageHistory = computed(() => {
-    return store.getters["chat/messages"];
-});
 
 onUnmounted(() => {
     // stop listening
     store.state.chat.recentMessageRef();
     store.commit('chat/clearRecentMessageRef');
 });
-
-// onUpdated(() => {
-//     store.dispatch('chat/subscribeToRecentMessages', { receiverId: route.params.id, senderId: localStorage.getItem("userId") });
-// });
 
 </script>
 

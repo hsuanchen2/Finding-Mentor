@@ -67,9 +67,7 @@ const router = createRouter({
 });
 // 根據是否登入來跳轉不同頁面
 router.beforeEach((to, from, next) => {
-  // if (to.path.startsWith("/chat")) {
-  //   console.log(store.state.chat.recentMessageRef);
-  // };
+
   if (to.meta.requireAuth && !store.getters.isAuthenticated) {
     next("/SignIn");
   } else if (to.meta.requireUnAuth && store.getters.isAuthenticated) {

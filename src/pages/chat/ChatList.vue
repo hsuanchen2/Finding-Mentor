@@ -12,92 +12,52 @@
                 <button class="chat-button">
                     <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
                     <div class="user-info">
-                        <h3>Patrick Shyu</h3>
+                        <h3>John Doe</h3>
                         <h4>ex Google ex Facebook tech lead</h4>
                     </div>
                 </button>
-                <button class="chat-button">
+                <!-- <button class="chat-button">
                     <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
                     <div class="user-info">
                         <h3>Patrick Shyu</h3>
                         <h4>ex Google ex Facebook tech lead</h4>
                     </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button>
+                </button> -->
             </div>
         </aside>
-
     </transition>
 </template>
 <script setup lang="ts">
-import { Ref, ref, onMounted, watch } from "vue";
+import { Ref, ref, reactive, onMounted, watch, onUnmounted, computed } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 const props = defineProps({
     show: Boolean
 });
-
-
-
+const userId = ref(localStorage.getItem("userId"));
 const emits = defineEmits(["toggle-chat-list"]);
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
-}
+};
+
+
+
+const chatList = computed(() => {
+    return store.getters["chat/getChatList"][0];
+});
+
+const getChatList = async () => {
+    await store.dispatch("chat/listenToMostRecentMessage", userId.value);
+};
+
+onMounted(async () => {
+    await getChatList();
+    console.log(store.state.chat.mostRecentMessage);
+});
+
+onUnmounted(() => {
+    store.state.chat.mostRecentMessageRef();
+});
 
 </script>
 <style lang="scss" scoped>

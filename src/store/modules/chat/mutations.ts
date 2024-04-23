@@ -1,8 +1,6 @@
 import { ref, push, onValue, query, orderByChild, equalTo, getDatabase, get, off, set, child } from "firebase/database";
 export default {
     addMessage(state: any, message: any) {
-        console.log("mutations!!");
-        console.log(message);
         state.messages.push(message);
     },
     setMessages(state, userMessages) {
@@ -17,5 +15,11 @@ export default {
     },
     clearRecentMessageRef(state) {
         state.recentMessageRef = null;
+    },
+    setMostRecentMessageRef(state, ref) {
+        state.mostRecentMessageRef = ref;
+    },
+    setMostRecentMessage(state, payload) {
+        state.mostRecentMessage = payload;
     }
 }; 

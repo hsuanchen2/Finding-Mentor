@@ -1,7 +1,7 @@
 import moment from "moment";
 import { ref, push, onValue, query, orderByChild, equalTo, getDatabase, get, off, set, child } from "firebase/database";
 import { db } from "@/../config/firebaseAuth.js";
-import { send } from "vite";
+import getUserData from "@/utils/getUserData"
 
 interface message {
     id: string;
@@ -11,8 +11,18 @@ interface message {
     timeStamp: string;
 }
 
+interface newMessageNode {
+    latestMessage: Object, 
+    userData : Object, 
+}
+
 export default {
     async sendMessage(context: any, payload: any) {
+        // update message to conversation collection
+        const newMessageNode : newMessageNode= {
+            latestMessage: {}, 
+            userData: {}, 
+        }; 
         const db = getDatabase();
         const newMessage: message = {
             id: new Date().getTime().toString(),
@@ -21,39 +31,29 @@ export default {
             receiverId: payload.receiverId,
             timeStamp: moment().format('YYYY/MM/DD/HH:mm'),
         };
-
-        // Write the message to the 'messages' node
-        // const messagesRef = ref(db, 'messages');
-        // const newMessageRef = push(messagesRef);
-        // await set(newMessageRef, newMessage);
-
-        // Also write the message to the 'recentMessages' of the conversation
         const conversationId = [payload.senderId, payload.receiverId].sort().join('-');
-        console.log(conversationId);
         const conversationRef = ref(db, `conversations/${conversationId}`);
         const recentMessagesRef = child(conversationRef, 'recentMessages');
         const newRecentMessageRef = push(recentMessagesRef);
-        await set(newRecentMessageRef, newMessage);
 
-        // Update the 'participantIds' of the conversation
-        // const participantIdsRef = child(conversationRef, 'participantIds');
-        // await set(participantIdsRef, [payload.senderId, payload.receiverId]);
+
+        const userData = await getUserData(payload.receiverId, payload.content); 
+        newMessageNode.latestMessage = newMessage; 
+        newMessageNode.userData = userData; 
+        await set(newRecentMessageRef, newMessage);
+        console.log(newMessageNode); 
+        // set most recent message
+        await context.dispatch('updateMostRecentMessage', newMessageNode);
     },
-    // 初步估計是沒有成功 off掉 listener
+
     subscribeToRecentMessages(context, payload) {
-        console.log("start subbing!");
-        // console.log(context.state.chat.recentMessageRef);
         const db = getDatabase();
         const conversationId = JSON.parse(JSON.stringify([payload.senderId, payload.receiverId].sort().join('-')));
         const recentMessagesRef = ref(db, `conversations/${conversationId}/recentMessages`);
         context.commit("setRecentMessageRef", recentMessagesRef);
-        console.log(payload.senderId + " " + payload.receiverId);
-        console.log(conversationId);
-        //  onValue is triggered once when the listener is attached and again every time the data, including children, changes
+
         const handleNewMessage = (snapshot) => {
-            console.log("listening to" + " " + conversationId);
             const messages = snapshot.val();
-            console.log(messages);
             const messagesArray = Object.values(messages);
             const lastMessage = messagesArray.slice(-1)[0];
             const lastMessageId = lastMessage.id;
@@ -72,10 +72,9 @@ export default {
         };
     },
 
-
     async setContactUser(context, payload) {
-        const dbUrl = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
-        const response = await fetch(`${dbUrl}/coaches/${payload}.json`);
+        const DATABASE_URL = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
+        const response = await fetch(`${DATABASE_URL}/coaches/${payload}.json`);
         const data = await response.json();
         context.commit("userWhoIsChattingWith", data);
     },
@@ -94,5 +93,30 @@ export default {
         };
         dataArray = Object.values(data);
         context.commit('setMessages', [...dataArray]);
-    }
+    },
+
+    async updateMostRecentMessage(context: any, newMessage: message) {
+        const db = getDatabase();
+        // Update the most recent message for each user
+        const senderRecentMessageRef = ref(db, `recentMessages/${newMessage.latestMessage.senderId}/${newMessage.latestMessage.receiverId}`);
+        const receiverRecentMessageRef = ref(db, `recentMessages/${newMessage.latestMessage.receiverId}/${newMessage.latestMessage.senderId}`);
+        await set(senderRecentMessageRef, newMessage);
+        await set(receiverRecentMessageRef, newMessage);
+    },
+
+    async listenToMostRecentMessage(context, userId: string) {
+        const db = getDatabase();
+        const mostRecentMessageRef = ref(db, `recentMessages/${userId}`);
+        let chatListData;
+        const handleNewMessage = async (snapshot) => {
+            const data = await snapshot.val();
+            // console.log(data);
+            chatListData = Object.values(data);
+            console.log(chatListData);
+            chatListData && context.commit('setMostRecentMessage', chatListData);
+            // console.log(context.state.mostRecentMessage);
+        };
+        const unsub = onValue(mostRecentMessageRef, handleNewMessage);
+        context.commit("setMostRecentMessageRef", unsub);
+    },
 }; 

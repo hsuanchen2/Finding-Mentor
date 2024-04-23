@@ -1,24 +1,37 @@
 {
-    "userIdA": {
-        "userId1": {
-            "messageHistory": {
-                "userId2": {
-                    "conversationId": "abc",
-                    "messages": [
-                        {
-                            "messageId": "55555",
-                            "content": "Hello, User 2",
-                            "timestamp": "2022-01-01T00:00:00Z",
-                            "read": true
-                        },
-                        {
-                            "messageId": "666666",
-                            "content": "Hello, User 2",
-                            "timestamp": "2022-01-01T00:00:00Z",
-                            "read": true
-                        }
-                    ]
-                }
+    "recentMessages": {
+        "A": {
+            "B": {
+                "id": "1634567890123",
+                "content": "Hello, this is A.",
+                "senderId": "A",
+                "receiverId": "B",
+                "timeStamp": "2022/01/01/12:00"
+            },
+            "C": {
+                "id": "1634567890125",
+                "content": "Hello, this is C.",
+                "senderId": "C",
+                "receiverId": "A",
+                "timeStamp": "2022/01/01/12:02"
+            }
+        },
+        "B": {
+            "A": {
+                "id": "1634567890124",
+                "content": "Hello, this is B.",
+                "senderId": "B",
+                "receiverId": "A",
+                "timeStamp": "2022/01/01/12:01"
+            }
+        },
+        "C": {
+            "A": {
+                "id": "1634567890125",
+                "content": "Hello, this is C.",
+                "senderId": "C",
+                "receiverId": "A",
+                "timeStamp": "2022/01/01/12:02"
             }
         }
     }
