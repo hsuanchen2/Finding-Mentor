@@ -5,7 +5,7 @@ interface UserInfo {
     latestMessage: string; 
 }
 const getUserData = async (userId: string): Promise<Object> => {
-    console.log(userId); 
+    // console.log(userId); 
     const DB_URL = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
     try {
         const response = await fetch(`${DB_URL}/coaches/${userId}.json`);

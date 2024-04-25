@@ -120,7 +120,7 @@ export default {
             const data = await snapshot.val();
             // console.log(data);
             chatListData = Object.values(data);
-            console.log(chatListData);
+            // console.log(chatListData);
             chatListData && context.commit('setMostRecentMessage', chatListData);
             // console.log(context.state.mostRecentMessage);
         };

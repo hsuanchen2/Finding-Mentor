@@ -129,7 +129,7 @@ onMounted(async () => {
     watch(store.state.chat.messages, (newValue, oldValue) => {
         scrollToBottom();
     }, { deep: true });
-    console.log(store.state.chat.messages);
+    // console.log(store.state.chat.messages);
 });
 
 

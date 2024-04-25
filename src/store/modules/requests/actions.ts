@@ -23,7 +23,7 @@ export default {
         const error = new Error(responseData.message || "Something went wrong");
         throw error;
       }
-      console.log(responseData);
+      // console.log(responseData);
       // name is basically the key of the new request named by firebase
       newRequests.id = responseData.name;
       context.commit("addRequest", newRequests);

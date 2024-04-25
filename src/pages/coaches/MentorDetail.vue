@@ -1,5 +1,4 @@
 <template>
-  <button @click="test">123</button>
   <section class="mentor-profile mx-2 mx-md-auto">
     <header>
       <div class="user-image-wrapper">
@@ -114,10 +113,6 @@ const contactLink2 = computed((): string => {
   return isContact ? route.path : route.path + "/contact";
 })
 
-const test = () => {
-  console.log(localStorage.getItem("userId"));
-  console.log(route.params.id);
-}
 
 const setMentor = async () => {
   await store.dispatch("coaches/loadSpecificMentorInfo", route.params.id);
@@ -138,7 +133,6 @@ const setMentor = async () => {
 
 onMounted(async () => {
   await setMentor();
-  console.log("is authed", store.getters["auth/isAuthenticated"]);
 });
 
 

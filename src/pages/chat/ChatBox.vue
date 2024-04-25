@@ -63,7 +63,7 @@ const receiverInfo: ReceiverInfo = reactive({
 // listen to emits events
 const toggleChatList = (): void => {
   showChatList.value = !showChatList.value;
-  console.log(showChatList.value);
+  // console.log(showChatList.value);
 }
 
 const toggleContactInfo = (): void => {
