@@ -172,4 +172,5 @@ export default {
     context.dispatch("logout");
     context.commit("setAutoLogout");
   },
+  
 };

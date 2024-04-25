@@ -4,7 +4,8 @@ interface UserInfo {
     userImage: string; 
     latestMessage: string; 
 }
-const getUserData = async (userId: string, latestMessage: string): Promise<Object> => {
+const getUserData = async (userId: string): Promise<Object> => {
+    console.log(userId); 
     const DB_URL = import.meta.env.VITE_FIREBASE_REALTIME_DATABASE_API_KEY;
     try {
         const response = await fetch(`${DB_URL}/coaches/${userId}.json`);
@@ -18,7 +19,7 @@ const getUserData = async (userId: string, latestMessage: string): Promise<Objec
         chatListUserInfo.firstName = userData.firstName; 
         chatListUserInfo.lastName = userData.lastName; 
         chatListUserInfo.userImage = userData.userImage; 
-        chatListUserInfo.latestMessage = latestMessage; 
+        // chatListUserInfo.latestMessage = latestMessage; 
         return chatListUserInfo; 
     } catch (error) {
         console.error(error);

@@ -5,54 +5,72 @@
                 <button class="toggle-mobile-chat-list" @click="toggleChatList">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
+
                 <h4 class="title">Chats</h4>
             </div>
-            <input type="text" placeholder="Search user" class="search-input" />
-            <div class="chat-buttons-container">
-                <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
+
+            <div class="search-container">
+                <input v-model.trim="searchTerm" type="text" placeholder="Search user" class="search-input" />
+                <button v-if="searchTerm !== ''" @click="clearSearchTerm" class="clear-input-button"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="chat-buttons-container" v-if="chatList">
+                <button v-for="(chat, index) in chatList" :key="chat.userData.userImage" class="chat-button" :class="{ active: route.params.id == chat.userData.userId }"
+                    @click="switchUser(chat.userData.userId)">
+                    <img :src="chat.userData.userImage" class="chat-button-img" alt="">
                     <div class="user-info">
-                        <h3>John Doe</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
+                        <h3>{{ chat.userData.firstName }} {{ chat.userData.lastName }}</h3>
+                        <h4> <span v-if="userId == chat.latestMessage.senderId">You :</span> {{
+            chat.latestMessage.content }}</h4>
                     </div>
                 </button>
-                <!-- <button class="chat-button">
-                    <img src="@/../public/user-img/test2.jpg" class="chat-button-img" alt="">
-                    <div class="user-info">
-                        <h3>Patrick Shyu</h3>
-                        <h4>ex Google ex Facebook tech lead</h4>
-                    </div>
-                </button> -->
             </div>
         </aside>
     </transition>
 </template>
 <script setup lang="ts">
-import { Ref, ref, reactive, onMounted, watch, onUnmounted, computed } from "vue";
+import { Ref, ref, reactive, onMounted, watch, onUnmounted, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
 const store = useStore();
 const props = defineProps({
     show: Boolean
 });
+
+const searchTerm = ref("");
 const userId = ref(localStorage.getItem("userId"));
 const emits = defineEmits(["toggle-chat-list"]);
 const toggleChatList = (): void => {
     emits("toggle-chat-list");
 };
 
-
+const switchUser = (userId: string) => {
+    router.push(`/chat/${userId}`)
+};
 
 const chatList = computed(() => {
-    return store.getters["chat/getChatList"][0];
+    if (searchTerm.value === "") {
+        return store.getters["chat/getChatList"];
+    }
+    const usersData = store.getters["chat/getChatList"];
+    return usersData.filter((user: Object) => {
+        return user.userData.firstName.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+            user.userData.lastName.toLowerCase().includes(searchTerm.value.toLowerCase());
+    });
 });
 
 const getChatList = async () => {
     await store.dispatch("chat/listenToMostRecentMessage", userId.value);
 };
 
+const clearSearchTerm = () => {
+    searchTerm.value = "";
+};  
+
 onMounted(async () => {
     await getChatList();
-    console.log(store.state.chat.mostRecentMessage);
 });
 
 onUnmounted(() => {
@@ -79,8 +97,19 @@ onUnmounted(() => {
     }
 }
 
+.search-container {
+    position: relative;
+    .clear-input-button {
+        position: absolute;
+        right: 8px;
+        top: 0; 
+        border: none;
+        background: none;
+    }
+}
+
 .search-input {
-    width: 90%;
+    width: 95%;
     margin-left: 10px;
     padding-left: 10px;
     border: none;
@@ -128,6 +157,8 @@ onUnmounted(() => {
         background-color: rgb(184, 184, 184);
     }
 
+
+
     img {
         width: 35px;
         height: 35px;
@@ -153,6 +184,13 @@ onUnmounted(() => {
             color: $minor-text-color;
             margin-bottom: 0;
         }
+    }
+}
+
+.chat-button.active {
+    background-color: rgb(208, 208, 208);
+    h3, h4 {
+        color: rgb(36, 36, 36);
     }
 }
 

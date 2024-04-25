@@ -12,17 +12,17 @@ interface message {
 }
 
 interface newMessageNode {
-    latestMessage: Object, 
-    userData : Object, 
+    latestMessage: Object,
+    userData: Object,
 }
 
 export default {
     async sendMessage(context: any, payload: any) {
         // update message to conversation collection
-        const newMessageNode : newMessageNode= {
-            latestMessage: {}, 
-            userData: {}, 
-        }; 
+        const newMessageNode: newMessageNode = {
+            latestMessage: {},
+            userData: {},
+        };
         const db = getDatabase();
         const newMessage: message = {
             id: new Date().getTime().toString(),
@@ -36,12 +36,13 @@ export default {
         const recentMessagesRef = child(conversationRef, 'recentMessages');
         const newRecentMessageRef = push(recentMessagesRef);
 
+        // make a condition check if the userid is sender or the receiver
+        // const userData = await getUserData(payload.receiverId, payload.content); 
+        // console.log(userData);
+        newMessageNode.latestMessage = newMessage;
 
-        const userData = await getUserData(payload.receiverId, payload.content); 
-        newMessageNode.latestMessage = newMessage; 
-        newMessageNode.userData = userData; 
         await set(newRecentMessageRef, newMessage);
-        console.log(newMessageNode); 
+        // console.log(newMessageNode); 
         // set most recent message
         await context.dispatch('updateMostRecentMessage', newMessageNode);
     },
@@ -97,11 +98,18 @@ export default {
 
     async updateMostRecentMessage(context: any, newMessage: message) {
         const db = getDatabase();
-        // Update the most recent message for each user
+        const senderData = await getUserData(newMessage.latestMessage.receiverId);
+        const receiverData = await getUserData(newMessage.latestMessage.senderId);
         const senderRecentMessageRef = ref(db, `recentMessages/${newMessage.latestMessage.senderId}/${newMessage.latestMessage.receiverId}`);
         const receiverRecentMessageRef = ref(db, `recentMessages/${newMessage.latestMessage.receiverId}/${newMessage.latestMessage.senderId}`);
-        await set(senderRecentMessageRef, newMessage);
-        await set(receiverRecentMessageRef, newMessage);
+        const senderNewNode = JSON.parse(JSON.stringify(newMessage));
+        const receiverNewNode = JSON.parse(JSON.stringify(newMessage));
+        senderNewNode.userData = senderData;
+        senderNewNode.userData.userId = newMessage.latestMessage.receiverId;
+        receiverNewNode.userData = receiverData;
+        receiverNewNode.userData.userId = newMessage.latestMessage.senderId;
+        await set(senderRecentMessageRef, senderNewNode);
+        await set(receiverRecentMessageRef, receiverNewNode);
     },
 
     async listenToMostRecentMessage(context, userId: string) {

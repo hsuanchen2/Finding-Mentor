@@ -9,7 +9,7 @@ export default {
             messages: [],
             userWhoIsChattingWith: {},
             recentMessageRef: null,
-            mostRecentMessage: {},
+            mostRecentMessage: [],
             mostRecentMessageRef: null, 
         };
     },
