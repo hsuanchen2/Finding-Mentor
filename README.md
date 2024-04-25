@@ -1,7 +1,23 @@
-# Vue 3 + Vite
+# 專案名稱 - Mentor
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+這是一個假想的工程師職涯互助平台，用戶可以在上面註冊帳號，並成為導師，並接收其他用戶傳來的留言。
+用戶也可以根據不同的程式語言、專長、導師所在地區等條件，搜尋符合條件的導師。
+另外也可以與其他用戶建立即時聊天室，並能夠同時與多人聊天。
 
-## Recommended IDE Setup
+![image](https://github.com/hsuanchen2/Finding-Mentor/assets/126219198/d58105d8-a2c4-42d1-8649-979156b0232c)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+![image](https://github.com/hsuanchen2/Finding-Mentor/assets/126219198/4e52d683-a20b-4cf9-bdd5-5639f098bb2b)
+
+# 安裝環境 Vite + Vue
+
+## 安裝
+
+首先，你需要安裝 [Node.js](https://nodejs.org/) 和 [Yarn](https://yarnpkg.com/)。然後，你可以運行以下命令來安裝專案的依賴：
+
+```bash
+npm install
+
+運行開發環境
+npm run dev
+
+
