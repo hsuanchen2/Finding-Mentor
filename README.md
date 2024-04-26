@@ -8,6 +8,20 @@
 
 ![image](https://github.com/hsuanchen2/Finding-Mentor/assets/126219198/4e52d683-a20b-4cf9-bdd5-5639f098bb2b)
 
+
+## 使用技術
+Vue 3
+Vite
+Vuex
+Vue Router
+TypeScript
+Bootstrap
+SCSS
+Firebase
+Splide.js
+AOS.js
+Email.js
+
 # 安裝環境 Vite + Vue
 
 ## 安裝
